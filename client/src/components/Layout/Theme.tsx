@@ -19,6 +19,15 @@ const Theme: React.FC<Props> = ({ children }) => {
       secondary: yellow,
       type,
     },
+    overrides: {
+      MuiCssBaseline: {
+        '@global': {
+          body: {
+            transition: 'background 0.25s ease-out, color 0.25s ease-out',
+          },
+        },
+      },
+    },
   });
 
   const toggleTheme = (): void => {
