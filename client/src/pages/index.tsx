@@ -1,10 +1,12 @@
-import { Typography } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
+
+import NotLoggedInitial from '../components/NotLoggedInitial';
 
 const Home: React.FC = () => {
   return (
-    <div>
-      <Typography>Hello world!</Typography>
-    </div>
+    <Box minHeight="100vh" height="100%">
+      <NotLoggedInitial />
+    </Box>
   );
 };
 
