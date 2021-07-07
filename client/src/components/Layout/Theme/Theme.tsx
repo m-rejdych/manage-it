@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createTheme, PaletteType, ThemeProvider, CssBaseline } from '@material-ui/core';
-import { cyan, yellow } from '@material-ui/core/colors';
+import { blue, yellow } from '@material-ui/core/colors';
 
 interface ChildrenProps {
   toggleTheme: () => void;
@@ -15,7 +15,7 @@ const Theme: React.FC<Props> = ({ children }) => {
 
   const theme = createTheme({
     palette: {
-      primary: cyan,
+      primary: blue,
       secondary: yellow,
       type,
     },
@@ -23,7 +23,7 @@ const Theme: React.FC<Props> = ({ children }) => {
       MuiCssBaseline: {
         '@global': {
           body: {
-            transition: 'background 0.25s ease-out, color 0.25s ease-out',
+            transition: 'all 0.25s ease-out',
           },
         },
       },
