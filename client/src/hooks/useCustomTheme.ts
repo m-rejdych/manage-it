@@ -1,16 +1,8 @@
-import { useState } from 'react';
-import { createTheme, PaletteType, ThemeProvider, CssBaseline } from '@material-ui/core';
+import { useState, useRef } from 'react';
+import { createTheme, PaletteType } from '@material-ui/core';
 import { blue, yellow } from '@material-ui/core/colors';
 
-interface ChildrenProps {
-  toggleTheme: () => void;
-}
-
-interface Props {
-  children: (props: ChildrenProps) => JSX.Element;
-}
-
-const Theme: React.FC<Props> = ({ children }) => {
+const useCustomTheme = () => {
   const [type, setType] = useState<PaletteType>('light');
 
   const theme = createTheme({
@@ -31,15 +23,11 @@ const Theme: React.FC<Props> = ({ children }) => {
   });
 
   const toggleTheme = (): void => {
+    console.log('hjeanć kgunwo');
     setType((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {children({ toggleTheme })}
-    </ThemeProvider>
-  );
+  return { theme, toggleTheme };
 };
 
-export default Theme;
+export default useCustomTheme;
