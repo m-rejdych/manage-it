@@ -1,9 +1,11 @@
-import { useState, useRef } from 'react';
-import { createTheme, PaletteType } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { createTheme } from '@material-ui/core';
 import { blue, yellow } from '@material-ui/core/colors';
 
+import { RootState } from '../store/types/state';
+
 const useCustomTheme = () => {
-  const [type, setType] = useState<PaletteType>('light');
+  const type = useSelector((state: RootState) => state.theme.paletteType);
 
   const theme = createTheme({
     palette: {
@@ -22,12 +24,7 @@ const useCustomTheme = () => {
     },
   });
 
-  const toggleTheme = (): void => {
-    console.log('hjeanć kgunwo');
-    setType((prev) => (prev === 'light' ? 'dark' : 'light'));
-  };
-
-  return { theme, toggleTheme };
+  return theme;
 };
 
 export default useCustomTheme;

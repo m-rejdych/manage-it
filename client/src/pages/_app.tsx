@@ -1,15 +1,15 @@
-import React from 'react';
-import Head from 'next/head';
-import { ThemeProvider, CssBaseline } from '@material-ui/core';
+import { useEffect } from 'react';
+import { Provider } from 'react-redux';
 import { AppProps } from 'next/app';
+import Head from 'next/head';
 
-import useCustomTheme from '../hooks/useCustomTheme';
+import useStore from '../store';
 import Layout from '../components/Layout';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
-  const { theme } = useCustomTheme();
+  const store = useStore();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles) {
       jssStyles.parentElement?.removeChild(jssStyles);
@@ -22,12 +22,11 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
         <title>Manage IT</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
       </Head>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+      <Provider store={store}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </ThemeProvider>
+      </Provider>
     </>
   );
 };
