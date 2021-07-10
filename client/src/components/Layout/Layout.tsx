@@ -1,16 +1,19 @@
 import { ThemeProvider, CssBaseline, GlobalStyles } from '@material-ui/core';
 
-import ThemeModeButton from '../ThemeModeButton';
-import useCustomTheme from '../../hooks/useCustomTheme';
+import theme from '../../theme';
 
 const Layout: React.FC = ({ children }) => {
-  const theme = useCustomTheme();
-
   return children ? (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <GlobalStyles styles={{ body: { transition: 'all 0.25s ease-out' } }} />
-      <ThemeModeButton />
+      <GlobalStyles
+        styles={{
+          body: {
+            background:
+              'radial-gradient(123.22% 129.67% at 100.89% -5.6%, #201D47 0%, #17153A 100%)',
+          },
+        }}
+      />
       {children}
     </ThemeProvider>
   ) : null;
