@@ -1,20 +1,15 @@
-import { Box, Paper, Typography, Button, makeStyles } from '@material-ui/core';
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(3),
-  },
-  registerButton: {
-    marginRight: theme.spacing(2),
-  },
-}));
+import { Box, Paper, Typography, Button, useTheme } from '@material-ui/core';
 
 const Home: React.FC = () => {
-  const classes = useStyles();
+  const theme = useTheme();
 
   return (
     <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
-      <Paper className={classes.paper}>
+      <Paper
+        css={{
+          padding: theme.spacing(3),
+        }}
+      >
         <Typography variant="h5" paragraph>
           Create a free account and work on exciting projects with other people!
         </Typography>
@@ -23,7 +18,9 @@ const Home: React.FC = () => {
             variant="contained"
             color="primary"
             size="large"
-            className={classes.registerButton}
+            css={{
+              marginRight: theme.spacing(2),
+            }}
           >
             Register
           </Button>

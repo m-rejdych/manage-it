@@ -1,15 +1,4 @@
-import { Paper, Grid, Typography, makeStyles } from '@material-ui/core';
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    padding: theme.spacing(2),
-    height: 200,
-    cursor: 'pointer',
-  },
-  label: {
-    fontWeight: 700,
-  },
-}));
+import { Paper, Grid, Typography, useTheme } from '@material-ui/core';
 
 const categories = [
   {
@@ -39,14 +28,26 @@ const categories = [
 ];
 
 const Search: React.FC = () => {
-  const classes = useStyles();
+  const theme = useTheme();
 
   return (
     <Grid container spacing={3}>
       {categories.map(({ id, label }) => (
         <Grid item xs={6} key={id}>
-          <Paper className={classes.paper}>
-            <Typography className={classes.label}>{label}</Typography>
+          <Paper
+            css={{
+              padding: theme.spacing(2),
+              height: 200,
+              cursor: 'pointer',
+            }}
+          >
+            <Typography
+              css={{
+                fontWeight: 700,
+              }}
+            >
+              {label}
+            </Typography>
           </Paper>
         </Grid>
       ))}

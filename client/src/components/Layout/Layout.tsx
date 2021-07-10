@@ -1,6 +1,6 @@
-import { ThemeProvider, CssBaseline } from '@material-ui/core';
+import { ThemeProvider, CssBaseline, GlobalStyles } from '@material-ui/core';
 
-import ThemeColorButton from '../ThemeColorButton';
+import ThemeModeButton from '../ThemeModeButton';
 import useCustomTheme from '../../hooks/useCustomTheme';
 
 const Layout: React.FC = ({ children }) => {
@@ -9,7 +9,8 @@ const Layout: React.FC = ({ children }) => {
   return children ? (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ThemeColorButton />
+      <GlobalStyles styles={{ body: { transition: 'all 0.25s ease-out' } }} />
+      <ThemeModeButton />
       {children}
     </ThemeProvider>
   ) : null;
