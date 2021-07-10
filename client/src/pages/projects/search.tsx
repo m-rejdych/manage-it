@@ -35,14 +35,14 @@ const Search: React.FC = () => {
       {categories.map(({ id, label }) => (
         <Grid item xs={6} key={id}>
           <Paper
-            css={{
+            sx={{
               padding: theme.spacing(2),
               height: 200,
               cursor: 'pointer',
             }}
           >
             <Typography
-              css={{
+              sx={{
                 fontWeight: 700,
               }}
             >

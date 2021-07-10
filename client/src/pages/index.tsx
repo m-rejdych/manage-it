@@ -1,12 +1,21 @@
 import { Box, Paper, Typography, Button, useTheme } from '@material-ui/core';
+import { useRouter } from 'next/router';
+
+import ROUTES from '../constants/routes';
+import ValueOf from '../types/ValueOf';
 
 const Home: React.FC = () => {
   const theme = useTheme();
+  const router = useRouter();
+
+  const handleAuth = (route: ValueOf<typeof ROUTES>) => {
+    router.push(route);
+  };
 
   return (
-    <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
+    <Box height="100vh" display="flex" alignItems="center" justifyContent="center">
       <Paper
-        css={{
+        sx={{
           padding: theme.spacing(3),
         }}
       >
@@ -18,13 +27,19 @@ const Home: React.FC = () => {
             variant="contained"
             color="primary"
             size="large"
-            css={{
+            onClick={(): void => handleAuth(ROUTES.REGISTER)}
+            sx={{
               marginRight: theme.spacing(2),
             }}
           >
             Register
           </Button>
-          <Button variant="contained" color="secondary" size="large">
+          <Button
+            variant="contained"
+            color="secondary"
+            size="large"
+            onClick={(): void => handleAuth(ROUTES.LOGIN)}
+          >
             Login
           </Button>
         </Box>
