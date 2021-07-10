@@ -71,13 +71,15 @@ const Register: React.FC = () => {
       name: 'password',
       type: 'password',
       label: 'Password',
-      validate: (value: string): string | undefined => {
-        const error = validateInput(value, { regexp: PASSWORD_REGEXP })
-          ? undefined
-          : 'Passowrd should contain a digit and be at least 6 characters long.';
+      validate: isRegister
+        ? (value: string): string | undefined => {
+            const error = validateInput(value, { regexp: PASSWORD_REGEXP })
+              ? undefined
+              : 'Passowrd should contain a digit and be at least 6 characters long.';
 
-        return error;
-      },
+            return error;
+          }
+        : undefined,
     },
   ];
 
@@ -116,23 +118,21 @@ const Register: React.FC = () => {
       {({ values }) => (
         <Form>
           <Stack spacing={1}>
-            {fields
-              .filter((field) => !!field)
-              .map(({ validate, ...field }) => (
-                <AuthField
-                  key={field.name}
-                  validate={
-                    !validate && field.name === 'repeatPassword'
-                      ? () =>
-                          handleValidateRepeatPassword(
-                            values.password,
-                            (values as RegisterValues).repeatPassword
-                          )
-                      : validate
-                  }
-                  {...field}
-                />
-              ))}
+            {fields.map(({ validate, ...field }) => (
+              <AuthField
+                key={field.name}
+                validate={
+                  !validate && field.name === 'repeatPassword'
+                    ? () =>
+                        handleValidateRepeatPassword(
+                          values.password,
+                          (values as RegisterValues).repeatPassword
+                        )
+                    : validate
+                }
+                {...field}
+              />
+            ))}
             <Button sx={{ alignSelf: 'center' }} type="submit">
               {isRegister ? 'Register' : 'Login'}
             </Button>
