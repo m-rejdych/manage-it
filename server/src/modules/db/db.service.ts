@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 
+import User from '../user/user.entity';
+
+const entities = [User];
+
 @Injectable()
 class TypeOrmService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
@@ -18,6 +22,7 @@ class TypeOrmService implements TypeOrmOptionsFactory {
       autoLoadEntities: true,
       synchronize: true,
       logging: true,
+      entities,
     };
   }
 }
