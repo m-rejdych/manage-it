@@ -1,9 +1,11 @@
-import { Controller, Post, Body, Res } from '@nestjs/common';
+import { Controller, Post, Body, Res, UseGuards, Req } from '@nestjs/common';
 import { Response } from 'express';
 
 import AuthService from './auth.service';
 import RegisterDto from './dto/register.dto';
-import AuthResponseDto from './dto/authResponse.dto';
+import User from '../user/user.entity';
+import LocalGuard from '../../guards/local.guard';
+import AuthRequest from './interfaces/auth-request';
 
 @Controller('auth')
 class AuthController {
@@ -13,15 +15,28 @@ class AuthController {
   async register(
     @Body() data: RegisterDto,
     @Res({ passthrough: true }) res: Response,
-  ): Promise<AuthResponseDto> {
-    const userData = await this.authService.register(data);
+  ): Promise<User> {
+    const { user, token } = await this.authService.register(data);
 
-    res.cookie('jwt', userData.token, {
+    res.cookie('jwt', token, {
       httpOnly: true,
-      maxAge: 36000,
+      maxAge: 3600000,
     });
 
-    return userData;
+    return user;
+  }
+
+  @UseGuards(LocalGuard)
+  @Post('login')
+  async login(
+    @Req() req: AuthRequest,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<User> {
+    const { user, token } = await this.authService.login(req.user.id);
+
+    res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 });
+
+    return user;
   }
 }
 

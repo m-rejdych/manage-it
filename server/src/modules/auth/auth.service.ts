@@ -1,18 +1,19 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Repository } from 'typeorm';
 import { compare } from 'bcrypt';
 
 import UserService from '../user/user.service';
 import User from '../user/user.entity';
 import RegisterDto from './dto/register.dto';
-import AuthResponseDto from './dto/authResponse.dto';
+import AuthPayload from './dto/authPayload.dot';
 
 @Injectable()
 class AuthService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
     private userService: UserService,
     private jwtService: JwtService,
   ) {}
@@ -20,8 +21,10 @@ class AuthService {
   async validateUser(
     email: string,
     password: string,
-  ): Promise<Partial<User> | null> {
-    const user = await this.userService.findByEmail(email);
+  ): Promise<Omit<User, 'password'> | null> {
+    const user = await this.userService.findByEmail(email, {
+      withPassword: true,
+    });
     if (!user) return null;
 
     const { password: userPassword, ...rest } = user;
@@ -36,7 +39,7 @@ class AuthService {
     username,
     password,
     repeatPassword,
-  }: RegisterDto): Promise<AuthResponseDto> {
+  }: RegisterDto): Promise<AuthPayload> {
     if (password !== repeatPassword) {
       throw new BadRequestException('Passwords does not match.');
     }
@@ -54,7 +57,19 @@ class AuthService {
 
     const token = this.jwtService.sign({ userId: user.id, email });
 
-    return { userId: user.id, email, token };
+    return { user, token };
+  }
+
+  async login(userId: number): Promise<AuthPayload> {
+    const user = await this.userService.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+
+    const token = this.jwtService.sign({ userId, email: user.email });
+
+    return { user, token };
   }
 }
 

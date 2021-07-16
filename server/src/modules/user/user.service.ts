@@ -1,5 +1,9 @@
 import { hash } from 'bcrypt';
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -21,11 +25,21 @@ class UserService {
       ? await this.userRepository
           .createQueryBuilder('user')
           .where('user.email = :email', { email })
-          .addSelect('password')
+          .addSelect('user.password')
           .getOne()
       : await this.userRepository.findOne({ email });
 
     return user || null;
+  }
+
+  async findById(id: number): Promise<User> {
+    const user = await this.userRepository.findOne(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+
+    return user;
   }
 
   async createUser({

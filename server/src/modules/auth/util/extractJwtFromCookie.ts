@@ -1,6 +1,6 @@
-import { Request } from 'express';
+import { JwtFromRequestFunction } from 'passport-jwt';
 
-export default (req: Request) => {
+const extractJwtFromCookie: JwtFromRequestFunction = (req) => {
   let token: string | null = null;
 
   if (req?.cookies) {
@@ -9,3 +9,5 @@ export default (req: Request) => {
 
   return token;
 };
+
+export default extractJwtFromCookie;
