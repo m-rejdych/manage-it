@@ -2,15 +2,15 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 
 import User from '../../../types/user';
-import { REGISTER, LOGIN, registerSuccess, loginSuccess, setError } from './actions';
-import { register, login } from '../../../services/authServices';
+import { REGISTER, LOGIN, AUTOLOGIN, authSuccess, autologinSuccess, setError } from './actions';
+import { register, login, autologin } from '../../../services/authServices';
 import { RegisterPayload, LoginPayload } from '../../../types/auth/payloads';
 import { PayloadAction } from '../../types/actions';
 
 function* handleRegister({ payload }: PayloadAction<typeof REGISTER, RegisterPayload>) {
   try {
     const response: AxiosResponse<User> = yield call(register, payload);
-    yield put(registerSuccess(response.data));
+    yield put(authSuccess(response.data));
   } catch (error) {
     yield put(setError(error.response.data.message));
   }
@@ -19,7 +19,7 @@ function* handleRegister({ payload }: PayloadAction<typeof REGISTER, RegisterPay
 function* handleLogin({ payload }: PayloadAction<typeof LOGIN, LoginPayload>) {
   try {
     const response: AxiosResponse<User> = yield call(login, payload);
-    yield put(loginSuccess(response.data));
+    yield put(authSuccess(response.data));
   } catch (error) {
     yield put(setError(error.response.data.message));
   }

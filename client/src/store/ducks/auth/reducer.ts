@@ -2,7 +2,7 @@ import { Reducer } from 'redux';
 
 import { State } from './types';
 import { PayloadAction } from '../../types/actions';
-import { REGISTER, REGISTER_SUCCESS, LOGIN, LOGIN_SUCCESS, SET_ERROR } from './actions';
+import { REGISTER, LOGIN, AUTH_SUCCESS, AUTOLOGIN, AUTOLOGIN_SUCCESS, SET_ERROR } from './actions';
 
 const initialState: State = {
   isAuth: false,
@@ -15,11 +15,9 @@ const reducer: Reducer<State, PayloadAction> = (state = initialState, { type, pa
   switch (type) {
     case REGISTER:
       return { ...state, loading: true };
-    case REGISTER_SUCCESS:
-      return { ...state, loading: false, isAuth: true, user: payload, error: null };
     case LOGIN:
       return { ...state, loading: true };
-    case LOGIN_SUCCESS:
+    case AUTH_SUCCESS:
       return { ...state, loading: false, isAuth: true, user: payload, error: null };
     case SET_ERROR:
       return { ...state, loading: false, error: payload };

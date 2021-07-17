@@ -11,7 +11,7 @@ const cache = createCache({ key: 'css' });
 cache.compat = true;
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
-  const store = useStore();
+  const store = useStore(pageProps.initialReduxState);
 
   return (
     <CacheProvider value={cache}>

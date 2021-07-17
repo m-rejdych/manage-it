@@ -5,11 +5,14 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
+import { Request } from 'express';
 
 import UserService from '../user/user.service';
 import User from '../user/user.entity';
 import RegisterDto from './dto/register.dto';
 import AuthPayload from './dto/authPayload.dot';
+import JwtPayload from './dto/jwtPayload.dto';
+import extractJwtFromCookie from './util/extractJwtFromCookie';
 
 @Injectable()
 class AuthService {
@@ -70,6 +73,20 @@ class AuthService {
     const token = this.jwtService.sign({ userId, email: user.email });
 
     return { user, token };
+  }
+
+  async autologin(req: Request): Promise<User | null> {
+    const token = extractJwtFromCookie(req);
+    if (!token) return null;
+
+    const jwtData: JwtPayload = await this.jwtService.verifyAsync(token);
+
+    const user = await this.userService.findById(Number(jwtData.userId));
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    return user;
   }
 }
 

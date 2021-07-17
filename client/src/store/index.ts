@@ -26,7 +26,7 @@ const initStore = (
   return store;
 };
 
-const initializeStore = (preloadedState?: Partial<RootState>) => {
+export const initializeStore = (preloadedState?: Partial<RootState>) => {
   let _store = store ?? initStore(preloadedState);
 
   if (preloadedState && store) {

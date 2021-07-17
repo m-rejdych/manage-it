@@ -1,5 +1,13 @@
-import { Controller, Post, Body, Res, UseGuards, Req } from '@nestjs/common';
-import { Response } from 'express';
+import {
+  Controller,
+  Post,
+  Body,
+  Res,
+  UseGuards,
+  Req,
+  ConsoleLogger,
+} from '@nestjs/common';
+import { Response, Request } from 'express';
 
 import AuthService from './auth.service';
 import RegisterDto from './dto/register.dto';
@@ -42,6 +50,11 @@ class AuthController {
     });
 
     return user;
+  }
+
+  @Post('autologin')
+  async autologin(@Req() req: Request): Promise<User | null> {
+    return await this.authService.autologin(req);
   }
 }
 
