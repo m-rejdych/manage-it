@@ -1,5 +1,5 @@
-import { PaletteType } from '@material-ui/core';
+import { PaletteMode } from '@material-ui/core';
 
 export interface State {
-  paletteType: PaletteType;
+  paletteType: PaletteMode;
 }

@@ -21,6 +21,7 @@ class AuthController {
     res.cookie('jwt', token, {
       httpOnly: true,
       maxAge: 3600000,
+      secure: process.env.NODE_ENV === 'production',
     });
 
     return user;
@@ -34,7 +35,11 @@ class AuthController {
   ): Promise<User> {
     const { user, token } = await this.authService.login(req.user.id);
 
-    res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 });
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      maxAge: 3600000,
+      secure: process.env.NODE_ENV === 'production',
+    });
 
     return user;
   }

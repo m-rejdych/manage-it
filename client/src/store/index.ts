@@ -1,21 +1,27 @@
 import { useMemo } from 'react';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { combineReducers, createStore, CombinedState, Reducer, EmptyObject, Store } from 'redux';
+import { createStore, EmptyObject, Store, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 
-import themeReducer from './ducks/theme/reducer';
 import { PayloadAction } from './types/actions';
 import { RootState } from './types/state';
+import rootReducer from './reducer';
+import rootSaga from './saga';
 
 let store: Store<EmptyObject & RootState, PayloadAction> | undefined;
 
 const initStore = (
   preloadedState?: Partial<RootState>
 ): Store<EmptyObject & RootState, PayloadAction> => {
-  const rootReducer: Reducer<CombinedState<RootState>, PayloadAction> = combineReducers<RootState>({
-    theme: themeReducer,
-  });
+  const sagaMiddleware = createSagaMiddleware();
 
-  const store = createStore(rootReducer, preloadedState, composeWithDevTools());
+  const store = createStore(
+    rootReducer,
+    preloadedState,
+    composeWithDevTools(applyMiddleware(sagaMiddleware))
+  );
+
+  sagaMiddleware.run(rootSaga);
 
   return store;
 };

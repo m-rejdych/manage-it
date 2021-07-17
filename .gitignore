@@ -5,19 +5,6 @@
 /.pnp
 .pnp.js
 
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# env
-.env.local
-
 # misc
 .DS_Store
 *.pem
@@ -32,6 +19,3 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
-
-# vercel
-.vercel

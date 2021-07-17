@@ -3,11 +3,13 @@ import Link from 'next/link';
 import { Stack, Button, Typography, useTheme } from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 
 import ROUTES from '../../constants/routes';
 import AuthField from './AuthField';
 import InputType from '../../types/InputType';
 import validateInput from '../../util/validateInput';
+import { login, register } from '../../store/ducks/auth/actions';
 
 const EMAIL_REGEXP =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -39,6 +41,7 @@ export interface Field {
 const Register: React.FC = () => {
   const router = useRouter();
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const isRegister = router.pathname === ROUTES.REGISTER;
 
@@ -105,16 +108,14 @@ const Register: React.FC = () => {
       ]
     : [];
 
+  const handleSubmit = (values: LoginValues | RegisterValues): void => {
+    dispatch(isRegister ? register(values as RegisterValues) : login(values as LoginValues));
+  };
+
   const fields = [...loginFields, ...registerFields];
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={initialValues}
-      onSubmit={(data): void => {
-        console.log(data);
-      }}
-    >
+    <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit}>
       {({ values }) => (
         <Form>
           <Stack spacing={1}>

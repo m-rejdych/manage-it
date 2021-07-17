@@ -1,12 +1,12 @@
 import { Reducer } from 'redux';
-import { PaletteType } from '@material-ui/core';
+import { PaletteMode } from '@material-ui/core';
 
 import { State } from './types';
 import { PayloadAction } from '../../types/actions';
 import { SET_PALETTE_TYPE } from './actions';
 
 const initialState = {
-  paletteType: 'light' as PaletteType,
+  paletteType: 'light' as PaletteMode,
 };
 
 const reducer: Reducer<State, PayloadAction> = (state = initialState, { type, payload }): State => {
