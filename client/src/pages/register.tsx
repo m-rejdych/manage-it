@@ -1,6 +1,9 @@
+import { GetServerSideProps } from 'next';
 import { Box, Paper, useTheme } from '@material-ui/core';
 
 import AuthForm from '../components/AuthForm';
+import autologin from '../util/autologin';
+import ROUTES from '../constants/routes';
 
 const Register: React.FC = () => {
   const theme = useTheme();
@@ -12,6 +15,16 @@ const Register: React.FC = () => {
       </Paper>
     </Box>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const initialState = await autologin(ctx);
+
+  if (!initialState) {
+    return { props: {} };
+  }
+
+  return { props: { initialReduxState: initialState }, redirect: { destination: ROUTES.HOME } };
 };
 
 export default Register;

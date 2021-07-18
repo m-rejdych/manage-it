@@ -57,7 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return { redirect: { destination: ROUTES.LOGIN }, props: {} };
   }
 
-  return { props: { initialReduxState: initialState } };
+  return { props: { initialReduxState: initialState }, redirect: { destination: ROUTES.HOME } };
 };
 
 export default Home;

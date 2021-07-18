@@ -1,15 +1,17 @@
-import React from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { Stack, Button, Typography, useTheme } from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ROUTES from '../../constants/routes';
 import AuthField from './AuthField';
 import InputType from '../../types/InputType';
+import AppAlert from '../../components/AppAlert';
 import validateInput from '../../util/validateInput';
-import { login, register } from '../../store/ducks/auth/actions';
+import { RootState } from '../../store/types/state';
+import { login, register, setError } from '../../store/ducks/auth/actions';
 
 const EMAIL_REGEXP =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -39,9 +41,15 @@ export interface Field {
 }
 
 const Register: React.FC = () => {
+  const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+  const error = useSelector((state: RootState) => state.auth.error);
   const router = useRouter();
   const theme = useTheme();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isAuth) router.push(ROUTES.HOME);
+  }, [isAuth]);
 
   const isRegister = router.pathname === ROUTES.REGISTER;
 
@@ -112,43 +120,52 @@ const Register: React.FC = () => {
     dispatch(isRegister ? register(values as RegisterValues) : login(values as LoginValues));
   };
 
+  const handleCloseAlert = (): void => {
+    dispatch(setError(null));
+  };
+
   const fields = [...loginFields, ...registerFields];
 
   return (
-    <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit}>
-      {({ values }) => (
-        <Form>
-          <Stack spacing={1}>
-            {fields.map(({ validate, ...field }) => (
-              <AuthField
-                key={field.name}
-                validate={
-                  !validate && field.name === 'repeatPassword'
-                    ? () =>
-                        handleValidateRepeatPassword(
-                          values.password,
-                          (values as RegisterValues).repeatPassword
-                        )
-                    : validate
-                }
-                {...field}
-              />
-            ))}
-            <Button sx={{ alignSelf: 'center' }} type="submit">
-              {isRegister ? 'Register' : 'Login'}
-            </Button>
-            <Typography variant="caption" sx={{ alignSelf: 'center' }}>
-              {isRegister ? 'Already have an account? ' : "Don't have an account? "}
-              <Link href={isRegister ? ROUTES.LOGIN : ROUTES.REGISTER}>
-                <a style={{ color: theme.palette.secondary.main }}>
-                  {isRegister ? 'Login' : 'Register'}
-                </a>
-              </Link>
-            </Typography>
-          </Stack>
-        </Form>
-      )}
-    </Formik>
+    <>
+      <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit}>
+        {({ values }) => (
+          <Form>
+            <Stack spacing={1}>
+              {fields.map(({ validate, ...field }) => (
+                <AuthField
+                  key={field.name}
+                  validate={
+                    !validate && field.name === 'repeatPassword'
+                      ? () =>
+                          handleValidateRepeatPassword(
+                            values.password,
+                            (values as RegisterValues).repeatPassword
+                          )
+                      : validate
+                  }
+                  {...field}
+                />
+              ))}
+              <Button sx={{ alignSelf: 'center' }} type="submit">
+                {isRegister ? 'Register' : 'Login'}
+              </Button>
+              <Typography variant="caption" sx={{ alignSelf: 'center' }}>
+                {isRegister ? 'Already have an account? ' : "Don't have an account? "}
+                <Link href={isRegister ? ROUTES.LOGIN : ROUTES.REGISTER}>
+                  <a style={{ color: theme.palette.secondary.main }}>
+                    {isRegister ? 'Login' : 'Register'}
+                  </a>
+                </Link>
+              </Typography>
+            </Stack>
+          </Form>
+        )}
+      </Formik>
+      <AppAlert open={!!error} severity="error" onClose={handleCloseAlert}>
+        {error}
+      </AppAlert>
+    </>
   );
 };
 
