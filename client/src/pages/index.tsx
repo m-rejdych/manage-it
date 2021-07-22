@@ -50,14 +50,14 @@ const Home: React.FC = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const initialState = await autologin(ctx);
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const initialState = await autologin(ctx);
 
-  if (!initialState) {
-    return { redirect: { destination: ROUTES.LOGIN }, props: {} };
-  }
+//   if (!initialState) {
+//     return { props: {} };
+//   }
 
-  return { props: { initialReduxState: initialState }, redirect: { destination: ROUTES.HOME } };
-};
+//   return { props: { initialReduxState: initialState }, redirect: { destination: ROUTES.HOME } };
+// };
 
 export default Home;

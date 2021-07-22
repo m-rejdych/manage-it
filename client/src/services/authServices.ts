@@ -10,3 +10,6 @@ export const register = async (data: RegisterPayload): Promise<AxiosResponse<Use
 
 export const login = async (data: LoginPayload): Promise<AxiosResponse<User>> =>
   axios.post(`${API}/auth/login`, data, { withCredentials: true });
+
+export const logout = async (): Promise<AxiosResponse<boolean>> =>
+  axios.post(`${API}/auth/logout`, {}, { withCredentials: true });

@@ -1,25 +1,33 @@
-import { GetServerSideProps } from 'next';
-import { Typography, Box } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { Typography, Box, Button, useTheme } from '@material-ui/core';
 
-import autologin from '../../util/autologin';
-import ROUTES from '../../constants/routes';
+import { logout } from '../../store/ducks/auth/actions';
 
-const Home: React.FC = () => {
+const Home: React.FC = (props) => {
+  const theme = useTheme();
+  const dispatch = useDispatch();
+
+  const handleLogout = (): void => {
+    dispatch(logout());
+  };
+
   return (
-    <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center">
+    <Box
+      minHeight="100vh"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      position="relative"
+    >
       <Typography>Hello world!</Typography>
+      <Button
+        sx={{ position: 'fixed', top: theme.spacing(3), right: theme.spacing(3) }}
+        onClick={handleLogout}
+      >
+        Logout
+      </Button>
     </Box>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const initialState = await autologin(ctx);
-
-  if (!initialState) {
-    return { props: {}, redirect: { destination: ROUTES.LOGIN } };
-  }
-
-  return { props: { initialReduxState: initialState } };
 };
 
 export default Home;

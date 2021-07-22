@@ -56,6 +56,19 @@ class AuthController {
   async autologin(@Req() req: Request): Promise<User | null> {
     return await this.authService.autologin(req);
   }
+
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: Response): boolean {
+    console.log('logout');
+    res.clearCookie('jwt');
+    // res.cookie('jwt', '', {
+    //   httpOnly: true,
+    //   maxAge: -1,
+    //   secure: process.env.NODE_ENV === 'production',
+    // });
+
+    return true;
+  }
 }
 
 export default AuthController;

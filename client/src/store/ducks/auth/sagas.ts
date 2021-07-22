@@ -2,8 +2,8 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 
 import User from '../../../types/user';
-import { REGISTER, LOGIN, AUTOLOGIN, authSuccess, autologinSuccess, setError } from './actions';
-import { register, login, autologin } from '../../../services/authServices';
+import { REGISTER, LOGIN, LOGOUT, authSuccess, reset, setError } from './actions';
+import { register, login, logout } from '../../../services/authServices';
 import { RegisterPayload, LoginPayload } from '../../../types/auth/payloads';
 import { PayloadAction } from '../../types/actions';
 
@@ -25,6 +25,16 @@ function* handleLogin({ payload }: PayloadAction<typeof LOGIN, LoginPayload>) {
   }
 }
 
+function* handleLogout() {
+  try {
+    const response: AxiosResponse<boolean> = yield call(logout);
+
+    yield put(reset(response.data));
+  } catch (error) {
+    yield put(setError(error.response.data.message));
+  }
+}
+
 function* registerSaga() {
   yield takeEvery(REGISTER, handleRegister);
 }
@@ -33,6 +43,10 @@ function* loginSaga() {
   yield takeEvery(LOGIN, handleLogin);
 }
 
-const sagas = [registerSaga(), loginSaga()];
+function* logoutSaga() {
+  yield takeEvery(LOGOUT, handleLogout);
+}
+
+const sagas = [registerSaga(), loginSaga(), logoutSaga()];
 
 export default sagas;

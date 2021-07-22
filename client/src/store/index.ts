@@ -1,55 +1,28 @@
-import { useMemo } from 'react';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore, EmptyObject, Store, applyMiddleware } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import { createWrapper, MakeStore } from 'next-redux-wrapper';
+import createSagaMiddleware, { Task } from 'redux-saga';
 
 import { PayloadAction } from './types/actions';
 import { RootState } from './types/state';
 import rootReducer from './reducer';
 import rootSaga from './saga';
 
-let store: Store<EmptyObject & RootState, PayloadAction> | undefined;
+interface SagaStore extends Store<EmptyObject & RootState, PayloadAction> {
+  sagaTask?: Task;
+}
 
-const initStore = (
-  preloadedState?: Partial<RootState>
-): Store<EmptyObject & RootState, PayloadAction> => {
+const makeStore: MakeStore<SagaStore> = (): SagaStore => {
   const sagaMiddleware = createSagaMiddleware();
 
-  const store = createStore(
+  const store: SagaStore = createStore(
     rootReducer,
-    preloadedState,
     composeWithDevTools(applyMiddleware(sagaMiddleware))
   );
 
-  sagaMiddleware.run(rootSaga);
+  store.sagaTask = sagaMiddleware.run(rootSaga);
 
   return store;
 };
 
-export const initializeStore = (preloadedState?: Partial<RootState>) => {
-  let _store = store ?? initStore(preloadedState);
-
-  if (preloadedState && store) {
-    _store = initStore({
-      ...store.getState(),
-      ...preloadedState,
-    });
-
-    store = undefined;
-  }
-
-  if (typeof window === 'undefined') return _store;
-  if (!store) store = _store;
-
-  return _store;
-};
-
-const useStore = (
-  initialState?: Partial<RootState>
-): Store<EmptyObject & RootState, PayloadAction> => {
-  const store = useMemo(() => initializeStore(initialState), [initialState]);
-
-  return store;
-};
-
-export default useStore;
+export const wrapper = createWrapper<SagaStore>(makeStore);
