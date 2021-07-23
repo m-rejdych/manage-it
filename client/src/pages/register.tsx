@@ -1,6 +1,9 @@
 import { Box, Paper, useTheme } from '@material-ui/core';
 
+import ROUTES from '../constants/routes';
 import AuthForm from '../components/AuthForm';
+import { wrapper } from '../store';
+import { getServerSidePropsWithAutologin } from '../util/autologin';
 
 const Register: React.FC = () => {
   const theme = useTheme();
@@ -13,5 +16,9 @@ const Register: React.FC = () => {
     </Box>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  getServerSidePropsWithAutologin(false, ROUTES.HOME)
+);
 
 export default Register;

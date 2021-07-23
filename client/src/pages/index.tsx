@@ -1,10 +1,10 @@
-import { GetServerSideProps } from 'next';
 import { Box, Paper, Typography, Button, useTheme } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
 import ROUTES from '../constants/routes';
 import ValueOf from '../types/ValueOf';
-import autologin from '../util/autologin';
+import { wrapper } from '../store';
+import { getServerSidePropsWithAutologin } from '../util/autologin';
 
 const Home: React.FC = () => {
   const theme = useTheme();
@@ -50,14 +50,8 @@ const Home: React.FC = () => {
   );
 };
 
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const initialState = await autologin(ctx);
-
-//   if (!initialState) {
-//     return { props: {} };
-//   }
-
-//   return { props: { initialReduxState: initialState }, redirect: { destination: ROUTES.HOME } };
-// };
+export const getServerSideProps = wrapper.getServerSideProps(
+  getServerSidePropsWithAutologin(false, ROUTES.HOME)
+);
 
 export default Home;

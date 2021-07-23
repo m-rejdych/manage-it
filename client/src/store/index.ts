@@ -8,7 +8,7 @@ import { RootState } from './types/state';
 import rootReducer from './reducer';
 import rootSaga from './saga';
 
-interface SagaStore extends Store<EmptyObject & RootState, PayloadAction> {
+export interface SagaStore extends Store<EmptyObject & RootState, PayloadAction> {
   sagaTask?: Task;
 }
 

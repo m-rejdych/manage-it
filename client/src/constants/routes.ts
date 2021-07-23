@@ -6,7 +6,7 @@ const ROUTES = {
   LOGIN: '/login',
   PROJECTS_SEARCH: '/projects/search',
   HOME: '/home',
-};
+} as const;
 
 export const NON_AUTH_ROUTES: ValueOf<typeof ROUTES>[] = [
   ROUTES.ROOT,
