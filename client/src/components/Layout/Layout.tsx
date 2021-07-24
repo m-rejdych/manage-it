@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { ThemeProvider, CssBaseline, GlobalStyles } from '@material-ui/core';
 
 import theme from '../../theme';
-import SettingsButton from '../Settings';
+import Nav from '../Nav';
 import { BODY_BACKGROUND } from '../../constants/styleOverrides';
 import { RootState } from '../../store/types/state';
 
@@ -20,7 +20,7 @@ const Layout: React.FC = ({ children }) => {
         }}
       />
       {children}
-      {isAuth && <SettingsButton />}
+      {isAuth && <Nav />}
     </ThemeProvider>
   ) : null;
 };
