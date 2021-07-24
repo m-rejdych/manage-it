@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { Box } from '@material-ui/core';
 
 import { RootState } from '../../store/types/state';
+import { BODY_BACKGROUND } from '../../constants/styleOverrides';
 import ROUTES, { AUTH_ROUTES, NON_AUTH_ROUTES } from '../../constants/routes';
 
 const AuthProvider: React.FC = ({ children }) => {
@@ -34,8 +35,7 @@ const AuthProvider: React.FC = ({ children }) => {
           sx={{
             height: '100vh',
             position: 'absolute',
-            background:
-              'radial-gradient(123.22% 129.67% at 100.89% -5.6%, #201D47 0%, #17153A 100%)',
+            background: BODY_BACKGROUND,
           }}
         ></Box>
       )}

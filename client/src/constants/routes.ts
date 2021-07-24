@@ -1,12 +1,12 @@
 import ValueOf from '../types/ValueOf';
 
 const ROUTES = {
-  ROOT: '/',
-  REGISTER: '/register',
+  ROOT: '/' as const,
+  REGISTER: '/register' as const,
   LOGIN: '/login',
-  PROJECTS_SEARCH: '/projects/search',
-  HOME: '/home',
-} as const;
+  PROJECTS_SEARCH: '/projects/search' as const,
+  HOME: '/home' as const,
+};
 
 export const NON_AUTH_ROUTES: ValueOf<typeof ROUTES>[] = [
   ROUTES.ROOT,
