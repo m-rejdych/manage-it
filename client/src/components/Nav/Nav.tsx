@@ -2,6 +2,7 @@ import { Box, useTheme } from '@material-ui/core';
 
 import SettingsButton from '../Settings';
 import NotificationButton from '../Notifications';
+import Search from '../Search';
 
 const Nav: React.FC = () => {
   const theme = useTheme();
@@ -14,6 +15,7 @@ const Nav: React.FC = () => {
       display="flex"
       alignItems="center"
     >
+      <Search />
       <NotificationButton />
       <SettingsButton />
     </Box>
