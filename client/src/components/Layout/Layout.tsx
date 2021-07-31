@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { ThemeProvider, CssBaseline, GlobalStyles } from '@material-ui/core';
+import { ThemeProvider, CssBaseline, GlobalStyles, Container, useTheme } from '@material-ui/core';
 
 import theme from '../../theme';
 import Nav from '../Nav';
@@ -19,7 +19,16 @@ const Layout: React.FC = ({ children }) => {
           },
         }}
       />
-      {children}
+      <Container
+        maxWidth="lg"
+        sx={{
+          position: 'relative',
+          paddingTop: isAuth ? theme.spacing(10) : 0,
+          minHeight: '100vh',
+        }}
+      >
+        {children}
+      </Container>
       {isAuth && <Nav />}
     </ThemeProvider>
   ) : null;

@@ -23,12 +23,19 @@ const Search: React.FC = () => {
     setValue(e.target.value);
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key !== 'Enter' || !showInput) return;
+
+    setShowInput(false);
+  };
+
   return (
     <ClickAwayListener onClickAway={(): void => setShowInput(false)}>
       <Box position="relative" overflow="hidden">
         <Slide in={showInput} direction="left">
           <TextField
             onChange={handleChange}
+            onKeyPress={handleKeyPress}
             placeholder="Search..."
             inputProps={{
               sx: {
