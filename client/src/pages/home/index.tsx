@@ -1,8 +1,11 @@
-import { Box, Grid, useTheme } from '@material-ui/core';
+import { Box, Button, Grid, useTheme } from '@material-ui/core';
 
 import { wrapper } from '../../store';
 import { getServerSidePropsWithAutologin } from '../../util/autologin';
+import { PAPER } from '../../constants/styleOverrides';
 import ROUTES from '../../constants/routes';
+
+import CreateNewProjectButton from '../../components/NewProject/NewProjectButton';
 
 const Home: React.FC = () => {
   const theme = useTheme();
@@ -17,7 +20,7 @@ const Home: React.FC = () => {
     >
       <Grid container item xs={2} spacing={4}>
         <Grid item xs={3}>
-          <Box height="100%" borderRadius={2} border={`1px solid ${theme.palette.divider}`} />
+          <CreateNewProjectButton />
         </Grid>
         <Grid item xs={3}>
           <Box height="100%" borderRadius={2} border={`1px solid ${theme.palette.divider}`} />
