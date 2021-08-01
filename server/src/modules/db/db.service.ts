@@ -3,8 +3,9 @@ import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 
 import User from '../user/user.entity';
+import Project from '../project/project.entity';
 
-const entities = [User];
+const entities = [User, Project];
 
 @Injectable()
 class TypeOrmService implements TypeOrmOptionsFactory {

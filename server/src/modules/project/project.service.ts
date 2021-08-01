@@ -1,0 +1,37 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
+import Project from './project.entity';
+import UserService from '../user/user.service';
+import CreateProjectDto from './dto/createProject.dto';
+
+@Injectable()
+class ProjectService {
+  constructor(
+    @InjectRepository(Project) private projectRepository: Repository<Project>,
+    private userService: UserService,
+  ) {}
+
+  async createProject(
+    { name }: CreateProjectDto,
+    userId: number,
+  ): Promise<Project> {
+    const user = await this.userService.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+
+    const project = this.projectRepository.create({
+      name,
+      creator: user,
+      members: [user],
+    });
+    await this.projectRepository.save(project);
+
+    return project;
+  }
+}
+
+export default ProjectService;

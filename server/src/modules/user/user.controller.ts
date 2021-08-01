@@ -1,4 +1,10 @@
-import { Controller, Get, UseGuards, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Query,
+  NotFoundException,
+} from '@nestjs/common';
 
 import UserService from './user.service';
 import JwtGuard from '../../guards/jwt.guard';
@@ -11,7 +17,13 @@ class UserController {
   @UseGuards(JwtGuard)
   @Get('get-by-id')
   async getById(@Query('id') id: string): Promise<User> {
-    return await this.userService.findById(Number(id));
+    const user = await this.userService.findById(Number(id));
+
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    return user;
   }
 }
 

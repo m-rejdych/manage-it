@@ -67,7 +67,7 @@ class AuthService {
     const user = await this.userService.findById(userId);
 
     if (!user) {
-      throw new NotFoundException('User not found!');
+      throw new NotFoundException('Uset not found!');
     }
 
     const token = this.jwtService.sign({ userId, email: user.email });
@@ -82,8 +82,9 @@ class AuthService {
     const jwtData: JwtPayload = await this.jwtService.verifyAsync(token);
 
     const user = await this.userService.findById(Number(jwtData.userId));
+
     if (!user) {
-      throw new NotFoundException('User not found.');
+      throw new NotFoundException('User not found!');
     }
 
     return user;
