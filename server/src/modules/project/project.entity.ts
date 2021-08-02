@@ -17,7 +17,7 @@ class Project {
   id: number;
 
   @Column()
-  name: string;
+  title: string;
 
   @CreateDateColumn()
   createdAt: Date;

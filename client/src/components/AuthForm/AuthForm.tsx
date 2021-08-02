@@ -6,8 +6,8 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ROUTES from '../../constants/routes';
-import AuthField from './AuthField';
-import InputType from '../../types/InputType';
+import FormField from '../FormField';
+import Field from '../../types/FormField';
 import AppAlert from '../../components/AppAlert';
 import validateInput from '../../util/validateInput';
 import { RootState } from '../../store/types/state';
@@ -28,16 +28,9 @@ interface LoginValues {
   password: string;
 }
 
-interface RegisterValues extends LoginValues {
+export interface RegisterValues extends LoginValues {
   username: string;
   repeatPassword: string;
-}
-
-export interface Field {
-  name: keyof RegisterValues;
-  type: InputType;
-  label: string;
-  validate?: (value: string) => string | undefined;
 }
 
 const Register: React.FC = () => {
@@ -65,12 +58,12 @@ const Register: React.FC = () => {
         password: '',
       };
 
-  const loginFields: Field[] = [
+  const loginFields: Field<LoginValues>[] = [
     {
       name: 'email',
       type: 'email',
       label: 'Email address',
-      validate: (value: string): string | undefined => {
+      validate: (value) => {
         const error = validateInput(value, { regexp: EMAIL_REGEXP })
           ? undefined
           : 'Enter a valid email address.';
@@ -83,7 +76,7 @@ const Register: React.FC = () => {
       type: 'password',
       label: 'Password',
       validate: isRegister
-        ? (value: string): string | undefined => {
+        ? (value) => {
             const error = validateInput(value, { regexp: PASSWORD_REGEXP })
               ? undefined
               : 'Passowrd should contain a digit and be at least 6 characters long.';
@@ -94,13 +87,13 @@ const Register: React.FC = () => {
     },
   ];
 
-  const registerFields: Field[] = isRegister
+  const registerFields: Field<RegisterValues>[] = isRegister
     ? [
         {
           name: 'username',
           type: 'text',
           label: 'Username',
-          validate: (value: string): string | undefined => {
+          validate: (value) => {
             const error = validateInput(value, { length: 2 })
               ? undefined
               : 'Username should be at least 2 characters long.';
@@ -133,7 +126,7 @@ const Register: React.FC = () => {
           <Form>
             <Stack spacing={1}>
               {fields.map(({ validate, ...field }) => (
-                <AuthField
+                <FormField
                   key={field.name}
                   validate={
                     !validate && field.name === 'repeatPassword'

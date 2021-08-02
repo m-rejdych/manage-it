@@ -14,7 +14,7 @@ class ProjectService {
   ) {}
 
   async createProject(
-    { name }: CreateProjectDto,
+    { title }: CreateProjectDto,
     userId: number,
   ): Promise<Project> {
     const user = await this.userService.findById(userId);
@@ -24,7 +24,7 @@ class ProjectService {
     }
 
     const project = this.projectRepository.create({
-      name,
+      title,
       creator: user,
       members: [user],
     });

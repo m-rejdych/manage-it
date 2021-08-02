@@ -1,10 +1,10 @@
 import { TextField } from '@material-ui/core';
 import { useField } from 'formik';
 
-import { Field } from './AuthForm';
+import Field from '../../types/FormField';
 
-const AuthField: React.FC<Field> = ({ label, type, ...rest }) => {
-  const [field, meta] = useField({ type, ...rest });
+const FormField: React.FC<Field> = ({ label, type, name, ...rest }) => {
+  const [field, meta] = useField({ type, name: name as string, ...rest });
 
   return (
     <TextField
@@ -20,4 +20,4 @@ const AuthField: React.FC<Field> = ({ label, type, ...rest }) => {
   );
 };
 
-export default AuthField;
+export default FormField;

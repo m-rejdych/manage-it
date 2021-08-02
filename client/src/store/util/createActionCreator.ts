@@ -1,7 +1,7 @@
-import { PayloadAcitonCreator } from '../types/actions';
+import { PayloadActionCreator } from '../types/actions';
 
 const createActionCreator =
-  <T, U>(type: T): PayloadAcitonCreator<T, U> =>
+  <T, U>(type: T): PayloadActionCreator<T, U> =>
   (payload: U) => ({
     type,
     payload,

@@ -1,17 +1,15 @@
-import { Box, Button, Grid, useTheme } from '@material-ui/core';
+import { Box, Grid, useTheme } from '@material-ui/core';
 
 import { wrapper } from '../../store';
 import { getServerSidePropsWithAutologin } from '../../util/autologin';
-import { PAPER } from '../../constants/styleOverrides';
 import ROUTES from '../../constants/routes';
 
-import CreateNewProjectButton from '../../components/NewProject/NewProjectButton';
+import NewProjectButton from '../../components/Project/NewProjectButton';
 
 const Home: React.FC = () => {
   const theme = useTheme();
 
   return (
-    // <Box display="flex" alignItems="center" justifyContent="center" position="relative">
     <Grid
       container
       direction="column"
@@ -20,7 +18,7 @@ const Home: React.FC = () => {
     >
       <Grid container item xs={2} spacing={4}>
         <Grid item xs={3}>
-          <CreateNewProjectButton />
+          <NewProjectButton />
         </Grid>
         <Grid item xs={3}>
           <Box height="100%" borderRadius={2} border={`1px solid ${theme.palette.divider}`} />
@@ -52,7 +50,6 @@ const Home: React.FC = () => {
         </Grid>
       </Grid>
     </Grid>
-    // </Box>
   );
 };
 
