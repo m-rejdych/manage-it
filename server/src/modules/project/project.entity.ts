@@ -19,6 +19,9 @@ class Project {
   @Column()
   title: string;
 
+  @Column()
+  description: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

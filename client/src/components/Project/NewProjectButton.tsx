@@ -6,7 +6,7 @@ import ProjectDialog from './ProjectDialog';
 const NewProjectButton: React.FC = () => {
   const [open, setOpen] = useState(false);
 
-  const toggleDialog = (): void => {
+  const toggleDialog = (_?: React.MouseEvent<HTMLButtonElement>): void => {
     setOpen((prev) => !prev);
   };
 

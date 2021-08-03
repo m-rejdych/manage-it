@@ -9,6 +9,7 @@ import { createProject } from '../../store/ducks/projects/actions';
 
 interface Values {
   title: string;
+  description: string;
 }
 
 const fields: Field<Values>[] = [
@@ -24,18 +25,33 @@ const fields: Field<Values>[] = [
       return error;
     },
   },
+  {
+    name: 'description',
+    label: 'Description',
+    type: 'text',
+    multiline: true,
+    rows: 5,
+    validate: (value) => {
+      const error = validateInput(value, { length: 3 })
+        ? undefined
+        : 'Description can not be empty!';
+
+      return error;
+    },
+  },
 ];
 
 interface Props {
-  onDialogClose?: ((event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void) | undefined;
+  onDialogClose?: ((e?: React.MouseEvent<HTMLButtonElement>) => void) | undefined;
 }
 
 const ProjectForm: React.FC<Props> = ({ onDialogClose }) => {
-  const initialValues = { title: '' };
+  const initialValues = { title: '', description: '' };
   const dispatch = useDispatch();
 
   const handleSubmit = (values: Values): void => {
     dispatch(createProject(values));
+    onDialogClose();
   };
 
   return (
