@@ -32,6 +32,12 @@ class ProjectService {
 
     return project;
   }
+
+  async getProjectById(id: number): Promise<Project | null> {
+    const project = await this.projectRepository.findOne(id);
+
+    return project || null;
+  }
 }
 
 export default ProjectService;

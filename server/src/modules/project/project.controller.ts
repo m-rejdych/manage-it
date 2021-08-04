@@ -1,4 +1,14 @@
-import { Controller, Post, UseGuards, Req, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  UseGuards,
+  Req,
+  Body,
+  Param,
+  ParseIntPipe,
+  NotFoundException,
+} from '@nestjs/common';
 
 import ProjectService from './project.service';
 import JwtGuard from '../../guards/jwt.guard';
@@ -19,6 +29,18 @@ class ProjectController {
     const { userId } = req.user;
 
     return await this.projectService.createProject(data, userId);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('get-by-id/:id')
+  async getById(@Param('id', new ParseIntPipe()) id: number): Promise<Project> {
+    const project = await this.getById(id);
+
+    if (!project) {
+      throw new NotFoundException('Project not found.');
+    }
+
+    return project;
   }
 }
 

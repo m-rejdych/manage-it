@@ -7,8 +7,9 @@ import Project from '../project/project.entity';
 import TaskType from '../taskType/taskType.entity';
 import TaskPriority from '../taskPriority/taskPriority.entity';
 import Task from '../task/task.entity';
+import Tag from '../tag/tag.entitiy';
 
-const entities = [User, Project, TaskType, TaskPriority, Task];
+const entities = [User, Project, TaskType, TaskPriority, Task, Tag];
 
 @Injectable()
 class TypeOrmService implements TypeOrmOptionsFactory {
