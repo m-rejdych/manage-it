@@ -5,11 +5,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  ManyToMany,
 } from 'typeorm';
 
 import TaskType from '../taskType/taskType.entity';
 import TaskPriority from '../taskPriority/taskPriority.entity';
+import Project from '../project/project.entity';
 import User from '../user/user.entity';
+import Tag from '../tag/tag.entitiy';
 
 @Entity()
 class Task {
@@ -28,17 +31,29 @@ class Task {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.createdTasks)
+  @ManyToOne(() => User, (user) => user.createdTasks, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   creator: User;
 
-  @ManyToOne(() => User, (user) => user.assignedTasks)
+  @ManyToOne(() => Project, (project) => project.tasks)
+  project: Project;
+
+  @ManyToOne(() => User, (user) => user.assignedTasks, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   assignedTo: User;
 
-  @ManyToOne(() => TaskType)
+  @ManyToOne(() => TaskType, { cascade: true, onDelete: 'CASCADE' })
   type: TaskType;
 
-  @ManyToOne(() => TaskPriority)
+  @ManyToOne(() => TaskPriority, { cascade: true, onDelete: 'CASCADE' })
   priority: TaskPriority;
+
+  @ManyToMany(() => Tag, (tag) => tag.tasks)
+  tags: Tag[];
 }
 
 export default Task;

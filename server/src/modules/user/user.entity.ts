@@ -41,10 +41,14 @@ class User {
   })
   projects: Project[];
 
-  @OneToMany(() => Task, (task) => task.creator)
+  @OneToMany(() => Task, (task) => task.creator, {
+    cascade: ['insert', 'update'],
+  })
   createdTasks: Task[];
 
-  @OneToMany(() => Task, (task) => task.assignedTo)
+  @OneToMany(() => Task, (task) => task.assignedTo, {
+    cascade: ['insert', 'update'],
+  })
   assignedTasks: Task[];
 }
 

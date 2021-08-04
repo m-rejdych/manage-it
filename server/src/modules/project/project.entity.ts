@@ -7,9 +7,12 @@ import {
   ManyToOne,
   JoinTable,
   ManyToMany,
+  OneToMany,
 } from 'typeorm';
 
 import User from '../user/user.entity';
+import Tag from '../tag/tag.entitiy';
+import Task from '../task/task.entity';
 
 @Entity()
 class Project {
@@ -40,6 +43,16 @@ class Project {
   })
   @JoinTable()
   members: User[];
+
+  @OneToMany(() => Task, (task) => task.project, {
+    cascade: ['insert', 'update'],
+  })
+  tasks: Task[];
+
+  @ManyToMany(() => Tag, (tag) => tag.projects, {
+    cascade: ['insert', 'update'],
+  })
+  tags: Tag[];
 }
 
 export default Project;
