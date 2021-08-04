@@ -1,18 +1,18 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
+  Column,
   CreateDateColumn,
   UpdateDateColumn,
-  Column,
   ManyToOne,
-  JoinTable,
-  ManyToMany,
 } from 'typeorm';
 
+import TaskType from '../taskType/taskType.entity';
+import TaskPriority from '../taskPriority/taskPriority.entity';
 import User from '../user/user.entity';
 
 @Entity()
-class Project {
+class Task {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -28,18 +28,17 @@ class Project {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.createdProjects, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(() => User, (user) => user.createdTasks)
   creator: User;
 
-  @ManyToMany(() => User, (user) => user.projects, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinTable()
-  members: User[];
+  @ManyToOne(() => User, (user) => user.assignedTasks)
+  assignedTo: User;
+
+  @ManyToOne(() => TaskType)
+  type: TaskType;
+
+  @ManyToOne(() => TaskPriority)
+  priority: TaskPriority;
 }
 
-export default Project;
+export default Task;

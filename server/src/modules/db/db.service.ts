@@ -4,8 +4,11 @@ import { ConfigService } from '@nestjs/config';
 
 import User from '../user/user.entity';
 import Project from '../project/project.entity';
+import TaskType from '../taskType/taskType.entity';
+import TaskPriority from '../taskPriority/taskPriority.entity';
+import Task from '../task/task.entity';
 
-const entities = [User, Project];
+const entities = [User, Project, TaskType, TaskPriority, Task];
 
 @Injectable()
 class TypeOrmService implements TypeOrmOptionsFactory {

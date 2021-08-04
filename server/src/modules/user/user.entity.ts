@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 
 import Project from '../project/project.entity';
+import Task from '../task/task.entity';
 
 @Entity()
 class User {
@@ -39,6 +40,12 @@ class User {
     cascade: ['insert', 'update'],
   })
   projects: Project[];
+
+  @OneToMany(() => Task, (task) => task.creator)
+  createdTasks: Task[];
+
+  @OneToMany(() => Task, (task) => task.assignedTo)
+  assignedTasks: Task[];
 }
 
 export default User;

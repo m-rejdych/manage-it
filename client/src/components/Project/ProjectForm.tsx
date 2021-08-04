@@ -31,13 +31,6 @@ const fields: Field<Values>[] = [
     type: 'text',
     multiline: true,
     rows: 5,
-    validate: (value) => {
-      const error = validateInput(value, { length: 3 })
-        ? undefined
-        : 'Description can not be empty!';
-
-      return error;
-    },
   },
 ];
 
@@ -51,7 +44,7 @@ const ProjectForm: React.FC<Props> = ({ onDialogClose }) => {
 
   const handleSubmit = (values: Values): void => {
     dispatch(createProject(values));
-    onDialogClose();
+    if (onDialogClose) onDialogClose();
   };
 
   return (
