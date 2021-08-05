@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindOneOptions } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import Tag from './tag.entitiy';
 
@@ -8,14 +8,14 @@ import Tag from './tag.entitiy';
 class TagService {
   constructor(@InjectRepository(Tag) private tagRepository: Repository<Tag>) {}
 
-  async getTabByName(name: string): Promise<Tag | null> {
+  async findByName(name: string): Promise<Tag | null> {
     const tag = await this.tagRepository.findOne({ name: name.toLowerCase() });
 
     return tag || null;
   }
 
-  async getOrCreateTag(name: string): Promise<Tag> {
-    let tag = await this.getTabByName(name);
+  async findOrCreateTag(name: string): Promise<Tag> {
+    let tag = await this.findByName(name);
 
     if (!tag) {
       tag = this.tagRepository.create({

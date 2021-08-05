@@ -28,6 +28,7 @@ class Tag {
     cascade: true,
     onDelete: 'CASCADE',
   })
+  @JoinTable()
   tasks: Task[];
 }
 

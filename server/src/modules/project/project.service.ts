@@ -32,11 +32,9 @@ class ProjectService {
     });
 
     if (tags) {
-      const projectTags = [];
-
-      tags.forEach((name) => {
-        projectTags.push(this.tagService.getOrCreateTag(name));
-      });
+      const projectTags = tags.map((name) =>
+        this.tagService.findOrCreateTag(name),
+      );
 
       const resolvedTags = await Promise.all(projectTags);
 
@@ -48,7 +46,7 @@ class ProjectService {
     return project;
   }
 
-  async getProjectById(id: number): Promise<Project | null> {
+  async findById(id: number): Promise<Project | null> {
     const project = await this.projectRepository.findOne(id);
 
     return project || null;

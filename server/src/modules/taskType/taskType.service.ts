@@ -13,7 +13,7 @@ class TaskTypeService {
     private taskTypeRepository: Repository<TaskType>,
   ) {}
 
-  async getTaskTypeByName(name: TaskTypeName): Promise<Task | null> {
+  async findByName(name: TaskTypeName): Promise<Task | null> {
     const taskType = await this.taskTypeRepository.findOne({ name });
 
     return taskType || null;

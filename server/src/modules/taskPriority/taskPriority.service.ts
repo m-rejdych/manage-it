@@ -12,16 +12,14 @@ class TaskPriorityService {
     private taskPriorityRepository: Repository<TaskPriority>,
   ) {}
 
-  async getTaskPriorityByName(
-    name: TaskPriorityName,
-  ): Promise<TaskPriority | null> {
+  async findByName(name: TaskPriorityName): Promise<TaskPriority | null> {
     const taskPriority = await this.taskPriorityRepository.findOne({ name });
 
     return taskPriority || null;
   }
 
   async createTaskPriority(name: TaskPriorityName): Promise<TaskPriority> {
-    let taskPriority = await this.getTaskPriorityByName(name);
+    let taskPriority = await this.findByName(name);
     if (taskPriority) {
       throw new BadRequestException(
         'Task priority with this name already exists.',

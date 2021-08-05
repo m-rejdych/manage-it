@@ -34,7 +34,7 @@ class ProjectController {
   @UseGuards(JwtGuard)
   @Get('get-by-id/:id')
   async getById(@Param('id', new ParseIntPipe()) id: number): Promise<Project> {
-    const project = await this.getById(id);
+    const project = await this.projectService.findById(id);
 
     if (!project) {
       throw new NotFoundException('Project not found.');
