@@ -1,4 +1,4 @@
-import { IsEmail, MinLength, Matches } from 'class-validator';
+import { IsEmail, MinLength, IsString, Matches } from 'class-validator';
 
 const PASSWORD_REGEXP = /^(?=.*\d).{6,}$/;
 
@@ -12,7 +12,8 @@ class CreateUserDto {
   })
   password: string;
 
-  @MinLength(2)
+  @IsString({ message: 'Username must be a string.' })
+  @MinLength(2, { message: 'Username must be at least 2 characters long.' })
   username: string;
 }
 

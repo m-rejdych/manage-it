@@ -21,14 +21,14 @@ class TaskPriorityService {
   }
 
   async createTaskPriority(name: TaskPriorityName): Promise<TaskPriority> {
-    const foundTaskPriority = await this.getTaskPriorityByName(name);
-    if (foundTaskPriority) {
+    let taskPriority = await this.getTaskPriorityByName(name);
+    if (taskPriority) {
       throw new BadRequestException(
         'Task priority with this name already exists.',
       );
     }
 
-    const taskPriority = this.taskPriorityRepository.create({ name });
+    taskPriority = this.taskPriorityRepository.create({ name });
     await this.taskPriorityRepository.save(taskPriority);
 
     return taskPriority;

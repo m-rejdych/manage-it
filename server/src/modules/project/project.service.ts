@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 
 import Project from './project.entity';
 import UserService from '../user/user.service';
+import TagService from '../tag/tag.service';
 import CreateProjectDto from './dto/createProject.dto';
 
 @Injectable()
@@ -11,10 +12,11 @@ class ProjectService {
   constructor(
     @InjectRepository(Project) private projectRepository: Repository<Project>,
     private userService: UserService,
+    private tagService: TagService,
   ) {}
 
   async createProject(
-    data: CreateProjectDto,
+    { tags, ...rest }: CreateProjectDto,
     userId: number,
   ): Promise<Project> {
     const user = await this.userService.findById(userId);
@@ -24,10 +26,23 @@ class ProjectService {
     }
 
     const project = this.projectRepository.create({
-      ...data,
+      ...rest,
       creator: user,
       members: [user],
     });
+
+    if (tags) {
+      const projectTags = [];
+
+      tags.forEach((name) => {
+        projectTags.push(this.tagService.getOrCreateTag(name));
+      });
+
+      const resolvedTags = await Promise.all(projectTags);
+
+      project.tags = resolvedTags;
+    }
+
     await this.projectRepository.save(project);
 
     return project;

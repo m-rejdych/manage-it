@@ -10,7 +10,7 @@ import { Request } from 'express';
 import UserService from '../user/user.service';
 import User from '../user/user.entity';
 import RegisterDto from './dto/register.dto';
-import AuthPayload from './dto/authPayload.dot';
+import AuthPayload from './dto/authPayload.dto';
 import JwtPayload from './dto/jwtPayload.dto';
 import extractJwtFromCookie from './util/extractJwtFromCookie';
 

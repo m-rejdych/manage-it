@@ -5,11 +5,13 @@ import ProjectService from './project.service';
 import ProjectController from './project.controller';
 import Project from './project.entity';
 import UserModule from '../user';
+import TagModule from '../tag';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Project]), UserModule],
+  imports: [TypeOrmModule.forFeature([Project]), UserModule, TagModule],
   providers: [ProjectService],
   controllers: [ProjectController],
+  exports: [ProjectService],
 })
 class ProjectModule {}
 

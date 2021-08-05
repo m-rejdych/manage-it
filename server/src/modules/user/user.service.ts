@@ -39,14 +39,14 @@ class UserService {
     username,
     password,
   }: CreateUserDto): Promise<User> {
-    const foundUser = await this.findByEmail(email);
-    if (foundUser) {
+    let user = await this.findByEmail(email);
+    if (user) {
       throw new BadRequestException('This email is already in use.');
     }
 
     const hashedPassword = await hash(password, 12);
 
-    const user = this.userRepository.create({
+    user = this.userRepository.create({
       email,
       username,
       password: hashedPassword,
