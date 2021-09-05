@@ -13,7 +13,7 @@ import TaskService from './task.service';
 import JwtGuard from '../../guards/jwt.guard';
 import Task from './task.entity';
 import CreateTaskDto from './dto/createTask.dto';
-import { JwtAuthRequest } from '../auth/interfaces/auth-request';
+import { JwtAuthRequest } from '../auth/interfaces/authRequest';
 
 @Controller('task')
 class TaskController {

@@ -5,7 +5,7 @@ import AuthService from './auth.service';
 import RegisterDto from './dto/register.dto';
 import User from '../user/user.entity';
 import LocalGuard from '../../guards/local.guard';
-import { LocalAuthRequest } from './interfaces/auth-request';
+import { LocalAuthRequest } from './interfaces/authRequest';
 
 @Controller('auth')
 class AuthController {

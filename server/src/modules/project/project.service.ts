@@ -31,7 +31,7 @@ class ProjectService {
       members: [user],
     });
 
-    if (tags) {
+    if (tags?.length) {
       const projectTags = tags.map((name) =>
         this.tagService.findOrCreateTag(name),
       );

@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import { Formik, Form } from 'formik';
 import { useDispatch } from 'react-redux';
 import { Stack, Button, DialogActions } from '@material-ui/core';
 
 import FormField from '../FormField';
 import Field from '../../types/FormField';
+import TagInput from '../TagInput';
 import validateInput from '../../util/validateInput';
+import { CreateProjectPayload } from '../../types/project/payloads';
 import { createProject } from '../../store/ducks/projects/actions';
 
 interface Values {
@@ -39,12 +42,21 @@ interface Props {
 }
 
 const ProjectForm: React.FC<Props> = ({ onDialogClose }) => {
+  const [tags, setTags] = useState<string[]>([]);
   const initialValues = { title: '', description: '' };
   const dispatch = useDispatch();
 
   const handleSubmit = (values: Values): void => {
-    dispatch(createProject(values));
+    const data: CreateProjectPayload = { ...values };
+    if (tags.length) data.tags = tags;
+
+    dispatch(createProject(data));
+
     if (onDialogClose) onDialogClose();
+  };
+
+  const handleChangeTags = (newTags: string[]): void => {
+    setTags(newTags);
   };
 
   return (
@@ -55,6 +67,7 @@ const ProjectForm: React.FC<Props> = ({ onDialogClose }) => {
             {fields.map((field) => (
               <FormField key={field.name} {...field} />
             ))}
+            <TagInput fullWidth onTagChange={handleChangeTags} placeholder="Enter tag name..." />
           </Stack>
           <DialogActions>
             <Button variant="contained" color="secondary" onClick={onDialogClose}>
