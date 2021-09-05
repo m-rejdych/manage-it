@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import Project from './project.entity';
 import UserService from '../user/user.service';
 import TagService from '../tag/tag.service';
+import ProjectStageService from '../projectStage/projectStage.service';
 import CreateProjectDto from './dto/createProject.dto';
 
 @Injectable()
@@ -13,6 +14,7 @@ class ProjectService {
     @InjectRepository(Project) private projectRepository: Repository<Project>,
     private userService: UserService,
     private tagService: TagService,
+    private projectStageService: ProjectStageService,
   ) {}
 
   async createProject(
@@ -25,8 +27,11 @@ class ProjectService {
       throw new NotFoundException('User not found!');
     }
 
+    const stage = await this.projectStageService.findByName('open');
+
     const project = this.projectRepository.create({
       ...rest,
+      stage,
       creator: user,
       members: [user],
     });

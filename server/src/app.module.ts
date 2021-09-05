@@ -5,8 +5,9 @@ import AuthModule from './modules/auth';
 import TypeOrmModule from './modules/db';
 import UserModule from './modules/user';
 import ProjectModule from './modules/project';
-import TaskTypeModule from './modules/taskType/taskType.module';
-import TaskPriorityModule from './modules/taskPriority/taskPriority.module';
+import ProjectStageModule from './modules/projectStage';
+import TaskTypeModule from './modules/taskType';
+import TaskPriorityModule from './modules/taskPriority';
 import Task from './modules/task';
 import Tag from './modules/tag';
 
@@ -17,6 +18,7 @@ import Tag from './modules/tag';
     AuthModule,
     UserModule,
     ProjectModule,
+    ProjectStageModule,
     TaskTypeModule,
     TaskPriorityModule,
     Task,

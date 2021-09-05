@@ -13,6 +13,7 @@ import {
 import User from '../user/user.entity';
 import Tag from '../tag/tag.entitiy';
 import Task from '../task/task.entity';
+import ProjectStage from '../projectStage/projectStage.entity';
 
 @Entity()
 class Project {
@@ -56,6 +57,12 @@ class Project {
     cascade: ['insert', 'update'],
   })
   tags: Tag[];
+
+  @ManyToOne(() => ProjectStage, (projectStage) => projectStage.projects, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  stage: ProjectStage;
 }
 
 export default Project;
