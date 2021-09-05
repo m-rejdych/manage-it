@@ -25,6 +25,9 @@ class Project {
   @Column({ type: 'text', nullable: true })
   description?: string;
 
+  @Column({ type: 'integer', nullable: true })
+  maxMembers: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -3,7 +3,7 @@ import { useField } from 'formik';
 
 import Field from '../../types/FormField';
 
-const FormField: React.FC<Field> = ({ label, type, name, multiline, ...rest }) => {
+const FormField: React.FC<Field> = ({ label, type, name, multiline, sx, ...rest }) => {
   const [field, meta] = useField({ type, name: name as string, ...rest });
 
   return (
@@ -17,6 +17,7 @@ const FormField: React.FC<Field> = ({ label, type, name, multiline, ...rest }) =
       helperText={meta.touched ? meta.error : undefined}
       sx={{
         minHeight: multiline ? 170 : 80,
+        ...sx,
       }}
     />
   );

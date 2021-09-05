@@ -16,7 +16,7 @@ const Home: React.FC = () => {
       spacing={2}
       sx={{ height: `calc(100vh - ${theme.spacing(10)})` }}
     >
-      <Grid container item xs={2} spacing={4}>
+      <Grid container item xs={1} spacing={4}>
         <Grid item xs={3}>
           <NewProjectButton />
         </Grid>
@@ -30,7 +30,7 @@ const Home: React.FC = () => {
           <Box height="100%" borderRadius={2} border={`1px solid ${theme.palette.divider}`} />
         </Grid>
       </Grid>
-      <Grid container item xs={4} spacing={4}>
+      <Grid container item xs={5} spacing={4}>
         <Grid item xs={8}>
           <Box height="100%" borderRadius={2} border={`1px solid ${theme.palette.divider}`} />
         </Grid>

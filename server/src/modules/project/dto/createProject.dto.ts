@@ -5,6 +5,7 @@ import {
   ArrayNotEmpty,
   ArrayUnique,
   IsOptional,
+  IsInt,
 } from 'class-validator';
 
 export default class CreateProjectDto {
@@ -15,6 +16,10 @@ export default class CreateProjectDto {
   @IsOptional()
   @IsString({ message: 'Description must be a string!' })
   description: string;
+
+  @IsInt({ message: 'Max members must be an integer!' })
+  @IsOptional()
+  maxMembers: number;
 
   @IsOptional()
   @IsArray({ message: 'Tags must be array.' })
