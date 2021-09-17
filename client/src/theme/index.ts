@@ -1,43 +1,23 @@
 import { createTheme } from '@material-ui/core';
 import { blue, pink } from '@material-ui/core/colors';
 
-import { TEXT_SECONDARY, DIVIDER, PAPER, BUTTON } from '../constants/styleOverrides';
-
 const theme = createTheme({
   palette: {
-    primary: blue,
-    secondary: pink,
+    primary: {
+      dark: '#abc4ff',
+      main: '#ccdbfd',
+      light: '#edf2fb',
+    },
+    secondary: {
+      dark: '#f08080',
+      main: '#f8ad9d',
+      light: '#ffdab9',
+    },
     mode: 'dark',
-    text: {
-      secondary: TEXT_SECONDARY,
+    background: {
+      default: '#0d1b2a',
+      paper: '#1b263b',
     },
-    action: {
-      active: TEXT_SECONDARY,
-    },
-    divider: DIVIDER,
-  },
-  components: {
-    MuiIcon: {
-      defaultProps: {
-        color: 'action',
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        ...PAPER,
-      },
-      defaultProps: {
-        elevation: 3,
-      },
-    },
-    MuiButton: {
-      styleOverrides: {
-        ...BUTTON,
-      },
-    },
-  },
-  shape: {
-    borderRadius: 10,
   },
 });
 

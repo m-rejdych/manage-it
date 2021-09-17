@@ -120,7 +120,11 @@ const ProjectForm: React.FC<Props> = ({ onDialogClose }) => {
                   />
                 </Stack>
               ) : (
-                <FormField {...field} key={field.name} />
+                <FormField
+                  {...field}
+                  key={field.name}
+                  sx={{ ':first-child': { marginTop: theme.spacing(1) } }}
+                />
               )
             )}
             <TagInput fullWidth onTagChange={handleChangeTags} placeholder="Enter tag name..." />

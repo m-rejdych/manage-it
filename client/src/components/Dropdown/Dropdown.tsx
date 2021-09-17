@@ -1,7 +1,6 @@
-import { List, Collapse, CollapseProps, ClickAwayListener } from '@material-ui/core';
+import { Paper, List, Collapse, CollapseProps, ClickAwayListener } from '@material-ui/core';
 
 import DropdownItem, { Item } from './DropdownItem';
-import { PAPER } from '../../constants/styleOverrides';
 
 interface Props extends CollapseProps {
   open: boolean;
@@ -14,8 +13,6 @@ const Dropdown: React.FC<Props> = ({ open, items, onClose, ...rest }) => {
     <Collapse
       {...rest}
       sx={{
-        ...PAPER.root,
-        ...PAPER.elevation1,
         borderRadius: 1,
         ...rest.sx,
       }}
@@ -23,11 +20,13 @@ const Dropdown: React.FC<Props> = ({ open, items, onClose, ...rest }) => {
       unmountOnExit
     >
       <ClickAwayListener onClickAway={onClose}>
-        <List>
-          {items.map((item) => (
-            <DropdownItem key={item.id} {...item} />
-          ))}
-        </List>
+        <Paper>
+          <List>
+            {items.map((item) => (
+              <DropdownItem key={item.id} {...item} />
+            ))}
+          </List>
+        </Paper>
       </ClickAwayListener>
     </Collapse>
   );

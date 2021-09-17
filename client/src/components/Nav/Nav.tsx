@@ -10,14 +10,19 @@ const Nav: React.FC = () => {
   return (
     <Box
       position="fixed"
-      top={theme.spacing(3)}
-      right={theme.spacing(3)}
+      top={0}
+      left={0}
+      right={0}
+      p={3}
       display="flex"
-      alignItems="center"
+      justifyContent="flex-end"
+      borderBottom={`1px solid ${theme.palette.divider}`}
     >
-      <Search />
-      <NotificationButton />
-      <SettingsButton />
+      <Box display="flex" alignItems="center">
+        <Search />
+        <NotificationButton />
+        <SettingsButton />
+      </Box>
     </Box>
   );
 };
