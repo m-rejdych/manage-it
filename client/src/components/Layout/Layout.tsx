@@ -4,6 +4,7 @@ import { ThemeProvider, CssBaseline, Grid, Paper } from '@material-ui/core';
 
 import theme from '../../theme';
 import Nav from '../Nav';
+import LeftSidebar from '../Sidebars/LeftSidebar';
 import { NON_AUTH_ROUTES } from '../../constants/routes';
 import { RootState } from '../../store/types/state';
 
@@ -25,12 +26,7 @@ const Layout: React.FC = ({ children }) => {
       >
         {shouldDisplayAuthContent && (
           <Grid item xs={3}>
-            <Paper
-              sx={{
-                minHeight: '100vh',
-                borderRadius: '0 50px 0 0',
-              }}
-            />
+            <LeftSidebar />
           </Grid>
         )}
         <Grid
