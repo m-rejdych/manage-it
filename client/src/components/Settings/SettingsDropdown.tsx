@@ -18,6 +18,7 @@ const SettingsDropdown: React.FC<Props> = ({ open, onClose }) => {
       open={open}
       onClose={onClose}
       sx={{ position: 'absolute', right: 0, top: `calc(100% + ${theme.spacing(1)})` }}
+      // paperProps={{ sx: { backgroundColor: theme.palette.background.default } }}
     />
   );
 };

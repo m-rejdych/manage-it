@@ -29,7 +29,7 @@ const Tag: React.FC<Props> = ({ name, onDelete }) => {
         px={1}
         py={0.2}
         m={0.5}
-        bgcolor={isDeleting ? red[500] : theme.palette.grey[800]}
+        bgcolor={isDeleting ? red[500] : theme.palette.background.default}
         borderRadius={1}
         display="inline-flex"
         alignItems="center"

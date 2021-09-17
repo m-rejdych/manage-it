@@ -20,25 +20,36 @@ const Layout: React.FC = ({ children }) => {
         container
         spacing={3}
         sx={{
-          pr: theme.spacing(3),
-          mt: isAuth && !NON_AUTH_ROUTES.includes(pathname) ? theme.spacing(11) : 0,
-          minHeight: `calc(100vh - ${theme.spacing(11)})`,
+          minHeight: '100vh',
         }}
       >
         {shouldDisplayAuthContent && (
-          <Grid item xs={3} sx={{ pt: '0 !important' }}>
+          <Grid item xs={3}>
             <Paper
-              elevation={3}
               sx={{
-                minHeight: `calc(100vh - ${theme.spacing(11)})`,
-                borderRight: `1px solid ${theme.palette.divider}`,
+                minHeight: '100vh',
+                borderRadius: '0 50px 0 0',
               }}
             />
           </Grid>
         )}
-        <Grid item xs={shouldDisplayAuthContent ? 9 : 12} sx={{ pt: '0 !important' }}>
+        <Grid
+          item
+          xs={shouldDisplayAuthContent ? 6 : 12}
+          sx={{ mt: shouldDisplayAuthContent ? theme.spacing(11) : 0 }}
+        >
           {children}
         </Grid>
+        {shouldDisplayAuthContent && (
+          <Grid item xs={3}>
+            <Paper
+              sx={{
+                minHeight: '100vh',
+                borderRadius: '50px 0 0 0',
+              }}
+            />
+          </Grid>
+        )}
       </Grid>
       {shouldDisplayAuthContent && <Nav />}
     </ThemeProvider>

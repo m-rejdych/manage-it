@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { Button, useTheme } from '@material-ui/core';
+import { Button, Box, useTheme } from '@material-ui/core';
 import { ExpandMore, AccountCircle } from '@material-ui/icons';
 
 import { RootState } from '../../store/types/state';
@@ -43,7 +43,7 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <>
+    <Box position="relative">
       <Button
         onClick={toggleDropdown}
         startIcon={<AccountCircle />}
@@ -55,7 +55,7 @@ const Settings: React.FC = () => {
         {username}
       </Button>
       <SettingsDropdown open={open} onClose={(): void => setOpen(false)} />
-    </>
+    </Box>
   );
 };
 
