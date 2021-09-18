@@ -44,7 +44,7 @@ class AuthService {
     repeatPassword,
   }: RegisterDto): Promise<AuthPayload> {
     if (password !== repeatPassword) {
-      throw new BadRequestException('Passwords does not match.');
+      throw new BadRequestException('Passwords do not match.');
     }
 
     const foundUser = await this.userService.findByEmail(email);
