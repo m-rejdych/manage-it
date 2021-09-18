@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { TextField, useTheme } from '@material-ui/core';
+import { TextField, ClickAwayListener, useTheme } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 
 const SearchInput: React.FC = () => {
   const [value, setValue] = useState('');
+  const [isActive, setIsActive] = useState(false);
   const theme = useTheme();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -11,16 +12,19 @@ const SearchInput: React.FC = () => {
   };
 
   return (
-    <TextField
-      fullWidth
-      placeholder="Search..."
-      value={value}
-      onChange={handleChange}
-      InputProps={{
-        startAdornment: <Search color="disabled" />,
-        sx: { boxShadow: theme.shadows[10], borderRadius: 5 },
-      }}
-    />
+    <ClickAwayListener onClickAway={(): void => setIsActive(false)}>
+      <TextField
+        fullWidth
+        placeholder="Search..."
+        value={value}
+        onChange={handleChange}
+        onClick={(): void => setIsActive(true)}
+        InputProps={{
+          startAdornment: <Search color="disabled" />,
+          sx: { boxShadow: isActive ? theme.shadows[16] : 'none', borderRadius: 5 },
+        }}
+      />
+    </ClickAwayListener>
   );
 };
 
