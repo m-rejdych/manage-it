@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { Stack, Typography, useTheme } from '@material-ui/core';
-import { LoadingButton } from '@material-ui/lab';
+import { Stack, Typography, useTheme } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { Formik, Form } from 'formik';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';

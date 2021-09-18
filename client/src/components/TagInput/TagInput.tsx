@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { OutlinedTextFieldProps, Box, TextField, Typography, useTheme } from '@material-ui/core';
+import { OutlinedTextFieldProps, Box, TextField, Typography, useTheme } from '@mui/material';
 
 import Tag from './Tag';
 

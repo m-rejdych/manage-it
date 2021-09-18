@@ -1,4 +1,4 @@
-import { ListItemButton, ListItemText, ListItemIcon } from '@material-ui/core';
+import { ListItemButton, ListItemText, ListItemIcon } from '@mui/material';
 
 export interface Item {
   id: string;

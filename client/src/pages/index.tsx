@@ -1,4 +1,4 @@
-import { Box, Paper, Typography, Button, useTheme } from '@material-ui/core';
+import { Box, Paper, Typography, Button, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 
 import ROUTES from '../constants/routes';

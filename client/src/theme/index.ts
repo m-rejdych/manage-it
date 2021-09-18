@@ -1,5 +1,4 @@
-import { createTheme } from '@material-ui/core';
-import { blue, pink } from '@material-ui/core/colors';
+import { createTheme } from '@mui/material';
 
 const theme = createTheme({
   palette: {

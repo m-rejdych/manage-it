@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { ThemeProvider, CssBaseline, Box } from '@material-ui/core';
+import { ThemeProvider, CssBaseline, Box } from '@mui/material';
 
 import theme from '../../theme';
 import TopBar from '../TopBar';

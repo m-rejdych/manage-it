@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CacheProvider } from '@emotion/react';
-import { blue } from '@material-ui/core/colors';
+import { blue } from '@mui/material/colors';
 import createCache from '@emotion/cache';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';

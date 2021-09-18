@@ -1,11 +1,4 @@
-import {
-  Paper,
-  List,
-  Collapse,
-  CollapseProps,
-  ClickAwayListener,
-  PaperProps,
-} from '@material-ui/core';
+import { Paper, List, Collapse, CollapseProps, ClickAwayListener, PaperProps } from '@mui/material';
 
 import DropdownItem, { Item } from './DropdownItem';
 

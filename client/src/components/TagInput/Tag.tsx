@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Stack, Typography, Button, Zoom, useTheme } from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
-import { Close } from '@material-ui/icons';
+import { Stack, Typography, Button, Zoom, useTheme } from '@mui/material';
+import { red } from '@mui/material/colors';
+import { Close } from '@mui/icons-material';
 
 interface Props {
   name: string;

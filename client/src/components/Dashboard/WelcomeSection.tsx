@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Box, Typography, Button, Divider, useTheme } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Box, Typography, Button, useTheme } from '@mui/material';
+import { Add } from '@mui/icons-material';
 
 import { RootState } from '../../store/types/state';
 import ProjectDialog from '../Project/ProjectDialog';
@@ -20,7 +20,7 @@ const WelcomeSection: React.FC = () => {
       <Box
         position="relative"
         pb={3}
-        pt={9}
+        pt={6}
         display="flex"
         alignItems="center"
         justifyContent="space-between"

@@ -1,4 +1,4 @@
-import { Box, Paper, useTheme } from '@material-ui/core';
+import { Box, Paper, useTheme } from '@mui/material';
 
 import ROUTES from '../constants/routes';
 import AuthForm from '../components/AuthForm';

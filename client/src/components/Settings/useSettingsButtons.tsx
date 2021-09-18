@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { Logout } from '@material-ui/icons';
+import { Logout } from '@mui/icons-material';
 
 import { Item } from '../Dropdown/DropdownItem';
 import { logout } from '../../store/ducks/auth/actions';

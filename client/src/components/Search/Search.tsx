@@ -7,8 +7,8 @@ import {
   Typography,
   ClickAwayListener,
   useTheme,
-} from '@material-ui/core';
-import { Search as SearchIcon } from '@material-ui/icons';
+} from '@mui/material';
+import { Search as SearchIcon } from '@mui/icons-material';
 
 const Search: React.FC = () => {
   const [value, setValue] = useState('');

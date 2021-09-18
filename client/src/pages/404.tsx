@@ -1,4 +1,4 @@
-import { Stack, Box, Typography, Divider } from '@material-ui/core';
+import { Stack, Box, Typography, Divider } from '@mui/material';
 
 const NotFound: React.FC = () => (
   <Box height="100vh" display="flex" alignItems="center" justifyContent="center">

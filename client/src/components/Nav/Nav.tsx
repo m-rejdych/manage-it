@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
-import { List, ListItemButton, ListItemIcon, ListItemText } from '@material-ui/core';
-import { Dashboard } from '@material-ui/icons';
+import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Dashboard } from '@mui/icons-material';
 
 type Values = '/dashboard';
 

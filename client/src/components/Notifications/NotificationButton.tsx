@@ -1,5 +1,5 @@
-import { IconButton, useTheme } from '@material-ui/core';
-import { Notifications } from '@material-ui/icons';
+import { IconButton, useTheme } from '@mui/material';
+import { Notifications } from '@mui/icons-material';
 
 const NotificationButton: React.FC = () => {
   const theme = useTheme();

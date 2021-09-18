@@ -1,4 +1,4 @@
-import { Paper, Grid, Typography, useTheme } from '@material-ui/core';
+import { Paper, Grid, Typography, useTheme } from '@mui/material';
 
 const categories = [
   {

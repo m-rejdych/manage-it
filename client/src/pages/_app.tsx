@@ -1,7 +1,7 @@
 import { AppProps } from 'next/app';
 import { CacheProvider } from '@emotion/react';
-import { LocalizationProvider } from '@material-ui/lab';
-import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
+import { LocalizationProvider } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import Head from 'next/head';
 import createCache from '@emotion/cache';
 

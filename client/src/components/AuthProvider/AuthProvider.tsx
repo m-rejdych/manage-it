@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 
 import { RootState } from '../../store/types/state';
 import ROUTES, { AUTH_ROUTES, NON_AUTH_ROUTES } from '../../constants/routes';

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { Button, Box, useTheme } from '@material-ui/core';
-import { ExpandMore, AccountCircle } from '@material-ui/icons';
+import { Button, Box, useTheme } from '@mui/material';
+import { ExpandMore, AccountCircle } from '@mui/icons-material';
 
 import { RootState } from '../../store/types/state';
 import SettingsDropdown from './SettingsDropdown';

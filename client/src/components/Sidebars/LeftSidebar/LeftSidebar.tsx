@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Paper, useTheme } from '@material-ui/core';
+import { Paper, useTheme } from '@mui/material';
 
 import Nav from '../../Nav';
 

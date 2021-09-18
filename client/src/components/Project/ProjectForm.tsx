@@ -1,14 +1,7 @@
 import { useState } from 'react';
 import { Formik, Form } from 'formik';
 import { useDispatch } from 'react-redux';
-import {
-  Stack,
-  Button,
-  DialogActions,
-  FormControlLabel,
-  Checkbox,
-  useTheme,
-} from '@material-ui/core';
+import { Stack, Button, DialogActions, FormControlLabel, Checkbox, useTheme } from '@mui/material';
 
 import FormField from '../FormField';
 import Field from '../../types/FormField';

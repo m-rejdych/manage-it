@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { TextField, ClickAwayListener, useTheme } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+import { TextField, ClickAwayListener, useTheme } from '@mui/material';
+import { Search } from '@mui/icons-material';
 
 const SearchInput: React.FC = () => {
   const [value, setValue] = useState('');

@@ -1,4 +1,4 @@
-import { Paper, useTheme } from '@material-ui/core';
+import { Paper, useTheme } from '@mui/material';
 
 const RightSidebar: React.FC = () => {
   const theme = useTheme();

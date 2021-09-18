@@ -1,5 +1,4 @@
-import ReactDOM from 'react-dom';
-import { Box, Alert, Zoom, AlertProps, Portal, useTheme } from '@material-ui/core';
+import { Box, Alert, Zoom, AlertProps, Portal, useTheme } from '@mui/material';
 
 interface Props extends AlertProps {
   open: boolean;
