@@ -31,11 +31,6 @@ class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => Project, (project) => project.creator, {
-    cascade: ['insert', 'update'],
-  })
-  createdProjects: Project[];
-
   @ManyToMany(() => Project, (project) => project.members, {
     cascade: ['insert', 'update'],
   })

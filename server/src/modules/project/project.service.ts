@@ -57,6 +57,18 @@ class ProjectService {
 
     return project || null;
   }
+
+  async findByMember(id: number): Promise<Project[]> {
+    const user = await this.userService.findById(id, {
+      relations: ['projects'],
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found!');
+    }
+
+    return user.projects;
+  }
 }
 
 export default ProjectService;

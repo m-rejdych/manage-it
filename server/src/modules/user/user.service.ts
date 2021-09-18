@@ -1,7 +1,7 @@
 import { hash } from 'bcrypt';
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOneOptions } from 'typeorm';
 
 import User from './user.entity';
 import CreateUserDto from './dto/create-user.dto';
@@ -28,8 +28,8 @@ class UserService {
     return user || null;
   }
 
-  async findById(id: number): Promise<User | null> {
-    const user = await this.userRepository.findOne(id);
+  async findById(id: number, options?: FindOneOptions): Promise<User | null> {
+    const user = await this.userRepository.findOne(id, options);
 
     return user || null;
   }

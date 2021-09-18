@@ -32,6 +32,14 @@ class ProjectController {
   }
 
   @UseGuards(JwtGuard)
+  @Get('get-my-projects')
+  async getMyProjects(@Req() req: JwtAuthRequest): Promise<Project[]> {
+    const { userId } = req.user;
+
+    return await this.projectService.findByMember(userId);
+  }
+
+  @UseGuards(JwtGuard)
   @Get('get-by-id/:id')
   async getById(@Param('id', new ParseIntPipe()) id: number): Promise<Project> {
     const project = await this.projectService.findById(id);

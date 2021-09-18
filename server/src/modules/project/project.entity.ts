@@ -35,7 +35,7 @@ class Project {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.createdProjects, {
+  @ManyToOne(() => User, {
     cascade: true,
     onDelete: 'CASCADE',
   })
@@ -49,6 +49,7 @@ class Project {
   members: User[];
 
   @ManyToMany(() => User, { cascade: true, onDelete: 'CASCADE' })
+  @JoinTable()
   admins: User[];
 
   @OneToMany(() => Task, (task) => task.project, {
