@@ -18,7 +18,7 @@ const AuthProvider: React.FC = ({ children }) => {
     }
 
     if (isAuth && NON_AUTH_ROUTES.includes(router.pathname)) {
-      router.push(ROUTES.HOME);
+      router.push(ROUTES.DASHBOARD);
       return;
     }
 

@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { Paper } from '@material-ui/core';
 
+import Nav from '../../Nav';
+
 const LeftSidebar: React.FC = () => {
   return (
     <Paper
@@ -13,6 +15,7 @@ const LeftSidebar: React.FC = () => {
       }}
     >
       <Image src="/Logo.svg" alt="Logo" width={150} height={150} />
+      <Nav />
     </Paper>
   );
 };

@@ -1,1 +1,1 @@
-export default ['open', 'progress', 'closed'];
+export default ['preparation', 'open', 'progress', 'closed'];

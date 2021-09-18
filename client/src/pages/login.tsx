@@ -18,7 +18,7 @@ const Login: React.FC = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  getServerSidePropsWithAutologin(false, ROUTES.HOME)
+  getServerSidePropsWithAutologin(false, ROUTES.DASHBOARD)
 );
 
 export default Login;

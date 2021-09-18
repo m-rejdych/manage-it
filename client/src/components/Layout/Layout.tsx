@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { ThemeProvider, CssBaseline, Grid, Paper } from '@material-ui/core';
 
 import theme from '../../theme';
-import Nav from '../Nav';
+import TopBar from '../TopBar';
 import LeftSidebar from '../Sidebars/LeftSidebar';
 import { NON_AUTH_ROUTES } from '../../constants/routes';
 import { RootState } from '../../store/types/state';
@@ -47,7 +47,7 @@ const Layout: React.FC = ({ children }) => {
           </Grid>
         )}
       </Grid>
-      {shouldDisplayAuthContent && <Nav />}
+      {shouldDisplayAuthContent && <TopBar />}
     </ThemeProvider>
   ) : null;
 };

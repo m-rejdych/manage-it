@@ -4,8 +4,7 @@ import { Box, Typography, Button, Divider, useTheme } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 
 import { RootState } from '../../store/types/state';
-import ProjectDialog from '../../components/Project/ProjectDialog';
-import { height } from '@material-ui/system';
+import ProjectDialog from '../Project/ProjectDialog';
 
 const WelcomeSection: React.FC = () => {
   const [open, setOpen] = useState(false);

@@ -1,26 +1,44 @@
-import { Box, useTheme } from '@material-ui/core';
+import { useRouter } from 'next/router';
+import { List, ListItemButton, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Dashboard } from '@material-ui/icons';
 
-import SettingsButton from '../Settings';
-import NotificationButton from '../Notifications';
-import Search from '../Search';
+type Values = '/dashboard';
+
+interface Element {
+  id: string;
+  value: Values;
+  label: string;
+  icon: JSX.Element;
+}
+
+const ELEMENTS: Element[] = [
+  {
+    id: 'nav-dashboard',
+    value: '/dashboard',
+    label: 'Dashboard',
+    icon: <Dashboard />,
+  },
+];
 
 const Nav: React.FC = () => {
-  const theme = useTheme();
+  const { pathname, push } = useRouter();
+  const handleSelect = (value: Values): void => {
+    push(value);
+  };
 
   return (
-    <Box
-      position="fixed"
-      top={0}
-      right={0}
-      p={3}
-      display="flex"
-      justifyContent="flex-end"
-      alignItems="center"
-    >
-      {/* <Search /> */}
-      <NotificationButton />
-      <SettingsButton />
-    </Box>
+    <List sx={{ width: '100%' }}>
+      {ELEMENTS.map(({ id, value, label, icon }) => (
+        <ListItemButton
+          key={id}
+          onClick={(): void => handleSelect(value)}
+          selected={pathname === value}
+        >
+          <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemText>{label}</ListItemText>
+        </ListItemButton>
+      ))}
+    </List>
   );
 };
 

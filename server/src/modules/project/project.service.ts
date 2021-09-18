@@ -27,7 +27,7 @@ class ProjectService {
       throw new NotFoundException('User not found!');
     }
 
-    const stage = await this.projectStageService.findByName('open');
+    const stage = await this.projectStageService.findByName('preparation');
 
     const project = this.projectRepository.create({
       ...rest,

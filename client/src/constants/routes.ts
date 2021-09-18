@@ -5,7 +5,7 @@ const ROUTES = {
   REGISTER: '/register' as const,
   LOGIN: '/login',
   PROJECTS_SEARCH: '/projects/search' as const,
-  HOME: '/home' as const,
+  DASHBOARD: '/dashboard' as const,
 };
 
 export const NON_AUTH_ROUTES: ValueOf<typeof ROUTES>[] = [

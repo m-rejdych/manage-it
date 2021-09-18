@@ -41,7 +41,7 @@ const Register: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isAuth) router.push(ROUTES.HOME);
+    if (isAuth) router.push(ROUTES.DASHBOARD);
   }, [isAuth]);
 
   const isRegister = router.pathname === ROUTES.REGISTER;
