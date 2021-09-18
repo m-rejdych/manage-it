@@ -17,8 +17,6 @@
     "@material-ui/icons": "^5.0.0-beta.5",
     "@material-ui/lab": "^5.0.0-alpha.44",
     "@material-ui/styles": "^4.11.4",
-    "@types/date-fns": "^2.6.0",
-    "@types/redux-saga": "^0.10.5",
     "axios": "^0.21.1",
     "date-fns": "^2.24.0",
     "formik": "^2.2.9",
@@ -33,12 +31,14 @@
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
+    "@types/date-fns": "^2.6.0",
     "@types/material-ui": "^0.21.9",
     "@types/next-redux-wrapper": "^3.0.0",
     "@types/react": "17.0.13",
     "@types/react-dom": "^17.0.9",
     "@types/react-redux": "^7.1.17",
     "@types/redux": "^3.6.0",
+    "@types/redux-saga": "^0.10.5",
     "eslint": "7.30.0",
     "eslint-config-next": "11.0.1",
     "typescript": "4.3.5"
