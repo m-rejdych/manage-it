@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { Dashboard } from '@mui/icons-material';
+import { Dashboard, MenuBook } from '@mui/icons-material';
 
-type Values = '/dashboard';
+type Values = '/dashboard' | '/projects';
 
 interface Element {
   id: string;
@@ -17,6 +17,12 @@ const ELEMENTS: Element[] = [
     value: '/dashboard',
     label: 'Dashboard',
     icon: <Dashboard />,
+  },
+  {
+    id: 'nav-projects',
+    value: '/projects',
+    label: 'Projects',
+    icon: <MenuBook />,
   },
 ];
 
