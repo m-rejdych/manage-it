@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { ThemeProvider, CssBaseline, Grid, Paper } from '@material-ui/core';
+import { ThemeProvider, CssBaseline, Box } from '@material-ui/core';
 
 import theme from '../../theme';
 import TopBar from '../TopBar';
 import LeftSidebar from '../Sidebars/LeftSidebar';
+import RightSidebar from '../Sidebars/RightSidebar';
 import { NON_AUTH_ROUTES } from '../../constants/routes';
 import { RootState } from '../../store/types/state';
 
@@ -17,32 +18,11 @@ const Layout: React.FC = ({ children }) => {
   return children ? (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Grid
-        container
-        spacing={3}
-        sx={{
-          minHeight: '100vh',
-        }}
-      >
-        {shouldDisplayAuthContent && (
-          <Grid item xs={3}>
-            <LeftSidebar />
-          </Grid>
-        )}
-        <Grid item xs={shouldDisplayAuthContent ? 6 : 12}>
-          {children}
-        </Grid>
-        {shouldDisplayAuthContent && (
-          <Grid item xs={3}>
-            <Paper
-              sx={{
-                minHeight: '100vh',
-                borderRadius: '50px 0 0 0',
-              }}
-            />
-          </Grid>
-        )}
-      </Grid>
+      <Box m="0 auto" width="50vw" height="200vh">
+        {children}
+      </Box>
+      {shouldDisplayAuthContent && <LeftSidebar />}
+      {shouldDisplayAuthContent && <RightSidebar />}
       {shouldDisplayAuthContent && <TopBar />}
     </ThemeProvider>
   ) : null;

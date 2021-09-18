@@ -48,6 +48,9 @@ class Project {
   @JoinTable()
   members: User[];
 
+  @ManyToMany(() => User, { cascade: true, onDelete: 'CASCADE' })
+  admins: User[];
+
   @OneToMany(() => Task, (task) => task.project, {
     cascade: ['insert', 'update'],
   })

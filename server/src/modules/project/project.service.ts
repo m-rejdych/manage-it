@@ -34,6 +34,7 @@ class ProjectService {
       stage,
       creator: user,
       members: [user],
+      admins: [user],
     });
 
     if (tags?.length) {

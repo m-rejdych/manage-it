@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { Stack, Button, Typography, useTheme } from '@material-ui/core';
+import { Stack, Typography, useTheme } from '@material-ui/core';
+import { LoadingButton } from '@material-ui/lab';
 import { Formik, Form } from 'formik';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,11 +18,13 @@ const EMAIL_REGEXP =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PASSWORD_REGEXP = /^(?=.*\d).{6,}$/;
 
-const handleValidateRepeatPassword = (value: string, passwordValue: string): string | undefined => {
-  const error = value === passwordValue ? undefined : 'Passwords does not match.';
+const handleValidateRepeatPassword =
+  (value: string, passwordValue: string): (() => string | undefined) =>
+  () => {
+    const error = value === passwordValue ? undefined : 'Passwords does not match.';
 
-  return error;
-};
+    return error;
+  };
 
 interface LoginValues {
   email: string;
@@ -35,6 +38,7 @@ export interface RegisterValues extends LoginValues {
 
 const Register: React.FC = () => {
   const isAuth = useSelector((state: RootState) => state.auth.isAuth);
+  const loading = useSelector((state: RootState) => state.auth.loading);
   const error = useSelector((state: RootState) => state.auth.error);
   const router = useRouter();
   const theme = useTheme();
@@ -130,19 +134,23 @@ const Register: React.FC = () => {
                   key={field.name}
                   validate={
                     !validate && field.name === 'repeatPassword'
-                      ? () =>
-                          handleValidateRepeatPassword(
-                            values.password,
-                            (values as RegisterValues).repeatPassword
-                          )
+                      ? handleValidateRepeatPassword(
+                          values.password,
+                          (values as RegisterValues).repeatPassword
+                        )
                       : validate
                   }
                   {...field}
                 />
               ))}
-              <Button sx={{ alignSelf: 'center' }} type="submit">
+              <LoadingButton
+                loading={loading}
+                sx={{ alignSelf: 'center' }}
+                type="submit"
+                variant="contained"
+              >
                 {isRegister ? 'Register' : 'Login'}
-              </Button>
+              </LoadingButton>
               <Typography variant="caption" sx={{ alignSelf: 'center' }}>
                 {isRegister ? 'Already have an account? ' : "Don't have an account? "}
                 <Link href={isRegister ? ROUTES.LOGIN : ROUTES.REGISTER}>

@@ -1,13 +1,19 @@
 import Image from 'next/image';
-import { Paper } from '@material-ui/core';
+import { Paper, useTheme } from '@material-ui/core';
 
 import Nav from '../../Nav';
 
 const LeftSidebar: React.FC = () => {
+  const theme = useTheme();
+
   return (
     <Paper
       sx={{
-        minHeight: '100vh',
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        height: '100vh',
+        width: `calc(25vw - ${theme.spacing(3)})`,
         borderRadius: '0 50px 0 0',
         display: 'flex',
         flexDirection: 'column',
