@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Formik, Form } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Stack, Button, DialogActions, FormControlLabel, Checkbox, useTheme } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
+import { RootState } from '../../store/types/state';
 import FormField from '../FormField';
 import Field from '../../types/FormField';
 import TagInput from '../TagInput';
@@ -55,6 +57,7 @@ interface Props {
 const ProjectForm: React.FC<Props> = ({ onDialogClose }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [isUnlimitedMembers, setIsUnlimitedMembers] = useState(false);
+  const loading = useSelector((state: RootState) => state.project.loading);
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -126,9 +129,9 @@ const ProjectForm: React.FC<Props> = ({ onDialogClose }) => {
             <Button variant="contained" color="secondary" onClick={onDialogClose}>
               Cancel
             </Button>
-            <Button variant="contained" type="submit">
+            <LoadingButton loading={loading} variant="contained" type="submit">
               Create
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </Form>
       )}
