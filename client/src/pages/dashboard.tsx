@@ -1,15 +1,22 @@
+import { Box } from '@material-ui/core';
+
 import { wrapper } from '../store';
 import { getServerSidePropsWithAutologin } from '../util/autologin';
-
 import ROUTES from '../constants/routes';
 import WelcomeSection from '../components/Dashboard/WelcomeSection';
+import SearchInput from '../components/Dashboard/SearchInput';
 
-const Home: React.FC = () => {
-  return <WelcomeSection />;
+const Dashboard: React.FC = () => {
+  return (
+    <Box py={3}>
+      <SearchInput />
+      <WelcomeSection />
+    </Box>
+  );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
   getServerSidePropsWithAutologin(true, ROUTES.LOGIN)
 );
 
-export default Home;
+export default Dashboard;

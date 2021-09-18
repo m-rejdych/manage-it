@@ -19,8 +19,8 @@ const WelcomeSection: React.FC = () => {
     <>
       <Box
         position="relative"
-        pt={8}
         pb={3}
+        pt={9}
         display="flex"
         alignItems="center"
         justifyContent="space-between"

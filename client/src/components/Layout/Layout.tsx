@@ -29,11 +29,7 @@ const Layout: React.FC = ({ children }) => {
             <LeftSidebar />
           </Grid>
         )}
-        <Grid
-          item
-          xs={shouldDisplayAuthContent ? 6 : 12}
-          sx={{ mt: shouldDisplayAuthContent ? theme.spacing(11) : 0 }}
-        >
+        <Grid item xs={shouldDisplayAuthContent ? 6 : 12}>
           {children}
         </Grid>
         {shouldDisplayAuthContent && (
