@@ -10,3 +10,6 @@ export const createProject = async (data: CreateProjectPayload): Promise<AxiosRe
 
 export const getMyProjects = async (): Promise<AxiosResponse<Project[]>> =>
   axios.get(`${API}/project/get-my-projects`, { withCredentials: true });
+
+export const getProjectById = (id: number): Promise<AxiosResponse<Project>> =>
+  axios.get(`${API}/project/get-by-id/${id}`, { withCredentials: true });

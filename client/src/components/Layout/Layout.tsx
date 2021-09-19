@@ -18,7 +18,7 @@ const Layout: React.FC = ({ children }) => {
   return children ? (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box m="0 auto" width="50vw" height="200vh">
+      <Box m="0 auto" width="60vw" height="200vh">
         {children}
       </Box>
       {shouldDisplayAuthContent && <LeftSidebar />}

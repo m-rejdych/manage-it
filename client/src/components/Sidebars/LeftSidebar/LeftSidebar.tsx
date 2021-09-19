@@ -13,7 +13,7 @@ const LeftSidebar: React.FC = () => {
         left: 0,
         top: 0,
         height: '100vh',
-        width: `calc(25vw - ${theme.spacing(3)})`,
+        width: `calc(20vw - ${theme.spacing(3)})`,
         borderRadius: '0 50px 0 0',
         display: 'flex',
         flexDirection: 'column',

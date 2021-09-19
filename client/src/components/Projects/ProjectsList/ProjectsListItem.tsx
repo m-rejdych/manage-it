@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { Grid, Paper, Box, Stack, Typography, useTheme } from '@mui/material';
 import { format } from 'date-fns';
 
@@ -9,9 +10,11 @@ import {
   PROJECT_STAGE_ICONS,
   PROJECT_STAGE_ICONS_COLORS,
 } from '../constants';
+import ROUTES from '../../../constants/routes';
 
-const ProjectsListItem: React.FC<Project> = ({ title, createdAt, stage, creator }) => {
+const ProjectsListItem: React.FC<Project> = ({ id, title, createdAt, stage, creator }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { push } = useRouter();
   const theme = useTheme();
 
   const getStageIcon = (name: ProjectStageName): JSX.Element => {
@@ -28,6 +31,10 @@ const ProjectsListItem: React.FC<Project> = ({ title, createdAt, stage, creator 
     setIsHovered(false);
   };
 
+  const handleGoToProject = (): void => {
+    push(`${ROUTES.PROJECTS}/${id}`);
+  };
+
   return (
     <Grid item xs={6}>
       <Paper
@@ -35,6 +42,7 @@ const ProjectsListItem: React.FC<Project> = ({ title, createdAt, stage, creator 
         elevation={isHovered ? 6 : 1}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onClick={handleGoToProject}
       >
         <Box>
           <Box display="flex" alignItems="center" justifyContent="space-between">

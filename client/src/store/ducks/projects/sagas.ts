@@ -3,8 +3,16 @@ import { AxiosResponse } from 'axios';
 
 import Project from '../../../types/project';
 import { PayloadAction } from '../../types/actions';
-import { createProject, getMyProjects } from '../../../services/projectServices';
-import { CREATE_PROJECT, GET_MY_PROJECTS, addProject, setProjects, setError } from './actions';
+import { createProject, getMyProjects, getProjectById } from '../../../services/projectServices';
+import {
+  CREATE_PROJECT,
+  GET_MY_PROJECTS,
+  GET_PROJECT_BY_ID,
+  addProject,
+  setProjects,
+  setOpenedProjec,
+  setError,
+} from './actions';
 
 function* handleCreateProject({ payload }: PayloadAction<Project>) {
   try {
@@ -26,6 +34,16 @@ function* handleGetMyProjects() {
   }
 }
 
+function* handleGetProjectById({ payload }: PayloadAction<number>) {
+  try {
+    const response: AxiosResponse<Project> = yield call(getProjectById, payload);
+
+    yield put(setOpenedProjec(response.data));
+  } catch (error) {
+    yield put(setError(error.response.data.message));
+  }
+}
+
 function* createProjectSaga() {
   yield takeEvery(CREATE_PROJECT, handleCreateProject);
 }
@@ -34,6 +52,10 @@ function* getMyProjectsSaga() {
   yield takeEvery(GET_MY_PROJECTS, handleGetMyProjects);
 }
 
-const sagas = [createProjectSaga(), getMyProjectsSaga()];
+function* getProjectByIdSaga() {
+  yield takeEvery(GET_PROJECT_BY_ID, handleGetProjectById);
+}
+
+const sagas = [createProjectSaga(), getMyProjectsSaga(), getProjectByIdSaga()];
 
 export default sagas;

@@ -4,8 +4,8 @@ const ROUTES = {
   ROOT: '/' as const,
   REGISTER: '/register' as const,
   LOGIN: '/login',
-  PROJECTS_SEARCH: '/projects/search' as const,
   DASHBOARD: '/dashboard' as const,
+  PROJECTS: '/projects' as const,
 };
 
 export const NON_AUTH_ROUTES: ValueOf<typeof ROUTES>[] = [

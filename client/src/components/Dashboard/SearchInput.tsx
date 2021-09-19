@@ -14,7 +14,6 @@ const SearchInput: React.FC = () => {
   return (
     <ClickAwayListener onClickAway={(): void => setIsActive(false)}>
       <TextField
-        fullWidth
         placeholder="Search..."
         value={value}
         onChange={handleChange}
@@ -23,6 +22,7 @@ const SearchInput: React.FC = () => {
           startAdornment: <Search color="disabled" />,
           sx: { boxShadow: isActive ? theme.shadows[16] : 'none', borderRadius: 5 },
         }}
+        sx={{ width: isActive ? '60%' : '30%', transition: 'all 0.2s ease' }}
       />
     </ClickAwayListener>
   );

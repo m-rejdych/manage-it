@@ -10,7 +10,7 @@ const RightSidebar: React.FC = () => {
         right: 0,
         top: 0,
         height: '100vh',
-        width: `calc(25vw - ${theme.spacing(3)})`,
+        width: `calc(20vw - ${theme.spacing(3)})`,
         borderRadius: '50px 0 0 0',
       }}
     />

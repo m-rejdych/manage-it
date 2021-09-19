@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOneOptions } from 'typeorm';
 
 import Project from './project.entity';
 import UserService from '../user/user.service';
@@ -52,8 +52,25 @@ class ProjectService {
     return project;
   }
 
-  async findById(id: number): Promise<Project | null> {
-    const project = await this.projectRepository.findOne(id);
+  async validateMembership(
+    projectId: number,
+    userId: number,
+  ): Promise<boolean> {
+    const project = await this.projectRepository
+      .createQueryBuilder('project')
+      .leftJoin('project.members', 'member')
+      .where('project.id = :projectId', { projectId })
+      .andWhere('member.id = :userId', { userId })
+      .getOne();
+
+    return !!project;
+  }
+
+  async findById(
+    id: number,
+    options?: FindOneOptions,
+  ): Promise<Project | null> {
+    const project = await this.projectRepository.findOne(id, options);
 
     return project || null;
   }
