@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Stack, Button, DialogActions, FormControlLabel, Checkbox, useTheme } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
-import { RootState } from '../../store/types/state';
-import FormField from '../FormField';
-import Field from '../../types/FormField';
-import TagInput from '../TagInput';
-import validateInput from '../../util/validateInput';
-import { CreateProjectPayload } from '../../types/project/payloads';
-import { createProject } from '../../store/ducks/projects/actions';
+import { RootState } from '../../../store/types/state';
+import FormField from '../../FormField';
+import Field from '../../../types/FormField';
+import TagInput from '../../TagInput';
+import validateInput from '../../../util/validateInput';
+import { CreateProjectPayload } from '../../../types/project/payloads';
+import { createProject } from '../../../store/ducks/projects/actions';
 
 interface Values {
   title: string;

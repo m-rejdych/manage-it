@@ -4,7 +4,7 @@ import { Box, Typography, Button, useTheme } from '@mui/material';
 import { Add } from '@mui/icons-material';
 
 import { RootState } from '../../store/types/state';
-import ProjectDialog from '../Project/ProjectDialog';
+import ProjectDialog from '../Projects/ProjectDialog';
 
 const WelcomeSection: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -26,8 +26,12 @@ const WelcomeSection: React.FC = () => {
         justifyContent="space-between"
       >
         <Box>
-          <Typography variant="h5">{`Hello, ${username}`}</Typography>
-          <Typography variant="h6" color="textSecondary" fontSize={theme.typography.body1.fontSize}>
+          <Typography variant="h6">{`Hello, ${username}`}</Typography>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            fontSize={theme.typography.body1.fontSize}
+          >
             Feeling like creating something new?
           </Typography>
         </Box>

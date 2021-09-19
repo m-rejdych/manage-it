@@ -59,15 +59,21 @@ class ProjectService {
   }
 
   async findByMember(id: number): Promise<Project[]> {
-    const user = await this.userService.findById(id, {
-      relations: ['projects'],
-    });
+    const user = await this.userService.findById(id);
 
     if (!user) {
       throw new NotFoundException('User not found!');
     }
 
-    return user.projects;
+    const projects = await this.projectRepository
+      .createQueryBuilder('project')
+      .leftJoin('project.members', 'member')
+      .leftJoinAndSelect('project.stage', 'stage')
+      .leftJoinAndSelect('project.creator', 'creator')
+      .where('member.id = :id', { id })
+      .getMany();
+
+    return projects;
   }
 }
 

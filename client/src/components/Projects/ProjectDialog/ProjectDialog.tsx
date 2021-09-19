@@ -1,7 +1,7 @@
 import { Dialog, DialogTitle, DialogContent, DialogProps } from '@mui/material';
 import React from 'react';
 
-import ProjectForm from './ProjectForm';
+import ProjectForm from '../ProjectForm';
 
 interface Props extends Omit<DialogProps, 'onClose'> {
   onClose: (e?: React.MouseEvent<HTMLButtonElement>) => void;
