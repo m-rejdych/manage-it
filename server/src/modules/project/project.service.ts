@@ -88,6 +88,7 @@ class ProjectService {
       .leftJoinAndSelect('project.stage', 'stage')
       .leftJoinAndSelect('project.creator', 'creator')
       .where('member.id = :id', { id })
+      .orderBy('project.updatedAt', 'DESC')
       .getMany();
 
     return projects;

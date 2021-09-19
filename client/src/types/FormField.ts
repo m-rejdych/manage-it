@@ -1,13 +1,25 @@
+import { InputProps } from '@mui/material';
+
 import InputType from './InputType';
+
+interface Option {
+  value: string;
+  label: string;
+}
 
 export default interface Field<T = { [key: string]: string }> {
   name: keyof T;
-  type: InputType;
-  label: string;
-  validate?: (value: string) => string | undefined;
+  type?: InputType;
+  label?: string;
+  placeholder?: string;
+  validate?: (value: string | string[]) => string | undefined;
   multiline?: boolean;
   rows?: number;
   disabled?: boolean;
   fullWidth?: boolean;
   sx?: object;
+  select?: boolean;
+  options?: Option[];
+  InputProps?: InputProps;
+  shouldValidate?: boolean;
 }

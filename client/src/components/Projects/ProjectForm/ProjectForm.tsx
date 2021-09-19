@@ -1,54 +1,23 @@
 import { useState } from 'react';
 import { Formik, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { Stack, Button, DialogActions, FormControlLabel, Checkbox, useTheme } from '@mui/material';
+import {
+  Stack,
+  Button,
+  DialogContent,
+  DialogActions,
+  FormControlLabel,
+  Checkbox,
+  useTheme,
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
-import { RootState } from '../../../store/types/state';
 import FormField from '../../FormField';
-import Field from '../../../types/FormField';
 import TagInput from '../../TagInput';
-import validateInput from '../../../util/validateInput';
+import { RootState } from '../../../store/types/state';
 import { CreateProjectPayload } from '../../../types/project/payloads';
 import { createProject } from '../../../store/ducks/projects/actions';
-
-interface Values {
-  title: string;
-  description: string;
-  maxMembers: string;
-}
-
-const fields: Field<Values>[] = [
-  {
-    name: 'title',
-    label: 'Title',
-    type: 'text',
-    validate: (value) => {
-      const error = validateInput(value, { length: 3 })
-        ? undefined
-        : 'Title must be at least 3 characters long.';
-
-      return error;
-    },
-  },
-  {
-    name: 'description',
-    label: 'Description',
-    type: 'text',
-    multiline: true,
-    rows: 5,
-  },
-  {
-    name: 'maxMembers',
-    label: 'Max members',
-    type: 'text',
-    validate: (value: string) => {
-      const error = !value || /^[0-9]*$/.test(value) ? undefined : 'Max members must be a number!';
-
-      return error;
-    },
-  },
-];
+import { initialValues, fields, Values } from './constants';
 
 interface Props {
   onDialogClose?: ((e?: React.MouseEvent<HTMLButtonElement>) => void) | undefined;
@@ -60,8 +29,6 @@ const ProjectForm: React.FC<Props> = ({ onDialogClose }) => {
   const loading = useSelector((state: RootState) => state.project.loading);
   const theme = useTheme();
   const dispatch = useDispatch();
-
-  const initialValues = { title: '', description: '', maxMembers: '8' };
 
   const handleSubmit = ({ maxMembers, ...values }: Values): void => {
     const data: CreateProjectPayload = { ...values };
@@ -79,11 +46,13 @@ const ProjectForm: React.FC<Props> = ({ onDialogClose }) => {
   };
 
   const handleChangeUnlimitedMembers = (
-    valueSetter: (field: string, value: any, shouldValidate?: boolean | undefined) => void
+    valueSetter: (field: string, value: any, shouldValidate?: boolean | undefined) => void,
+    errorSetter: (field: string, message: string | undefined) => void
   ): void => {
     if (!isUnlimitedMembers) {
       setIsUnlimitedMembers(true);
       valueSetter('maxMembers', '', false);
+      errorSetter('maxMembers', undefined);
     } else {
       setIsUnlimitedMembers(false);
       valueSetter('maxMembers', '8', false);
@@ -92,48 +61,64 @@ const ProjectForm: React.FC<Props> = ({ onDialogClose }) => {
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-      {({ setFieldValue }) => (
-        <Form>
-          <Stack spacing={1}>
-            {fields.map((field) =>
-              field.name === 'maxMembers' ? (
-                <Stack spacing={1} direction="row" width="100%" key={field.name}>
-                  <FormField
-                    {...field}
-                    label={isUnlimitedMembers ? 'Unlimited members' : field.label}
-                    disabled={isUnlimitedMembers}
-                    sx={{ flexGrow: 1 }}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={isUnlimitedMembers}
-                        onChange={(): void => handleChangeUnlimitedMembers(setFieldValue)}
+      {({ setFieldValue, setFieldError, handleSubmit }) => (
+        <>
+          <DialogContent>
+            <Form>
+              <Stack spacing={1}>
+                {fields.map((field) =>
+                  field.name === 'maxMembers' ? (
+                    <Stack spacing={1} direction="row" width="100%" key={field.name}>
+                      <FormField
+                        {...field}
+                        shouldValidate={field.name !== 'maxMembers' || !isUnlimitedMembers}
+                        label={isUnlimitedMembers ? 'Unlimited members' : field.label}
+                        disabled={isUnlimitedMembers}
+                        sx={{ flexGrow: 1 }}
                       />
-                    }
-                    sx={{ paddingBottom: theme.spacing(2.25) }}
-                    label="Unlimited members"
-                  />
-                </Stack>
-              ) : (
-                <FormField
-                  {...field}
-                  key={field.name}
-                  sx={{ ':first-child': { marginTop: theme.spacing(1) } }}
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={isUnlimitedMembers}
+                            onChange={(): void =>
+                              handleChangeUnlimitedMembers(setFieldValue, setFieldError)
+                            }
+                          />
+                        }
+                        sx={{ paddingBottom: theme.spacing(2.25) }}
+                        label="Unlimited members"
+                      />
+                    </Stack>
+                  ) : (
+                    <FormField
+                      {...field}
+                      key={field.name}
+                      sx={{ ':first-child': { marginTop: theme.spacing(1) } }}
+                    />
+                  )
+                )}
+                <TagInput
+                  fullWidth
+                  onTagChange={handleChangeTags}
+                  placeholder="Enter tag name..."
                 />
-              )
-            )}
-            <TagInput fullWidth onTagChange={handleChangeTags} placeholder="Enter tag name..." />
-          </Stack>
+              </Stack>
+            </Form>
+          </DialogContent>
           <DialogActions>
             <Button variant="contained" color="secondary" onClick={onDialogClose}>
               Cancel
             </Button>
-            <LoadingButton loading={loading} variant="contained" type="submit">
+            <LoadingButton
+              loading={loading}
+              variant="contained"
+              type="submit"
+              onClick={(): void => handleSubmit()}
+            >
               Create
             </LoadingButton>
           </DialogActions>
-        </Form>
+        </>
       )}
     </Formik>
   );

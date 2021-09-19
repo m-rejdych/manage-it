@@ -5,11 +5,7 @@ import { format } from 'date-fns';
 
 import Project from '../../../types/project';
 import ProjectStageName from '../../../types/projectStage/ProjectStageName';
-import {
-  PROJECT_STAGE_LABELS,
-  PROJECT_STAGE_ICONS,
-  PROJECT_STAGE_ICONS_COLORS,
-} from '../constants';
+import { PROJECT_STAGE_LABELS, PROJECT_STAGE_ICONS, PROJECT_STAGE_ICONS_COLORS } from './constants';
 import ROUTES from '../../../constants/routes';
 
 const ProjectsListItem: React.FC<Project> = ({ id, title, createdAt, stage, creator }) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Done, WatchLater, Cached, NotStarted } from '@mui/icons-material';
 import { green, yellow, deepPurple, teal } from '@mui/material/colors';
 
-import ProjectStageName from '../../types/projectStage/ProjectStageName';
+import ProjectStageName from '../../../types/projectStage/ProjectStageName';
 
 export const PROJECT_STAGE_LABELS: Record<ProjectStageName, string> = {
   closed: 'Closed',

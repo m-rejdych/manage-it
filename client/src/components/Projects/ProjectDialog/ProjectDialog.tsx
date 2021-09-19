@@ -10,10 +10,8 @@ interface Props extends Omit<DialogProps, 'onClose'> {
 const NewProjectDialog: React.FC<Props> = ({ onClose, ...rest }) => {
   return (
     <Dialog {...rest} PaperProps={{ sx: { width: '40vw' } }}>
-      <DialogTitle>Create</DialogTitle>
-      <DialogContent>
-        <ProjectForm onDialogClose={onClose} />
-      </DialogContent>
+      <DialogTitle>Create new project</DialogTitle>
+      <ProjectForm onDialogClose={onClose} />
     </Dialog>
   );
 };
