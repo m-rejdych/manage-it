@@ -8,8 +8,10 @@ import ProjectModule from './modules/project';
 import ProjectStageModule from './modules/projectStage';
 import TaskTypeModule from './modules/taskType';
 import TaskPriorityModule from './modules/taskPriority';
-import Task from './modules/task';
-import Tag from './modules/tag';
+import TaskStageModule from './modules/taskStage/taskStage.module';
+import TaskModule from './modules/task';
+import TagModule from './modules/tag';
+import CheckpointModule from './modules/checkpoint';
 
 @Module({
   imports: [
@@ -21,8 +23,10 @@ import Tag from './modules/tag';
     ProjectStageModule,
     TaskTypeModule,
     TaskPriorityModule,
-    Task,
-    Tag,
+    TaskStageModule,
+    TaskModule,
+    TagModule,
+    CheckpointModule,
   ],
 })
 export class AppModule {}

@@ -5,7 +5,7 @@ import Field from '../../../types/FormField';
 import validateInput from '../../../util/validateInput';
 import { taskPriorities, taskTypes } from '../../../constants/task';
 
-interface Values {
+export interface Values {
   title: string;
   description: string;
   type: TaskTypeName;

@@ -7,8 +7,10 @@ import Project from '../project/project.entity';
 import ProjectStage from '../projectStage/projectStage.entity';
 import TaskType from '../taskType/taskType.entity';
 import TaskPriority from '../taskPriority/taskPriority.entity';
+import TaskStage from '../taskStage/taskStage.entity';
 import Task from '../task/task.entity';
 import Tag from '../tag/tag.entitiy';
+import Checkpoint from '../checkpoint/checkpoint.entity';
 
 const entities = [
   User,
@@ -16,8 +18,10 @@ const entities = [
   ProjectStage,
   TaskType,
   TaskPriority,
+  TaskStage,
   Task,
   Tag,
+  Checkpoint,
 ];
 
 @Injectable()

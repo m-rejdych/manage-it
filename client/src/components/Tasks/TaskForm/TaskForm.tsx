@@ -1,26 +1,43 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form } from 'formik';
-import { Stack, DialogContent, DialogActions, Button, TextField, useTheme } from '@mui/material';
+import { Stack, DialogContent, DialogActions, Button, useTheme } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
 import FormField from '../../FormField';
+import TagInput from '../../TagInput';
 import CheckpointField from '../../CheckpointField';
-import { fields, initialValues } from './constants';
+import { RootState } from '../../../store/types/state';
+import { fields, initialValues, Values } from './constants';
+import { CreateTaskPayload } from '../../../types/task/payloads';
+import { createTask } from '../../../store/ducks/task/actions';
 
 interface Props {
-  onDialogClose?: ((e: React.MouseEvent<HTMLButtonElement>) => void) | undefined;
+  onDialogClose?: ((e?: React.MouseEvent<HTMLButtonElement>) => void) | undefined;
+  projectId: number;
 }
 
-const TaskForm: React.FC<Props> = ({ onDialogClose }) => {
-  const [checkpoints, setCheckpoints] = useState<string[]>([]);
+const TaskForm: React.FC<Props> = ({ onDialogClose, projectId }) => {
+  const [tags, setTags] = useState<string[]>([]);
+  const loading = useSelector((state: RootState) => state.task.loading);
   const theme = useTheme();
+  const dispatch = useDispatch();
 
-  const handleChangeCheckpoints = (value: string[]): void => {
-    setCheckpoints(value);
+  const handleChangeTags = (newTags: string[]): void => {
+    setTags(newTags);
+  };
+
+  const handleSubmit = ({ estimate, ...values }: Values): void => {
+    const data: CreateTaskPayload = { ...values, estimate: Number(estimate), projectId };
+
+    if (tags.length) data.tags = tags;
+
+    dispatch(createTask(data));
+    if (onDialogClose) onDialogClose();
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={(): void => console.log('Submited')}>
+    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       {({ handleSubmit, setFieldValue }) => (
         <>
           <DialogContent>
@@ -41,6 +58,12 @@ const TaskForm: React.FC<Props> = ({ onDialogClose }) => {
                     />
                   )
                 )}
+                <TagInput
+                  fullWidth
+                  placeholder="Enter tag name..."
+                  tags={tags}
+                  onTagChange={handleChangeTags}
+                />
               </Stack>
             </Form>
           </DialogContent>
@@ -48,7 +71,12 @@ const TaskForm: React.FC<Props> = ({ onDialogClose }) => {
             <Button color="secondary" variant="contained" onClick={onDialogClose}>
               Cancel
             </Button>
-            <LoadingButton variant="contained" type="submit" onClick={(): void => handleSubmit()}>
+            <LoadingButton
+              loading={loading}
+              variant="contained"
+              type="submit"
+              onClick={(): void => handleSubmit()}
+            >
               Create
             </LoadingButton>
           </DialogActions>

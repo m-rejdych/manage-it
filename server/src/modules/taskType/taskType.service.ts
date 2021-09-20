@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -19,7 +19,12 @@ class TaskTypeService {
     return taskType || null;
   }
 
-  async craeteTask(name: TaskTypeName): Promise<TaskType> {
+  async craeteTaskType(name: TaskTypeName): Promise<TaskType> {
+    const foundTaskType = await this.findByName(name);
+    if (foundTaskType) {
+      throw new BadRequestException('Task type with this name already exists.');
+    }
+
     const taskType = this.taskTypeRepository.create({ name });
     await this.taskTypeRepository.save(taskType);
 

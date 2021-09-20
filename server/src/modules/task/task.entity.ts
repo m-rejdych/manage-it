@@ -6,13 +6,16 @@ import {
   UpdateDateColumn,
   ManyToOne,
   ManyToMany,
+  OneToMany,
 } from 'typeorm';
 
 import TaskType from '../taskType/taskType.entity';
 import TaskPriority from '../taskPriority/taskPriority.entity';
+import TaskStage from '../taskStage/taskStage.entity';
 import Project from '../project/project.entity';
 import User from '../user/user.entity';
 import Tag from '../tag/tag.entitiy';
+import Checkpoint from '../checkpoint/checkpoint.entity';
 
 @Entity()
 class Task {
@@ -24,6 +27,9 @@ class Task {
 
   @Column({ type: 'text', nullable: true })
   description?: string;
+
+  @Column()
+  estimate: number;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -52,7 +58,15 @@ class Task {
   @ManyToOne(() => TaskPriority, { cascade: true, onDelete: 'CASCADE' })
   priority: TaskPriority;
 
-  @ManyToMany(() => Tag, (tag) => tag.tasks)
+  @ManyToOne(() => TaskStage, { cascade: true, onDelete: 'CASCADE' })
+  stage: TaskStage;
+
+  @OneToMany(() => Checkpoint, (checkpoint) => checkpoint.task, {
+    cascade: ['insert', 'update'],
+  })
+  checkpoints: Checkpoint[];
+
+  @ManyToMany(() => Tag, (tag) => tag.tasks, { cascade: ['insert', 'update'] })
   tags: Tag[];
 }
 

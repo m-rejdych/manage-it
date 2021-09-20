@@ -1,12 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import TaskTypeService from '../taskType/taskType.service';
 import TaskPriorityService from '../taskPriority/taskPriority.service';
+import TaskStageService from '../taskStage/taskStage.service';
 import TagService from '../tag/tag.service';
 import UserService from '../user/user.service';
 import ProjectService from '../project/project.service';
+import CheckpointService from '../checkpoint/checkpoint.service';
 import Task from './task.entity';
 import CreateTaskDto from './dto/createTask.dto';
 
@@ -17,29 +23,53 @@ class TaskService {
     private userService: UserService,
     private taskTypeService: TaskTypeService,
     private taskPriorityService: TaskPriorityService,
+    private taskStageService: TaskStageService,
     private projectService: ProjectService,
     private tagService: TagService,
+    private checkpointService: CheckpointService,
   ) {}
 
   async createTask(
     userId: number,
-    { projectId, type, priority, assignedToId, tags, ...rest }: CreateTaskDto,
+    {
+      projectId,
+      type,
+      priority,
+      assignedToId,
+      tags,
+      checkpoints,
+      ...rest
+    }: CreateTaskDto,
   ): Promise<Task> {
     const user = await this.userService.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found.');
     }
 
-    const project = await this.projectService.findById(projectId);
-    if (!project) {
-      throw new NotFoundException('Project not found.');
+    const isMember = await this.projectService.validateMembership(
+      projectId,
+      userId,
+    );
+
+    if (!isMember) {
+      throw new UnauthorizedException('You must be a member to add tasks.');
     }
+
+    const project = await this.projectService.findById(projectId);
 
     const assignedTo = assignedToId
       ? await this.userService.findById(assignedToId)
       : null;
     if (!assignedTo && assignedToId) {
-      throw new NotFoundException('Assigned to user not found.');
+      throw new NotFoundException('Assignee user not found.');
+    }
+
+    const isAssignedMember = assignedTo
+      ? await this.projectService.validateMembership(projectId, assignedToId)
+      : true;
+
+    if (!isAssignedMember) {
+      throw new UnauthorizedException('Assignee must be a member of project.');
     }
 
     const taskType = await this.taskTypeService.findByName(type);
@@ -49,8 +79,18 @@ class TaskService {
 
     const taskPriority = await this.taskPriorityService.findByName(priority);
     if (!taskPriority) {
-      throw new NotFoundException('Task priority not found!');
+      throw new NotFoundException('Task priority not found.');
     }
+
+    const taskStage = await this.taskStageService.findByName('open');
+    if (!taskStage) {
+      throw new NotFoundException('Task stage not found.');
+    }
+
+    const addedCheckpoints = checkpoints.map((checkpoint) =>
+      this.checkpointService.createCheckpoint(userId, checkpoint),
+    );
+    const resolvedCheckpoints = await Promise.all(addedCheckpoints);
 
     const task = this.taskRepository.create({
       ...rest,
@@ -59,6 +99,8 @@ class TaskService {
       assignedTo,
       type: taskType,
       priority: taskPriority,
+      stage: taskStage,
+      checkpoints: resolvedCheckpoints,
     });
 
     if (tags) {

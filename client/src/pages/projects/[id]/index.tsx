@@ -42,7 +42,7 @@ const Project: React.FC = () => {
             Add task
           </Button>
         </Box>
-        <TaskDialog open={open} onClose={toggleDialog} />
+        <TaskDialog open={open} onClose={toggleDialog} projectId={Number(query.id)} />
       </PageContainer>
     )
   );

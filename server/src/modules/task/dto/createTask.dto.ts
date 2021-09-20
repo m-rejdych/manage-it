@@ -2,11 +2,13 @@ import {
   IsString,
   MinLength,
   IsOptional,
-  IsNumber,
+  IsInt,
+  Min,
   IsIn,
   IsArray,
   ArrayNotEmpty,
   ArrayUnique,
+  ArrayMinSize,
 } from 'class-validator';
 
 import TaskType from '../../taskType/types/name';
@@ -23,7 +25,11 @@ export default class CreateTaskDto {
   @IsString({ message: 'Description must be a string.' })
   description?: string;
 
-  @IsNumber(undefined, { message: 'Project id must be a number.' })
+  @IsInt({ message: 'Estimate must be a positive number.' })
+  @Min(0, { message: 'Estimate must be a positive number.' })
+  estimate: number;
+
+  @IsInt({ message: 'Project id must be a number.' })
   projectId: number;
 
   @IsIn(taskTypes, {
@@ -39,8 +45,13 @@ export default class CreateTaskDto {
   priority: TaskPriority;
 
   @IsOptional()
-  @IsNumber(undefined, { message: 'Assigned to id must be a number.' })
+  @IsInt({ message: 'Assigned to id must be a number.' })
   assignedToId?: number;
+
+  @IsArray({ message: 'Checkpoints must be an array.' })
+  @ArrayUnique({ message: 'Checkpoints must be unique.' })
+  @ArrayMinSize(2, { message: 'There must be at least 2 checkpoints.' })
+  checkpoints: string[];
 
   @IsOptional()
   @IsArray({ message: 'Tags must be an array.' })

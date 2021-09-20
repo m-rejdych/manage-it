@@ -52,7 +52,7 @@ class ProjectController {
 
     if (!isMember) {
       throw new UnauthorizedException(
-        'You need to be a member to see project details.',
+        'You must be a member to see project details.',
       );
     }
 
