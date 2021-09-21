@@ -17,11 +17,7 @@ class ProjectStageService {
       name,
     });
 
-    if (!projectStageName) {
-      throw new NotFoundException('Project stage not found!');
-    }
-
-    return projectStageName;
+    return projectStageName || null;
   }
 }
 

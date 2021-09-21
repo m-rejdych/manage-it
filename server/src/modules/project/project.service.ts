@@ -28,6 +28,9 @@ class ProjectService {
     }
 
     const stage = await this.projectStageService.findByName('preparation');
+    if (!stage) {
+      throw new NotFoundException('Project stage not found.');
+    }
 
     const project = this.projectRepository.create({
       ...rest,
