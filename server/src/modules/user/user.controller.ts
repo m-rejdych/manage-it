@@ -25,6 +25,15 @@ class UserController {
 
     return user;
   }
+
+  @UseGuards(JwtGuard)
+  @Get('search-users')
+  async searchUsers(
+    @Query('value') value: string,
+    @Query('projectId') projectId: number,
+  ): Promise<User[]> {
+    return await this.userService.search(value, projectId);
+  }
 }
 
 export default UserController;

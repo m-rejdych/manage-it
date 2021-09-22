@@ -55,6 +55,26 @@ class UserService {
 
     return user;
   }
+
+  async search(value: string, projectId?: number): Promise<User[]> {
+    const users = projectId
+      ? await this.userRepository
+          .createQueryBuilder('user')
+          .leftJoin('user.projects', 'project')
+          .where('project.id = :projectId', { projectId })
+          .andWhere('LOWER(user.username) LIKE LOWER(:value)', {
+            value: `%${value}%`,
+          })
+          .getMany()
+      : await this.userRepository
+          .createQueryBuilder('user')
+          .where('LOWER(user.username) LIKE LOWER(:value)', {
+            value: `%${value}%`,
+          })
+          .getMany();
+
+    return users;
+  }
 }
 
 export default UserService;
