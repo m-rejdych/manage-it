@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import { Paper, useTheme } from '@mui/material';
 
-import Nav from '../../Nav';
+import Nav from '../Nav';
+import BottomButtons from './BottomButtons';
 
-const LeftSidebar: React.FC = () => {
+const Sidebar: React.FC = () => {
   const theme = useTheme();
 
   return (
@@ -13,17 +14,18 @@ const LeftSidebar: React.FC = () => {
         left: 0,
         top: 0,
         height: '100vh',
-        width: `calc(20vw - ${theme.spacing(3)})`,
-        borderRadius: '0 50px 0 0',
+        borderRadius: '0 5px 5px 0',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        pt: theme.spacing(4),
       }}
     >
-      <Image src="/Logo.svg" alt="Logo" width={150} height={150} />
+      <Image src="/Logo.svg" alt="Logo" width={56} height={40} />
       <Nav />
+      <BottomButtons />
     </Paper>
   );
 };
 
-export default LeftSidebar;
+export default Sidebar;

@@ -11,7 +11,7 @@ import Calendar from '../components/Calendar';
 const Dashboard: React.FC = () => {
   return (
     <PageContainer>
-      <SearchInput />
+      {/* <SearchInput /> */}
       <WelcomeSection />
       <Grid container spacing={3}>
         <Grid item xs={6}>

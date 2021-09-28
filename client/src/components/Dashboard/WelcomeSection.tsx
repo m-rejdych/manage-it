@@ -20,7 +20,6 @@ const WelcomeSection: React.FC = () => {
       <Box
         position="relative"
         pb={3}
-        pt={6}
         display="flex"
         alignItems="center"
         justifyContent="space-between"
