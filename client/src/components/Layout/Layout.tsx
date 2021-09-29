@@ -14,7 +14,14 @@ const Layout: React.FC = ({ children }) => {
   return children ? (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box position="relative" left={72} top={72} width="calc(100vw - 72px)" height="200vh" px={3}>
+      <Box
+        position="relative"
+        left={shouldDisplayAuthContent ? 72 : 0}
+        top={shouldDisplayAuthContent ? 72 : 0}
+        width="calc(100vw - 72px)"
+        height="200vh"
+        px={3}
+      >
         {children}
       </Box>
       {shouldDisplayAuthContent && <Sidebar />}

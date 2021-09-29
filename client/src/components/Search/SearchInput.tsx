@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { TextField, ClickAwayListener, useTheme } from '@mui/material';
 import { Search } from '@mui/icons-material';
+
+import { searchUsers } from '../../store/ducks/search/actions';
 
 const SearchInput: React.FC = () => {
   const [value, setValue] = useState('');
   const [isActive, setIsActive] = useState(false);
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setValue(e.target.value);
+    dispatch(searchUsers({ value: e.target.value }));
   };
 
   return (

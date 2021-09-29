@@ -60,6 +60,7 @@ class TaskService {
     const assignedTo = assignedToId
       ? await this.userService.findById(assignedToId)
       : null;
+
     if (!assignedTo && assignedToId) {
       throw new NotFoundException('Assignee user not found.');
     }

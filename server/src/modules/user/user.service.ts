@@ -56,7 +56,11 @@ class UserService {
     return user;
   }
 
-  async search(value: string, projectId?: number): Promise<User[]> {
+  async search(
+    userId: number,
+    value: string,
+    projectId?: number,
+  ): Promise<User[]> {
     const users = projectId
       ? await this.userRepository
           .createQueryBuilder('user')
@@ -65,12 +69,14 @@ class UserService {
           .andWhere('LOWER(user.username) LIKE LOWER(:value)', {
             value: `%${value}%`,
           })
+          .andWhere('user.id != :userId', { userId })
           .getMany()
       : await this.userRepository
           .createQueryBuilder('user')
           .where('LOWER(user.username) LIKE LOWER(:value)', {
             value: `%${value}%`,
           })
+          .andWhere('user.id != :userId', { userId })
           .getMany();
 
     return users;
