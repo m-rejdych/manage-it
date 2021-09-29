@@ -45,7 +45,7 @@ const BottomButtons: React.FC = () => {
           <IconButton
             onClick={onClick}
             sx={{
-              mb: theme.spacing(index === self.length - 1 ? 4 : 1),
+              mb: theme.spacing(index === self.length - 1 ? 0 : 1),
             }}
             size="large"
           >

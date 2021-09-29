@@ -14,14 +14,15 @@ const Sidebar: React.FC = () => {
         left: 0,
         top: 0,
         height: '100vh',
-        borderRadius: '0 5px 5px 0',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        pt: theme.spacing(4),
+        pb: theme.spacing(4),
+        pt: theme.spacing(9),
+        boxShadow: 'none',
+        borderRight: `1px solid ${theme.palette.divider}`,
       }}
     >
-      <Image src="/Logo.svg" alt="Logo" width={56} height={40} />
       <Nav />
       <BottomButtons />
     </Paper>

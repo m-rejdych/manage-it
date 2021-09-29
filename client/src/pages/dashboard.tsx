@@ -5,7 +5,6 @@ import { getServerSidePropsWithAutologin } from '../util/autologin';
 import ROUTES from '../constants/routes';
 import PageContainer from '../components/PageContainer';
 import WelcomeSection from '../components/Dashboard/WelcomeSection';
-import SearchInput from '../components/Dashboard/SearchInput';
 import Calendar from '../components/Calendar';
 
 const Dashboard: React.FC = () => {
