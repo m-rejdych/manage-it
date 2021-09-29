@@ -1,10 +1,11 @@
-import { InputProps } from '@mui/material';
+import { InputProps, SelectProps } from '@mui/material';
 
 import InputType from './InputType';
 
 interface Option {
   value: string;
   label: string;
+  icon?: JSX.Element;
 }
 
 export default interface Field<T = { [key: string]: string }> {
@@ -21,5 +22,6 @@ export default interface Field<T = { [key: string]: string }> {
   select?: boolean;
   options?: Option[];
   InputProps?: InputProps;
+  SelectProps?: SelectProps;
   shouldValidate?: boolean;
 }

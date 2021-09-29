@@ -16,6 +16,7 @@ const FormField: React.FC<Field> = ({
   select,
   options,
   InputProps,
+  SelectProps,
   placeholder,
   shouldValidate = true,
   ...rest
@@ -45,11 +46,17 @@ const FormField: React.FC<Field> = ({
         ...sx,
       }}
       InputProps={InputProps}
+      SelectProps={SelectProps}
     >
       {select &&
-        options?.map(({ value, label }) => (
-          <MenuItem key={`${label}-${value}`} value={value}>
+        options?.map(({ value, label, icon }) => (
+          <MenuItem
+            key={`${label}-${value}`}
+            value={value}
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          >
             {label}
+            {icon}
           </MenuItem>
         ))}
     </TextField>

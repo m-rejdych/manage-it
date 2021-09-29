@@ -1,9 +1,16 @@
+import { SelectProps as SelectPropsType } from '@mui/material';
+
 import SelectOption from '../../../types/SelectOption';
 import TaskTypeName from '../../../types/taskType/TaskTypeName';
 import TaskPriorityName from '../../../types/taskPriority/TaskPriorityName';
 import Field from '../../../types/FormField';
 import validateInput from '../../../util/validateInput';
-import { taskPriorities, taskTypes } from '../../../constants/task';
+import {
+  taskPriorities,
+  taskTypes,
+  TASK_TYPE_ICONS,
+  TASK_PRIORITY_ICONS,
+} from '../../../constants/task';
 
 export interface Values {
   title: string;
@@ -26,13 +33,25 @@ export const initialValues: Values = {
 const typeOptipns: SelectOption<TaskTypeName>[] = taskTypes.map((type) => ({
   value: type,
   label: type[0].toUpperCase() + type.slice(1),
+  icon: TASK_TYPE_ICONS[type],
 }));
 
 const priorityOptions: SelectOption<TaskPriorityName>[] = taskPriorities.map((priority) => ({
   value: priority,
   label:
     priority === 'nice-to-have' ? 'Nice to have' : priority[0].toUpperCase() + priority.slice(1),
+  icon: TASK_PRIORITY_ICONS[priority],
 }));
+
+const SelectProps: SelectPropsType = {
+  sx: {
+    '> div': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+  },
+};
 
 export const fields: Field<Values>[] = [
   {
@@ -59,6 +78,7 @@ export const fields: Field<Values>[] = [
     label: 'Type',
     select: true,
     options: typeOptipns,
+    SelectProps,
     validate: (value) => {
       const error = validateInput(value, { inArray: taskTypes }) ? undefined : 'Invalid task type.';
 
@@ -70,6 +90,7 @@ export const fields: Field<Values>[] = [
     label: 'Priority',
     select: true,
     options: priorityOptions,
+    SelectProps,
     validate: (value) => {
       const error = validateInput(value, { inArray: taskPriorities })
         ? undefined
