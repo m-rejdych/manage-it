@@ -1,4 +1,4 @@
 export interface SearchUsersPayload {
-  value: string;
+  value?: string;
   projectId?: number;
 }

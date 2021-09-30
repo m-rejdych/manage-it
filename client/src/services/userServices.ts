@@ -10,6 +10,8 @@ export const searchUsers = async ({
   projectId,
 }: SearchUsersPayload): Promise<AxiosResponse<User[]>> =>
   axios.get(
-    `${API}/user/search-users?value=${value}${projectId ? `&projectId=${projectId}` : ''}`,
+    `${API}/user/search-users${value ? `?value=${value}` : ''}${
+      projectId ? `&projectId=${projectId}` : ''
+    }`,
     { withCredentials: true }
   );

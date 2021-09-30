@@ -58,9 +58,11 @@ class UserService {
 
   async search(
     userId: number,
-    value: string,
+    value?: string,
     projectId?: number,
   ): Promise<User[]> {
+    if (!value?.trim().length) return [];
+
     const users = projectId
       ? await this.userRepository
           .createQueryBuilder('user')
