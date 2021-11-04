@@ -2,14 +2,17 @@ import { Paper, Popper, PopperProps, List, ListSubheader } from '@mui/material';
 
 import User from '../../types/user';
 import SearchListItem from './SearchListItem';
+import SearchItem from './types/SearchItem';
+import SEARCH_ITEM_TYPES from './constants/searchItemTypes';
 
-interface Props extends PopperProps {
+interface Props extends Omit<PopperProps, 'onSelect'> {
   showList: boolean;
+  onSelect: (item: SearchItem) => void;
   users?: User[];
   width?: number;
 }
 
-const SearchList: React.FC<Props> = ({ showList, users, width, open, ...rest }) => {
+const SearchList: React.FC<Props> = ({ showList, users, width, open, onSelect, ...rest }) => {
   return (
     <Popper {...rest} open={open} disablePortal>
       {showList && (
@@ -19,8 +22,10 @@ const SearchList: React.FC<Props> = ({ showList, users, width, open, ...rest }) 
               {users.map(({ id, username }) => (
                 <SearchListItem
                   key={`search-list-user-${id}`}
+                  id={id}
+                  type={SEARCH_ITEM_TYPES.USER}
                   value={username}
-                  onClick={(): void => {}}
+                  onClick={onSelect}
                 />
               ))}
             </List>

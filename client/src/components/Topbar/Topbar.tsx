@@ -2,9 +2,14 @@ import Image from 'next/image';
 import { Paper, useTheme } from '@mui/material';
 
 import SearchInput from '../Search/SearchInput';
+import SearchItem from '../Search/types/SearchItem';
 
 const Topbar: React.FC = () => {
   const theme = useTheme();
+
+  const handleSelect = (item: SearchItem): void => {
+    console.log(item);
+  };
 
   return (
     <Paper
@@ -23,7 +28,7 @@ const Topbar: React.FC = () => {
       }}
     >
       <Image src="/Logo.svg" alt="Logo" width={90} height={50} />
-      <SearchInput />
+      <SearchInput onSelect={handleSelect} />
     </Paper>
   );
 };

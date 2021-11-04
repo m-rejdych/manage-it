@@ -6,8 +6,13 @@ import { searchUsers } from '../../services/userServices';
 import useDebouncing from '../../hooks/useDebouncing';
 import User from '../../types/user';
 import SearchList from './SearchList';
+import SearchItem from './types/SearchItem';
 
-const SearchInput: React.FC = () => {
+interface Props {
+  onSelect: (item: SearchItem) => void;
+}
+
+const SearchInput: React.FC<Props> = ({ onSelect }) => {
   const [value, setValue] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [showList, setShowList] = useState(false);
@@ -82,6 +87,7 @@ const SearchInput: React.FC = () => {
         placement="bottom"
         users={users}
         width={width && width - 16}
+        onSelect={onSelect}
       />
       <ClickAwayListener onClickAway={handleHideSearch}>
         <TextField
