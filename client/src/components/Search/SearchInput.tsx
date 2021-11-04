@@ -1,9 +1,10 @@
-import React, { useState, useRef } from 'react';
-import { TextField, ClickAwayListener, Box, useTheme } from '@mui/material';
+import React, { useState, useRef, useEffect } from 'react';
+import { TextField, ClickAwayListener, useTheme } from '@mui/material';
 import { Search } from '@mui/icons-material';
 
 import { searchUsers } from '../../services/userServices';
 import useDebouncing from '../../hooks/useDebouncing';
+import useSearch from '../../hooks/useSearch';
 import User from '../../types/user';
 import SearchList from './SearchList';
 import SearchItem from './types/SearchItem';
@@ -16,34 +17,30 @@ const SearchInput: React.FC<Props> = ({ onSelect }) => {
   const [value, setValue] = useState('');
   const [isActive, setIsActive] = useState(false);
   const [showList, setShowList] = useState(false);
-  const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [width, setWidth] = useState<undefined | number>();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const theme = useTheme();
   const debounce = useDebouncing();
+  const { handleSearch, values, error, loading } = useSearch<User[]>(
+    searchUsers.bind(this, { value })
+  );
 
-  const handleSearchUsers = async (value: string): Promise<void> => {
-    if (!value.trim().length) {
-      setUsers([]);
-      setError(null);
-      return;
-    }
+  useEffect(() => {
+    const calculateWidth = (): void => {
+      setWidth(inputRef.current?.offsetWidth);
+    };
 
-    try {
-      const response = await searchUsers({ value });
+    window.addEventListener('resize', calculateWidth);
 
-      setError(null);
-      setUsers(response.data);
-    } catch (error) {
-      setError(error.response.data.message);
-    }
-  };
+    return () => {
+      window.removeEventListener('resize', calculateWidth);
+    };
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setValue(e.target.value);
-    debounce(500, handleSearchUsers.bind(this, e.target.value));
+    debounce(500, handleSearch.bind(this, e.target.value));
   };
 
   const resetTimeout = (): void => {
@@ -82,12 +79,13 @@ const SearchInput: React.FC<Props> = ({ onSelect }) => {
     <>
       <SearchList
         open={isActive}
-        showList={showList && !!users.length}
+        showList={showList && (!!values?.length || loading)}
         anchorEl={inputRef.current}
         placement="bottom"
-        users={users}
+        users={values}
         width={width && width - 16}
         onSelect={onSelect}
+        loading={loading}
       />
       <ClickAwayListener onClickAway={handleHideSearch}>
         <TextField
