@@ -72,7 +72,6 @@ const SearchInput: React.FC = () => {
     setIsActive(false);
     setWidth(undefined);
   };
-  console.log(users);
 
   return (
     <>

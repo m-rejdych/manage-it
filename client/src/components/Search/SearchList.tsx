@@ -12,19 +12,21 @@ interface Props extends PopperProps {
 const SearchList: React.FC<Props> = ({ showList, users, width, open, ...rest }) => {
   return (
     <Popper {...rest} open={open} disablePortal>
-      <Paper sx={{ borderRadius: 2, overflow: 'hidden' }}>
-        {!!users?.length && (
-          <List subheader={<ListSubheader>Users</ListSubheader>} sx={{ width }}>
-            {users.map(({ id, username }) => (
-              <SearchListItem
-                key={`search-list-user-${id}`}
-                value={username}
-                onClick={(): void => {}}
-              />
-            ))}
-          </List>
-        )}
-      </Paper>
+      {showList && (
+        <Paper sx={{ borderRadius: 2, overflow: 'hidden' }}>
+          {!!users?.length && (
+            <List subheader={<ListSubheader>Users</ListSubheader>} sx={{ width }}>
+              {users.map(({ id, username }) => (
+                <SearchListItem
+                  key={`search-list-user-${id}`}
+                  value={username}
+                  onClick={(): void => {}}
+                />
+              ))}
+            </List>
+          )}
+        </Paper>
+      )}
     </Popper>
   );
 };
