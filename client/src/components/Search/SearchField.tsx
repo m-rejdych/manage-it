@@ -7,8 +7,10 @@ import Field from '../../types/FormField';
 
 interface Props extends Omit<Field, 'validate'> {
   name: string;
-  onChange: (item: SearchItem) => void;
+  onChange: (item: SearchItem | null) => void;
   validate?: (value: string) => string | undefined;
+  useActiveState?: boolean;
+  clearAfterSelect?: boolean;
 }
 
 const SearchField: React.FC<Props> = ({
@@ -16,11 +18,21 @@ const SearchField: React.FC<Props> = ({
   validate,
   type,
   onChange,
+  useActiveState,
+  clearAfterSelect,
   ...rest
 }) => {
   const [{ onChange: _, ...field }] = useField({ name, validate, type });
 
-  return <SearchInput onSelect={onChange} {...rest} {...field} />;
+  return (
+    <SearchInput
+      onSelect={onChange}
+      useActiveState={useActiveState}
+      clearAfterSelect={clearAfterSelect}
+      {...rest}
+      {...field}
+    />
+  );
 };
 
 export default SearchField;

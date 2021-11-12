@@ -16,9 +16,10 @@ import SearchItem from './types/SearchItem';
 import SelectData from './types/SelectData';
 
 interface Props extends Omit<TextFieldProps, 'onSelect'> {
-  onSelect: (item: SearchItem) => void;
+  onSelect: (item: SearchItem | null) => void;
   useActiveState?: boolean;
   withIcon?: boolean;
+  clearAfterSelect?: boolean;
 }
 
 const SearchInput: React.FC<Props> = ({
@@ -26,10 +27,12 @@ const SearchInput: React.FC<Props> = ({
   useActiveState,
   fullWidth,
   withIcon,
+  clearAfterSelect,
   ...rest
 }) => {
   const [value, setValue] = useState('');
   const [isActive, setIsActive] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
   const [showList, setShowList] = useState(false);
   const [width, setWidth] = useState<undefined | number>();
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -51,11 +54,6 @@ const SearchInput: React.FC<Props> = ({
       window.removeEventListener('resize', calculateWidth);
     };
   }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setValue(e.target.value);
-    debounce(500, handleSearch.bind(this, e.target.value));
-  };
 
   const resetTimeout = (): void => {
     if (!timeoutRef.current) return;
@@ -92,6 +90,21 @@ const SearchInput: React.FC<Props> = ({
   const handleSelect = ({ item, value: selectValue }: SelectData): void => {
     onSelect(item);
     setValue(selectValue);
+    setIsSelected(true);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const newValue =
+      isSelected && clearAfterSelect
+        ? e.target.value.slice(-1)
+        : e.target.value;
+    setValue(newValue);
+    debounce(500, handleSearch.bind(this, newValue));
+
+    if (!isSelected) return;
+    setIsSelected(false);
+
+    if (clearAfterSelect) onSelect(null);
   };
 
   return (

@@ -67,6 +67,7 @@ const TaskForm: React.FC<Props> = ({ onDialogClose, projectId }) => {
               valueSetter('checkpoints', values)
             }
             key={field.name}
+            sx={{ minHeight: 80 }}
           />
         );
       }
@@ -75,12 +76,13 @@ const TaskForm: React.FC<Props> = ({ onDialogClose, projectId }) => {
         return (
           <SearchField
             {...field}
-            onChange={(value: SearchItem): void =>
+            onChange={(value: SearchItem | null): void =>
               valueSetter('assignedTo', value)
             }
             key={field.name}
             sx={{ mb: `${theme.spacing(1)}`, minHeight: 80 }}
             fullWidth
+            clearAfterSelect
           />
         );
       }
