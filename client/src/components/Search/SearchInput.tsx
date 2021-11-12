@@ -20,6 +20,7 @@ interface Props extends Omit<TextFieldProps, 'onSelect'> {
   useActiveState?: boolean;
   withIcon?: boolean;
   clearAfterSelect?: boolean;
+  projectIdFilter?: number;
 }
 
 const SearchInput: React.FC<Props> = ({
@@ -28,6 +29,7 @@ const SearchInput: React.FC<Props> = ({
   fullWidth,
   withIcon,
   clearAfterSelect,
+  projectIdFilter,
   ...rest
 }) => {
   const [value, setValue] = useState('');
@@ -40,7 +42,7 @@ const SearchInput: React.FC<Props> = ({
   const theme = useTheme();
   const debounce = useDebouncing();
   const { handleSearch, values, error, loading } = useSearch<User[]>(
-    searchUsers.bind(this, { value }),
+    searchUsers.bind(this, { value, projectId: projectIdFilter }),
   );
 
   useEffect(() => {

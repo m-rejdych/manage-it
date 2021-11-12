@@ -11,6 +11,7 @@ interface Props extends Omit<Field, 'validate'> {
   validate?: (value: string) => string | undefined;
   useActiveState?: boolean;
   clearAfterSelect?: boolean;
+  projectIdFilter?: number;
 }
 
 const SearchField: React.FC<Props> = ({
@@ -20,6 +21,7 @@ const SearchField: React.FC<Props> = ({
   onChange,
   useActiveState,
   clearAfterSelect,
+  projectIdFilter,
   ...rest
 }) => {
   const [{ onChange: _, ...field }] = useField({ name, validate, type });
@@ -29,6 +31,7 @@ const SearchField: React.FC<Props> = ({
       onSelect={onChange}
       useActiveState={useActiveState}
       clearAfterSelect={clearAfterSelect}
+      projectIdFilter={projectIdFilter}
       {...rest}
       {...field}
     />

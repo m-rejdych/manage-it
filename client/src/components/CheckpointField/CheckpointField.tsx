@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import { useField } from 'formik';
-import { Stack, TextField, IconButton, OutlinedTextFieldProps } from '@mui/material';
+import {
+  Stack,
+  TextField,
+  IconButton,
+  OutlinedTextFieldProps,
+  StackProps,
+} from '@mui/material';
 import { Add } from '@mui/icons-material';
 
 import CheckpointList from '../CheckpointList';
 
-interface Props extends Omit<OutlinedTextFieldProps, 'value' | 'onChange' | 'variant'> {
+interface Props
+  extends Omit<OutlinedTextFieldProps, 'value' | 'onChange' | 'variant'> {
   onChange: (checkpoints: string[]) => void;
   name: string;
   validate?: (values: string[]) => string | undefined;
+  containerProps?: StackProps;
 }
 
 const CheckpointField: React.FC<Props> = ({
@@ -17,12 +25,15 @@ const CheckpointField: React.FC<Props> = ({
   onChange,
   fullWidth,
   placeholder,
+  containerProps,
   ...rest
 }) => {
   const [textValue, setTextValue] = useState('');
   const [{ value }, { error, touched }] = useField({ name, validate });
 
-  const handleChangeTextValue = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChangeTextValue = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     setTextValue(e.target.value);
   };
 
@@ -34,7 +45,9 @@ const CheckpointField: React.FC<Props> = ({
   };
 
   const handleDeleteCheckpoint = (deletedValue: string): void => {
-    onChange((value as string[]).filter((checkpoint) => checkpoint !== deletedValue));
+    onChange(
+      (value as string[]).filter((checkpoint) => checkpoint !== deletedValue),
+    );
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -44,7 +57,7 @@ const CheckpointField: React.FC<Props> = ({
   };
 
   return (
-    <Stack width={fullWidth ? '100%' : 'auto'} spacing={2}>
+    <Stack width={fullWidth ? '100%' : 'auto'} spacing={2} {...containerProps}>
       <TextField
         {...rest}
         placeholder={placeholder || 'Enter checkpoint name...'}
@@ -63,7 +76,9 @@ const CheckpointField: React.FC<Props> = ({
           ),
         }}
       />
-      <CheckpointList value={value} onDelete={handleDeleteCheckpoint} />
+      {!!value.length && (
+        <CheckpointList value={value} onDelete={handleDeleteCheckpoint} />
+      )}
     </Stack>
   );
 };

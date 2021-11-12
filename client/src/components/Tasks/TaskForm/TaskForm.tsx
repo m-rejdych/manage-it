@@ -67,7 +67,7 @@ const TaskForm: React.FC<Props> = ({ onDialogClose, projectId }) => {
               valueSetter('checkpoints', values)
             }
             key={field.name}
-            sx={{ minHeight: 80 }}
+            containerProps={{ minHeight: 80 }}
           />
         );
       }
@@ -81,6 +81,7 @@ const TaskForm: React.FC<Props> = ({ onDialogClose, projectId }) => {
             }
             key={field.name}
             sx={{ mb: `${theme.spacing(1)}`, minHeight: 80 }}
+            projectIdFilter={projectId}
             fullWidth
             clearAfterSelect
           />
