@@ -28,7 +28,13 @@ const Topbar: React.FC = () => {
       }}
     >
       <Image src="/Logo.svg" alt="Logo" width={90} height={50} />
-      <SearchInput onSelect={handleSelect} />
+      <SearchInput
+        onSelect={handleSelect}
+        size="small"
+        placeholder="Search..."
+        useActiveState
+        withIcon
+      />
     </Paper>
   );
 };

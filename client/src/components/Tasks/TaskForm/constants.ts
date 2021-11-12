@@ -4,6 +4,7 @@ import SelectOption from '../../../types/SelectOption';
 import TaskTypeName from '../../../types/taskType/TaskTypeName';
 import TaskPriorityName from '../../../types/taskPriority/TaskPriorityName';
 import Field from '../../../types/FormField';
+import SearchItem from '../../Search/types/SearchItem';
 import validateInput from '../../../util/validateInput';
 import {
   taskPriorities,
@@ -19,6 +20,7 @@ export interface Values {
   priority: TaskPriorityName;
   estimate: string;
   checkpoints: string[];
+  assignedTo?: SearchItem | null;
 }
 
 export const initialValues: Values = {
@@ -28,6 +30,7 @@ export const initialValues: Values = {
   priority: 'major',
   estimate: '',
   checkpoints: [],
+  assignedTo: null,
 };
 
 const typeOptipns: SelectOption<TaskTypeName>[] = taskTypes.map((type) => ({
@@ -122,4 +125,10 @@ export const fields: Field<Values>[] = [
       return error;
     },
   },
+  {
+    name: 'assignedTo',
+    label: 'Assignee',
+    placeholder: 'Search user...',
+    type: 'text',
+  }
 ];
