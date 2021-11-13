@@ -11,23 +11,26 @@ import { RootState } from '../../../store/types/state';
 import ROUTES from '../../../constants/routes';
 import PageContainer from '../../../components/PageContainer';
 import TaskDialog from '../../../components/Tasks/TaskDialog';
+import TasksList from '../../../components/Tasks/TasksList';
 
 const Project: React.FC = () => {
   const [open, setOpen] = useState(false);
   const { query } = useRouter();
-  const project = useSelector((state: RootState) => state.project.openedProject);
+  const project = useSelector(
+    (state: RootState) => state.project.openedProject,
+  );
   const dispatch = useDispatch();
 
   useEffect(
     () => () => {
       dispatch(reset());
     },
-    []
+    [dispatch],
   );
 
   useEffect(() => {
-    dispatch(getProjectById(Number(query.id)));
-  }, [query.id]);
+    dispatch(getProjectById(parseInt(query.id as string)));
+  }, [query.id, dispatch]);
 
   const toggleDialog = (): void => {
     setOpen((isOpen) => !isOpen);
@@ -36,20 +39,34 @@ const Project: React.FC = () => {
   return (
     project && (
       <PageContainer>
-        <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={3}
+        >
           <Typography variant="h6">{project.title}</Typography>
-          <Button variant="contained" startIcon={<Add />} onClick={toggleDialog}>
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={toggleDialog}
+          >
             Add task
           </Button>
         </Box>
-        <TaskDialog open={open} onClose={toggleDialog} projectId={Number(query.id)} />
+        <TasksList tasks={project.tasks} />
+        <TaskDialog
+          open={open}
+          onClose={toggleDialog}
+          projectId={parseInt(query.id as string)}
+        />
       </PageContainer>
     )
   );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  getServerSidePropsWithAutologin(true, ROUTES.LOGIN)
+  getServerSidePropsWithAutologin(true, ROUTES.LOGIN),
 );
 
 export default Project;

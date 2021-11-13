@@ -1,1 +1,1 @@
-export default ['bug', 'task', 'problem', 'imporovement'];
+export default ['bug', 'task', 'problem', 'improvement'];

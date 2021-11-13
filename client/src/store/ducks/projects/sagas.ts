@@ -10,7 +10,7 @@ import {
   GET_PROJECT_BY_ID,
   addProject,
   setProjects,
-  setOpenedProjec,
+  setOpenedProject,
   setError,
 } from './actions';
 
@@ -38,7 +38,7 @@ function* handleGetProjectById({ payload }: PayloadAction<number>) {
   try {
     const response: AxiosResponse<Project> = yield call(getProjectById, payload);
 
-    yield put(setOpenedProjec(response.data));
+    yield put(setOpenedProject(response.data));
   } catch (error) {
     yield put(setError(error.response.data.message));
   }

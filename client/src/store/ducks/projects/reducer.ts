@@ -18,12 +18,20 @@ const initialState: State = {
   loading: false,
 };
 
-const reducer = (state = initialState, { type, payload }: PayloadAction): State => {
+const reducer = (
+  state = initialState,
+  { type, payload }: PayloadAction,
+): State => {
   switch (type) {
     case CREATE_PROJECT:
       return { ...state, loading: true };
     case ADD_PROJECT:
-      return { ...state, loading: false, error: null, projects: [payload, ...state.projects] };
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        projects: [payload, ...state.projects],
+      };
     case GET_MY_PROJECTS:
       return { ...state, loading: true };
     case GET_PROJECT_BY_ID:

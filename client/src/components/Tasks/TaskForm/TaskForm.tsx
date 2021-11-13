@@ -54,6 +54,7 @@ const TaskForm: React.FC<Props> = ({ onDialogClose, projectId }) => {
     if (tags.length) data.tags = tags;
     if (assignedTo) data.assignedToId = assignedTo.id;
 
+    console.log(data);
     dispatch(createTask(data));
     if (onDialogClose) onDialogClose();
   };

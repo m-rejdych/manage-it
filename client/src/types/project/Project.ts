@@ -1,6 +1,7 @@
 import User from '../user';
 import ProjectStage from '../projectStage';
 import Tag from '../tag';
+import Task from '../task';
 
 export default interface Project {
   id: number;
@@ -14,6 +15,5 @@ export default interface Project {
   admins?: User[];
   stage?: ProjectStage;
   tags?: Tag[];
-  // Replace string with Task interface later
-  tasks?: string[];
+  tasks?: Task[];
 }

@@ -14,7 +14,7 @@ import {
 import TaskType from '../../taskType/types/name';
 import TaskPriority from '../../taskPriority/types/name';
 import taskTypes from '../../taskType/constants/names';
-import taskPriority from '../../taskPriority/constants/names';
+import taskPriorities from '../../taskPriority/constants/names';
 
 export default class CreateTaskDto {
   @IsString({ message: 'Title must be a string.' })
@@ -38,7 +38,7 @@ export default class CreateTaskDto {
   })
   type: TaskType;
 
-  @IsIn(taskPriority, {
+  @IsIn(taskPriorities, {
     message:
       'Type name must be one of the following: minor, major, critical, nice-to-have.',
   })

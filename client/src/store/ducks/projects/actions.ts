@@ -25,7 +25,7 @@ export const getProjectById = createActionCreator<typeof GET_PROJECT_BY_ID, numb
 
 export const setProjects = createActionCreator<typeof SET_PROJECTS, Project[]>(SET_PROJECTS);
 
-export const setOpenedProjec = createActionCreator<typeof SET_OPENED_PROJECT, Project>(
+export const setOpenedProject = createActionCreator<typeof SET_OPENED_PROJECT, Project>(
   SET_OPENED_PROJECT
 );
 
