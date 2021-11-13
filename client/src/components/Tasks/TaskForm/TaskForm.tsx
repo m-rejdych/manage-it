@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
+import SEARCH_ITEM_TYPES from '../../Search/constants/searchItemTypes';
 import FormField from '../../FormField';
 import TagInput from '../../TagInput';
 import CheckpointField from '../../CheckpointField';
@@ -76,6 +77,7 @@ const TaskForm: React.FC<Props> = ({ onDialogClose, projectId }) => {
         return (
           <SearchField
             {...field}
+            search={[SEARCH_ITEM_TYPES.USER]}
             onChange={(value: SearchItem | null): void =>
               valueSetter('assignedTo', value)
             }

@@ -8,12 +8,16 @@ import {
 import { Search } from '@mui/icons-material';
 
 import { searchUsers } from '../../services/userServices';
+import { searchProjects } from '../../services/projectServices';
 import useDebouncing from '../../hooks/useDebouncing';
 import useSearch from '../../hooks/useSearch';
 import User from '../../types/user';
+import Project from '../../types/project';
 import SearchList from './SearchList';
 import SearchItem from './types/SearchItem';
 import SelectData from './types/SelectData';
+import SEARCH_ITEM_TYPES from './constants/searchItemTypes';
+import { SearchItemType } from './types/SearchItem';
 
 interface Props extends Omit<TextFieldProps, 'onSelect'> {
   onSelect: (item: SearchItem | null) => void;
@@ -21,6 +25,7 @@ interface Props extends Omit<TextFieldProps, 'onSelect'> {
   withIcon?: boolean;
   clearAfterSelect?: boolean;
   projectIdFilter?: number;
+  search: SearchItemType[];
 }
 
 const SearchInput: React.FC<Props> = ({
@@ -30,6 +35,7 @@ const SearchInput: React.FC<Props> = ({
   withIcon,
   clearAfterSelect,
   projectIdFilter,
+  search,
   ...rest
 }) => {
   const [value, setValue] = useState('');
@@ -41,9 +47,24 @@ const SearchInput: React.FC<Props> = ({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const theme = useTheme();
   const debounce = useDebouncing();
-  const { handleSearch, values, error, loading } = useSearch<User[]>(
-    searchUsers.bind(this, { value, projectId: projectIdFilter }),
+  const {
+    handleSearch: handleSearchUsers,
+    values: usersValues,
+    error: usersError,
+    loading: usersLoading,
+  } = useSearch<User[]>((value: string) =>
+    searchUsers({ value, projectId: projectIdFilter }),
   );
+  const {
+    handleSearch: handleSearchProjects,
+    values: projectsValues,
+    error: projectsError,
+    loading: projectsLoading,
+  } = useSearch<Project[]>(searchProjects);
+
+  const isListEmpty = !usersValues?.length && !projectsValues?.length;
+  const isLoading = usersLoading || projectsLoading;
+  const isError = usersError || projectsError;
 
   useEffect(() => {
     const calculateWidth = (): void => {
@@ -89,10 +110,19 @@ const SearchInput: React.FC<Props> = ({
     setWidth(undefined);
   };
 
+  const handleSearchItems = (newValue: string): void => {
+    debounce(500, (): void => {
+      if (search.includes(SEARCH_ITEM_TYPES.USER)) handleSearchUsers(newValue);
+      if (search.includes(SEARCH_ITEM_TYPES.PROJECT))
+        handleSearchProjects(newValue);
+    });
+  };
+
   const handleSelect = ({ item, value: selectValue }: SelectData): void => {
     onSelect(item);
     setValue(selectValue);
     setIsSelected(true);
+    handleSearchItems(selectValue);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -101,7 +131,8 @@ const SearchInput: React.FC<Props> = ({
         ? e.target.value.slice(-1)
         : e.target.value;
     setValue(newValue);
-    debounce(500, handleSearch.bind(this, newValue));
+
+    handleSearchItems(newValue);
 
     if (!isSelected) return;
     setIsSelected(false);
@@ -113,20 +144,21 @@ const SearchInput: React.FC<Props> = ({
     <>
       <SearchList
         open={isActive}
-        showList={showList && (!!values?.length || loading)}
+        showList={showList && (!isListEmpty || isLoading)}
         anchorEl={inputRef.current}
         placement="bottom"
-        users={values}
+        users={usersValues}
+        projects={projectsValues}
         width={width && width - 16}
         onSelect={handleSelect}
-        loading={loading}
+        loading={isLoading}
       />
       <ClickAwayListener onClickAway={handleHideSearch}>
         <TextField
           {...rest}
           ref={inputRef}
-          helperText={error || ''}
-          error={!!error}
+          helperText={isError || ''}
+          error={!!isError}
           InputProps={{
             startAdornment: withIcon ? <Search color="disabled" /> : null,
             ...rest.InputProps,

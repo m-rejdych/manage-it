@@ -6,6 +6,7 @@ import {
   Req,
   Body,
   Param,
+  Query,
   ParseIntPipe,
   NotFoundException,
   UnauthorizedException,
@@ -65,6 +66,12 @@ class ProjectController {
     }
 
     return project;
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('search-projects')
+  async searchProjects(@Query('value') value: string): Promise<Project[]> {
+    return await this.projectService.search(value);
   }
 }
 

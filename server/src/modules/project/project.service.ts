@@ -96,6 +96,15 @@ class ProjectService {
 
     return projects;
   }
+
+  async search(value: string): Promise<Project[]> {
+    const projects = await this.projectRepository
+      .createQueryBuilder('project')
+      .where('LOWER(project.title) LIKE LOWER(:value)', { value: `%${value}%` })
+      .getMany();
+
+    return projects;
+  }
 }
 
 export default ProjectService;

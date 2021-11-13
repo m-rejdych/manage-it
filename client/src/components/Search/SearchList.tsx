@@ -8,21 +8,25 @@ import {
 } from '@mui/material';
 
 import User from '../../types/user';
+import Project from '../../types/project';
 import SearchListItem from './SearchListItem';
 import SelectData from './types/SelectData';
+import ItemClickData from './types/ItemClickData';
 import SEARCH_ITEM_TYPES from './constants/searchItemTypes';
 
 interface Props extends Omit<PopperProps, 'onSelect'> {
   showList: boolean;
   onSelect: (item: SelectData) => void;
-  users: User[] | null;
   loading: boolean;
+  users?: User[] | null;
+  projects?: Project[] | null;
   width?: number;
 }
 
 const SearchList: React.FC<Props> = ({
   showList,
   users,
+  projects,
   width,
   open,
   loading,
@@ -31,8 +35,8 @@ const SearchList: React.FC<Props> = ({
 }) => {
   const isEmpty = !users?.length;
 
-  const handleClick = ({ id, username }: User): void => {
-    onSelect({ item: { id, type: SEARCH_ITEM_TYPES.USER }, value: username });
+  const handleClick = ({ id, value }: ItemClickData): void => {
+    onSelect({ item: { id, type: SEARCH_ITEM_TYPES.USER }, value });
   };
 
   return (
@@ -51,11 +55,22 @@ const SearchList: React.FC<Props> = ({
         >
           {!!users?.length && (
             <List subheader={<ListSubheader>Users</ListSubheader>}>
-              {users.map((user) => (
+              {users.map(({ id, username }) => (
                 <SearchListItem
-                  key={`search-list-user-${user.id}`}
-                  value={user.username}
-                  onClick={handleClick.bind(this, user)}
+                  key={`search-list-user-${id}`}
+                  value={username}
+                  onClick={handleClick.bind(this, { id, value: username })}
+                />
+              ))}
+            </List>
+          )}
+          {!!projects?.length && (
+            <List subheader={<ListSubheader>Projects</ListSubheader>}>
+              {projects.map(({ id, title }) => (
+                <SearchListItem
+                  key={`search-list-project-${id}`}
+                  value={title}
+                  onClick={handleClick.bind(this, { id, value: title })}
                 />
               ))}
             </List>

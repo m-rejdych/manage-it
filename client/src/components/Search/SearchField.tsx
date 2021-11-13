@@ -3,6 +3,7 @@ import { useField } from 'formik';
 
 import SearchInput from './SearchInput';
 import SearchItem from './types/SearchItem';
+import { SearchItemType } from './types/SearchItem';
 import Field from '../../types/FormField';
 
 interface Props extends Omit<Field, 'validate'> {
@@ -12,6 +13,7 @@ interface Props extends Omit<Field, 'validate'> {
   useActiveState?: boolean;
   clearAfterSelect?: boolean;
   projectIdFilter?: number;
+  search: SearchItemType[];
 }
 
 const SearchField: React.FC<Props> = ({
@@ -22,6 +24,7 @@ const SearchField: React.FC<Props> = ({
   useActiveState,
   clearAfterSelect,
   projectIdFilter,
+  search,
   ...rest
 }) => {
   const [{ onChange: _, ...field }] = useField({ name, validate, type });
@@ -32,6 +35,7 @@ const SearchField: React.FC<Props> = ({
       useActiveState={useActiveState}
       clearAfterSelect={clearAfterSelect}
       projectIdFilter={projectIdFilter}
+      search={search}
       {...rest}
       {...field}
     />

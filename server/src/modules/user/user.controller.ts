@@ -37,7 +37,7 @@ class UserController {
   ): Promise<User[]> {
     const { userId } = req.user;
 
-    return await this.userService.search(userId, value, Number(projectId));
+    return await this.userService.search(userId, value, parseInt(projectId));
   }
 }
 

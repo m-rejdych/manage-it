@@ -3,11 +3,12 @@ import { Paper, useTheme } from '@mui/material';
 
 import SearchInput from '../Search/SearchInput';
 import SearchItem from '../Search/types/SearchItem';
+import SEARCH_ITEM_TYPES from '../Search/constants/searchItemTypes';
 
 const Topbar: React.FC = () => {
   const theme = useTheme();
 
-  const handleSelect = (item: SearchItem): void => {
+  const handleSelect = (item: SearchItem | null): void => {
     console.log(item);
   };
 
@@ -29,6 +30,7 @@ const Topbar: React.FC = () => {
     >
       <Image src="/Logo.svg" alt="Logo" width={90} height={50} />
       <SearchInput
+        search={[SEARCH_ITEM_TYPES.USER, SEARCH_ITEM_TYPES.PROJECT]}
         onSelect={handleSelect}
         size="small"
         placeholder="Search..."

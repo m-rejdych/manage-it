@@ -5,7 +5,9 @@ import { CreateProjectPayload } from '../types/project/payloads';
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
-export const createProject = async (data: CreateProjectPayload): Promise<AxiosResponse<Project>> =>
+export const createProject = async (
+  data: CreateProjectPayload,
+): Promise<AxiosResponse<Project>> =>
   axios.post(`${API}/project/create-project`, data, { withCredentials: true });
 
 export const getMyProjects = async (): Promise<AxiosResponse<Project[]>> =>
@@ -13,3 +15,10 @@ export const getMyProjects = async (): Promise<AxiosResponse<Project[]>> =>
 
 export const getProjectById = (id: number): Promise<AxiosResponse<Project>> =>
   axios.get(`${API}/project/get-by-id/${id}`, { withCredentials: true });
+
+export const searchProjects = (
+  value: string,
+): Promise<AxiosResponse<Project[]>> =>
+  axios.get(`${API}/project/search-projects?value=${value}`, {
+    withCredentials: true,
+  });
