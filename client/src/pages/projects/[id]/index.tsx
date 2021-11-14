@@ -25,12 +25,12 @@ const Project: React.FC = () => {
     () => () => {
       dispatch(reset());
     },
-    [dispatch],
+    [],
   );
 
   useEffect(() => {
     dispatch(getProjectById(parseInt(query.id as string)));
-  }, [query.id, dispatch]);
+  }, [query.id]);
 
   const toggleDialog = (): void => {
     setOpen((isOpen) => !isOpen);
@@ -54,7 +54,7 @@ const Project: React.FC = () => {
             Add task
           </Button>
         </Box>
-        <TasksList tasks={project.tasks} />
+        <TasksList projectId={project.id} />
         <TaskDialog
           open={open}
           onClose={toggleDialog}

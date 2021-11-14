@@ -3,7 +3,12 @@ import { AxiosResponse } from 'axios';
 
 import Project from '../../../types/project';
 import { PayloadAction } from '../../types/actions';
-import { createProject, getMyProjects, getProjectById } from '../../../services/projectServices';
+import { CreateProjectPayload } from '../../../types/project/payloads';
+import {
+  createProject,
+  getMyProjects,
+  getProjectById,
+} from '../../../services/projectServices';
 import {
   CREATE_PROJECT,
   GET_MY_PROJECTS,
@@ -14,7 +19,9 @@ import {
   setError,
 } from './actions';
 
-function* handleCreateProject({ payload }: PayloadAction<Project>) {
+function* handleCreateProject({
+  payload,
+}: PayloadAction<CreateProjectPayload>) {
   try {
     const response: AxiosResponse<Project> = yield call(createProject, payload);
 
@@ -36,7 +43,10 @@ function* handleGetMyProjects() {
 
 function* handleGetProjectById({ payload }: PayloadAction<number>) {
   try {
-    const response: AxiosResponse<Project> = yield call(getProjectById, payload);
+    const response: AxiosResponse<Project> = yield call(
+      getProjectById,
+      payload,
+    );
 
     yield put(setOpenedProject(response.data));
   } catch (error) {

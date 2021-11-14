@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Param,
   Body,
+  Query,
   Req,
 } from '@nestjs/common';
 
@@ -36,6 +37,14 @@ class TaskController {
     const { userId } = req.user;
 
     return await this.taskService.createTask(userId, data);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('get-by-project-id')
+  async getByProjectId(
+    @Query('projectId', new ParseIntPipe()) projectId: number,
+  ): Promise<Task[]> {
+    return await this.taskService.findByProjectId(projectId);
   }
 }
 

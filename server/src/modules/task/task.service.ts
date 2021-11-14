@@ -124,6 +124,19 @@ class TaskService {
 
     return task || null;
   }
+
+  async findByProjectId(projectId: number): Promise<Task[]> {
+    const tasks = await this.taskRepository
+      .createQueryBuilder('task')
+      .leftJoin('task.project', 'project')
+      .leftJoinAndSelect('task.creator', 'creator')
+      .leftJoinAndSelect('task.stage', 'stage')
+      .where('project.id = :projectId', { projectId })
+      .orderBy('project.updatedAt', 'DESC')
+      .getMany();
+
+    return tasks;
+  }
 }
 
 export default TaskService;

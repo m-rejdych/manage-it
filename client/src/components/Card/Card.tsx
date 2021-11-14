@@ -70,7 +70,7 @@ const Card: React.FC<Props> = ({
         <Typography
           variant="body2"
           color="textSecondary"
-        >{`Launched at ${format(
+        >{`Created at ${format(
           new Date(createdAt),
           'MMM do, y',
         )}`}</Typography>
