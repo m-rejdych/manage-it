@@ -49,14 +49,6 @@ class ProjectController {
   ): Promise<Project> {
     const { userId } = req.user;
 
-    const isMember = await this.projectService.validateMembership(id, userId);
-
-    if (!isMember) {
-      throw new UnauthorizedException(
-        'You must be a member to see project details.',
-      );
-    }
-
     const project = await this.projectService.findById(id, {
       relations: ['creator', 'stage', 'members', 'tags', 'admins'],
     });
@@ -72,6 +64,17 @@ class ProjectController {
   @Get('search-projects')
   async searchProjects(@Query('value') value: string): Promise<Project[]> {
     return await this.projectService.search(value);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('validate-membership')
+  async validateMembership(
+    @Req() req: JwtAuthRequest,
+    @Query('projectId', new ParseIntPipe()) projectId: number,
+  ): Promise<boolean> {
+    const { userId } = req.user;
+
+    return await this.projectService.validateMembership(projectId, userId);
   }
 }
 

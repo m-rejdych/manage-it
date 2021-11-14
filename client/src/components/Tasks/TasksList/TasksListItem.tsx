@@ -9,6 +9,7 @@ interface Props {
   createdAt: Date;
   creator?: User;
   stage?: TaskStage;
+  disableClick?: boolean;
 }
 
 const TasksListItem: React.FC<Props> = (props) => {

@@ -19,6 +19,7 @@ interface Props {
   creator?: User;
   stage?: TaskStage | ProjectStage;
   onClick: () => void;
+  disableClick?: boolean;
 }
 
 const Card: React.FC<Props> = ({
@@ -27,6 +28,7 @@ const Card: React.FC<Props> = ({
   createdAt,
   creator,
   onClick,
+  disableClick,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const theme = useTheme();
@@ -40,20 +42,31 @@ const Card: React.FC<Props> = ({
   };
 
   const handleMouseEnter = (): void => {
+    if (disableClick) return;
     setIsHovered(true);
   };
 
   const handleMouseLeave = (): void => {
+    if (disableClick) return;
     setIsHovered(false);
+  };
+
+  const handleClick = (): void => {
+    if (disableClick) return;
+    onClick();
   };
 
   return (
     <Paper
-      sx={{ p: theme.spacing(4), borderRadius: 5, cursor: 'pointer' }}
+      sx={{
+        p: theme.spacing(4),
+        borderRadius: 5,
+        cursor: disableClick ? 'default' : 'pointer',
+      }}
       elevation={isHovered ? 6 : 1}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onClick={onClick}
+      onClick={handleClick}
     >
       <Box>
         <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -67,10 +80,7 @@ const Card: React.FC<Props> = ({
             </Stack>
           )}
         </Box>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-        >{`Created at ${format(
+        <Typography variant="body2" color="textSecondary">{`Created at ${format(
           new Date(createdAt),
           'MMM do, y',
         )}`}</Typography>

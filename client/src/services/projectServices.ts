@@ -22,3 +22,10 @@ export const searchProjects = (
   axios.get(`${API}/project/search-projects?value=${value}`, {
     withCredentials: true,
   });
+
+export const validateMembership = (
+  projectId: number,
+): Promise<AxiosResponse<boolean>> =>
+  axios.get(`${API}/project/validate-membership?projectId=${projectId}`, {
+    withCredentials: true,
+  });

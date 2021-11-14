@@ -2,18 +2,23 @@ import { State } from './types';
 import { PayloadAction } from '../../types/actions';
 import {
   CREATE_PROJECT,
+  VALIDATE_MEMBERSHIP,
   ADD_PROJECT,
   GET_MY_PROJECTS,
   GET_PROJECT_BY_ID,
   SET_PROJECTS,
   SET_OPENED_PROJECT,
+  SET_IS_MEMBER,
   SET_ERROR,
   RESET,
 } from './actions';
 
 const initialState: State = {
   projects: [],
-  openedProject: null,
+  openedProject: {
+    project: null,
+    isMember: false,
+  },
   error: null,
   loading: false,
 };
@@ -24,6 +29,8 @@ const reducer = (
 ): State => {
   switch (type) {
     case CREATE_PROJECT:
+      return { ...state, loading: true };
+    case VALIDATE_MEMBERSHIP:
       return { ...state, loading: true };
     case ADD_PROJECT:
       return {
@@ -39,7 +46,19 @@ const reducer = (
     case SET_PROJECTS:
       return { ...state, loading: false, error: null, projects: payload };
     case SET_OPENED_PROJECT:
-      return { ...state, loading: false, error: null, openedProject: payload };
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        openedProject: { ...state.openedProject, project: payload },
+      };
+    case SET_IS_MEMBER:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        openedProject: { ...state.openedProject, isMember: payload },
+      };
     case SET_ERROR:
       return { ...state, loading: false, error: payload };
     case RESET:

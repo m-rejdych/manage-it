@@ -8,9 +8,10 @@ import { RootState } from '../../../store/types/state';
 
 interface Props {
   projectId: number;
+  disableClick?: boolean;
 }
 
-const TasksList: React.FC<Props> = ({ projectId }) => {
+const TasksList: React.FC<Props> = ({ projectId, disableClick }) => {
   const tasks = useSelector((state: RootState) => state.task.tasks);
   const dispatch = useDispatch();
 
@@ -28,7 +29,11 @@ const TasksList: React.FC<Props> = ({ projectId }) => {
   return tasks?.length ? (
     <Stack spacing={3}>
       {tasks.map(({ id, ...task }) => (
-        <TasksListItem {...task} key={`task-${id}`} />
+        <TasksListItem
+          {...task}
+          disableClick={disableClick}
+          key={`task-${id}`}
+        />
       ))}
     </Stack>
   ) : null;

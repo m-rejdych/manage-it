@@ -1,4 +1,4 @@
-import { put, call, takeEvery } from 'redux-saga/effects';
+import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 
 import Project from '../../../types/project';
@@ -8,14 +8,17 @@ import {
   createProject,
   getMyProjects,
   getProjectById,
+  validateMembership,
 } from '../../../services/projectServices';
 import {
   CREATE_PROJECT,
   GET_MY_PROJECTS,
   GET_PROJECT_BY_ID,
+  VALIDATE_MEMBERSHIP,
   addProject,
   setProjects,
   setOpenedProject,
+  setIsMember,
   setError,
 } from './actions';
 
@@ -54,6 +57,19 @@ function* handleGetProjectById({ payload }: PayloadAction<number>) {
   }
 }
 
+function* handleValidateMembership({ payload }: PayloadAction<number>) {
+  try {
+    const response: AxiosResponse<boolean> = yield call(
+      validateMembership,
+      payload,
+    );
+
+    yield put(setIsMember(response.data));
+  } catch (error) {
+    yield put(setError(error.response.data.message));
+  }
+}
+
 function* createProjectSaga() {
   yield takeEvery(CREATE_PROJECT, handleCreateProject);
 }
@@ -66,6 +82,15 @@ function* getProjectByIdSaga() {
   yield takeEvery(GET_PROJECT_BY_ID, handleGetProjectById);
 }
 
-const sagas = [createProjectSaga(), getMyProjectsSaga(), getProjectByIdSaga()];
+function* validateMembershipSaga() {
+  yield takeLatest(VALIDATE_MEMBERSHIP, handleValidateMembership);
+}
+
+const sagas = [
+  createProjectSaga(),
+  getMyProjectsSaga(),
+  getProjectByIdSaga(),
+  validateMembershipSaga(),
+];
 
 export default sagas;
