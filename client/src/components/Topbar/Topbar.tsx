@@ -1,15 +1,27 @@
 import Image from 'next/image';
 import { Paper, useTheme } from '@mui/material';
+import { useRouter } from 'next/router';
 
 import SearchInput from '../Search/SearchInput';
 import SearchItem from '../Search/types/SearchItem';
 import SEARCH_ITEM_TYPES from '../Search/constants/searchItemTypes';
+import ROUTES from '../../constants/routes';
 
 const Topbar: React.FC = () => {
   const theme = useTheme();
+  const router = useRouter();
 
   const handleSelect = (item: SearchItem | null): void => {
-    console.log(item);
+    if (!item) return;
+    const { id, type } = item;
+
+    switch (type) {
+      case SEARCH_ITEM_TYPES.PROJECT:
+        router.push(`${ROUTES.PROJECTS}/${id}`);
+        break;
+      default:
+        console.log(type, id);
+    }
   };
 
   return (

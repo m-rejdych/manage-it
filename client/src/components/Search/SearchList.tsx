@@ -35,8 +35,8 @@ const SearchList: React.FC<Props> = ({
 }) => {
   const isEmpty = !users?.length;
 
-  const handleClick = ({ id, value }: ItemClickData): void => {
-    onSelect({ item: { id, type: SEARCH_ITEM_TYPES.USER }, value });
+  const handleClick = ({ id, value, type }: ItemClickData): void => {
+    onSelect({ item: { id, type }, value });
   };
 
   return (
@@ -59,7 +59,11 @@ const SearchList: React.FC<Props> = ({
                 <SearchListItem
                   key={`search-list-user-${id}`}
                   value={username}
-                  onClick={handleClick.bind(this, { id, value: username })}
+                  onClick={handleClick.bind(this, {
+                    id,
+                    value: username,
+                    type: SEARCH_ITEM_TYPES.USER,
+                  })}
                 />
               ))}
             </List>
@@ -70,7 +74,11 @@ const SearchList: React.FC<Props> = ({
                 <SearchListItem
                   key={`search-list-project-${id}`}
                   value={title}
-                  onClick={handleClick.bind(this, { id, value: title })}
+                  onClick={handleClick.bind(this, {
+                    id,
+                    value: title,
+                    type: SEARCH_ITEM_TYPES.PROJECT,
+                  })}
                 />
               ))}
             </List>

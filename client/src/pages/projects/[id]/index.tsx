@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Stack, Divider, Typography, Button } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 
@@ -54,7 +54,21 @@ const Project: React.FC = () => {
             Add task
           </Button>
         </Box>
-        <TasksList projectId={project.id} />
+        <Stack
+          direction="row"
+          spacing={3}
+          divider={<Divider orientation="vertical" flexItem />}
+        >
+          <Stack spacing={3} flex={1}>
+            <Typography color="textSecondary">
+              Tasks
+            </Typography>
+            <TasksList projectId={project.id} />
+          </Stack>
+          <Box flex={1}>
+            <Typography>Section</Typography>
+          </Box>
+        </Stack>
         <TaskDialog
           open={open}
           onClose={toggleDialog}
