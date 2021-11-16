@@ -9,6 +9,7 @@ import {
   getMyProjects,
   getProjectById,
   validateMembership,
+  checkIsMemberRequested,
 } from '../../../services/projectServices';
 import {
   CREATE_PROJECT,
@@ -16,6 +17,7 @@ import {
   GET_PROJECT_BY_ID,
   VALIDATE_MEMBERSHIP,
   addProject,
+  setIsMemberRequested,
   setProjects,
   setOpenedProject,
   setIsMember,
@@ -63,6 +65,15 @@ function* handleValidateMembership({ payload }: PayloadAction<number>) {
       validateMembership,
       payload,
     );
+
+    if (!response.data) {
+      const memberRequestResponse: AxiosResponse<boolean> = yield call(
+        checkIsMemberRequested,
+        payload,
+      );
+
+      yield put(setIsMemberRequested(memberRequestResponse.data));
+    }
 
     yield put(setIsMember(response.data));
   } catch (error) {

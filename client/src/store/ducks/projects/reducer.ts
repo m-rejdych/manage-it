@@ -9,6 +9,7 @@ import {
   SET_PROJECTS,
   SET_OPENED_PROJECT,
   SET_IS_MEMBER,
+  SET_IS_REQUESTED,
   SET_ERROR,
   RESET,
 } from './actions';
@@ -18,6 +19,7 @@ const initialState: State = {
   openedProject: {
     project: null,
     isMember: false,
+    isMemberRequested: false,
   },
   error: null,
   loading: false,
@@ -58,6 +60,13 @@ const reducer = (
         loading: false,
         error: null,
         openedProject: { ...state.openedProject, isMember: payload },
+      };
+    case SET_IS_REQUESTED:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        openedProject: { ...state.openedProject, isMemberRequested: payload },
       };
     case SET_ERROR:
       return { ...state, loading: false, error: payload };

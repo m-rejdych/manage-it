@@ -1,12 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOneOptions } from 'typeorm';
 
 import Project from './project.entity';
+import MemberRequest from '../memberRequest/memberRequest.entity';
 import UserService from '../user/user.service';
 import TagService from '../tag/tag.service';
 import ProjectStageService from '../projectStage/projectStage.service';
+import MemberRequestService from '../memberRequest/memberRequest.service';
 import CreateProjectDto from './dto/createProject.dto';
+import CreateMemberRequestDto from '../memberRequest/dto/CreateMemberRequest.dto';
 
 @Injectable()
 class ProjectService {
@@ -15,6 +22,7 @@ class ProjectService {
     private userService: UserService,
     private tagService: TagService,
     private projectStageService: ProjectStageService,
+    private memberRequestService: MemberRequestService,
   ) {}
 
   async createProject(
@@ -104,6 +112,44 @@ class ProjectService {
       .getMany();
 
     return projects;
+  }
+
+  async sendRequest(
+    userId: number,
+    { projectId }: CreateMemberRequestDto,
+  ): Promise<MemberRequest> {
+    const user = await this.userService.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+
+    const project = await this.findById(projectId, { relations: ['requests'] });
+    if (!project) {
+      throw new NotFoundException('Project not found!');
+    }
+
+    const isMember = await this.validateMembership(projectId, userId);
+    if (isMember) {
+      throw new BadRequestException('You are already member of this project.');
+    }
+
+    const isValidRequest = await this.memberRequestService.validateRequest(
+      userId,
+      projectId,
+    );
+    if (!isValidRequest) {
+      throw new BadRequestException(
+        'You have already requested to join this project.',
+      );
+    }
+
+    const memberRequest = await this.memberRequestService.createMemberRequest();
+    memberRequest.requestedBy = user;
+    project.requests = [...project.requests, memberRequest];
+
+    await this.projectRepository.save(project);
+
+    return memberRequest;
   }
 }
 

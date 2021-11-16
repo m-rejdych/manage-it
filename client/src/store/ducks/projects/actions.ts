@@ -11,6 +11,7 @@ export const SET_PROJECTS = 'PROJECT_SET_PROJECTS';
 export const SET_ERROR = 'PROJECT_SET_ERROR';
 export const SET_OPENED_PROJECT = 'PROJECT_SET_OPENED_PROJECT';
 export const SET_IS_MEMBER = 'PROJECT_SET_IS_MEMBER';
+export const SET_IS_REQUESTED = 'PROJECT_SET_IS_REQUESTED';
 export const RESET = 'PROJECT_RESET';
 
 export const createProject = createActionCreator<
@@ -48,6 +49,11 @@ export const setOpenedProject = createActionCreator<
 export const setIsMember = createActionCreator<typeof SET_IS_MEMBER, boolean>(
   SET_IS_MEMBER,
 );
+
+export const setIsMemberRequested = createActionCreator<
+  typeof SET_IS_REQUESTED,
+  boolean
+>(SET_IS_REQUESTED);
 
 export const setError = createActionCreator<typeof SET_ERROR, string | null>(
   SET_ERROR,

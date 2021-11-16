@@ -12,6 +12,7 @@ import TaskStageModule from './modules/taskStage/taskStage.module';
 import TaskModule from './modules/task';
 import TagModule from './modules/tag';
 import CheckpointModule from './modules/checkpoint';
+import MemberRequestModule from './modules/memberRequest';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import CheckpointModule from './modules/checkpoint';
     TaskModule,
     TagModule,
     CheckpointModule,
+    MemberRequestModule,
   ],
 })
 export class AppModule {}

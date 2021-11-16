@@ -29,3 +29,10 @@ export const validateMembership = (
   axios.get(`${API}/project/validate-membership?projectId=${projectId}`, {
     withCredentials: true,
   });
+
+export const checkIsMemberRequested = (
+  projectId: number,
+): Promise<AxiosResponse<boolean>> =>
+  axios.get(`${API}/project/check-is-member-requested?projectId=${projectId}`, {
+    withCredentials: true,
+  });

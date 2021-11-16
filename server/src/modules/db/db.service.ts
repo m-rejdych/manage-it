@@ -11,6 +11,7 @@ import TaskStage from '../taskStage/taskStage.entity';
 import Task from '../task/task.entity';
 import Tag from '../tag/tag.entitiy';
 import Checkpoint from '../checkpoint/checkpoint.entity';
+import MemberRequest from '../memberRequest/memberRequest.entity';
 
 const entities = [
   User,
@@ -22,6 +23,7 @@ const entities = [
   Task,
   Tag,
   Checkpoint,
+  MemberRequest,
 ];
 
 @Injectable()

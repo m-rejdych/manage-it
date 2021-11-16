@@ -9,18 +9,23 @@ import {
   Query,
   ParseIntPipe,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 
 import ProjectService from './project.service';
 import JwtGuard from '../../guards/jwt.guard';
 import Project from './project.entity';
 import CreateProjectDto from './dto/createProject.dto';
+import CreateMemberRequestDto from '../memberRequest/dto/CreateMemberRequest.dto';
+import MemberRequest from '../memberRequest/memberRequest.entity';
+import MemberRequestService from '../memberRequest/memberRequest.service';
 import { JwtAuthRequest } from '../auth/interfaces/authRequest';
 
 @Controller('project')
 class ProjectController {
-  constructor(private projectService: ProjectService) {}
+  constructor(
+    private projectService: ProjectService,
+    private memberRequestService: MemberRequestService,
+  ) {}
 
   @UseGuards(JwtGuard)
   @Post('create-project')
@@ -47,8 +52,6 @@ class ProjectController {
     @Req() req: JwtAuthRequest,
     @Param('id', new ParseIntPipe()) id: number,
   ): Promise<Project> {
-    const { userId } = req.user;
-
     const project = await this.projectService.findById(id, {
       relations: ['creator', 'stage', 'members', 'tags', 'admins'],
     });
@@ -75,6 +78,31 @@ class ProjectController {
     const { userId } = req.user;
 
     return await this.projectService.validateMembership(projectId, userId);
+  }
+
+  @UseGuards(JwtGuard)
+  @Post('member-request')
+  async sendRequest(
+    @Body() data: CreateMemberRequestDto,
+    @Req() req: JwtAuthRequest,
+  ): Promise<MemberRequest> {
+    const { userId } = req.user;
+
+    return await this.projectService.sendRequest(userId, data);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('check-is-member-requested')
+  async checkMemberShipRequest(
+    @Query('projectId', new ParseIntPipe()) projectId: number,
+    @Req() req: JwtAuthRequest,
+  ): Promise<boolean> {
+    const { userId } = req.user;
+
+    return !(await this.memberRequestService.validateRequest(
+      userId,
+      projectId,
+    ));
   }
 }
 

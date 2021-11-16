@@ -14,6 +14,7 @@ import User from '../user/user.entity';
 import Tag from '../tag/tag.entitiy';
 import Task from '../task/task.entity';
 import ProjectStage from '../projectStage/projectStage.entity';
+import MemberRequest from '../memberRequest/memberRequest.entity';
 
 @Entity()
 class Project {
@@ -67,6 +68,11 @@ class Project {
     onDelete: 'CASCADE',
   })
   stage: ProjectStage;
+
+  @OneToMany(() => MemberRequest, (memberRequest) => memberRequest.project, {
+    cascade: ['insert', 'update'],
+  })
+  requests: MemberRequest[];
 }
 
 export default Project;

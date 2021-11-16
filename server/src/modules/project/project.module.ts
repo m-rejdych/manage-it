@@ -7,6 +7,7 @@ import Project from './project.entity';
 import ProjectStageModule from '../projectStage';
 import UserModule from '../user';
 import TagModule from '../tag';
+import MemberRequestModule from '../memberRequest';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import TagModule from '../tag';
     UserModule,
     TagModule,
     ProjectStageModule,
+    MemberRequestModule,
   ],
   providers: [ProjectService],
   controllers: [ProjectController],
