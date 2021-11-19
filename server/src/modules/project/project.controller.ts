@@ -7,6 +7,7 @@ import {
   Body,
   Param,
   Query,
+  Delete,
   ParseIntPipe,
   NotFoundException,
 } from '@nestjs/common';
@@ -85,7 +86,7 @@ class ProjectController {
   ): Promise<MemberRequest> {
     const { userId } = req.user;
 
-    return await this.projectService.sendRequest(userId, data);
+    return await this.projectService.requestMembership(userId, data);
   }
 
   @UseGuards(JwtGuard)
@@ -102,6 +103,17 @@ class ProjectController {
       projectId,
       isAccepted,
     );
+  }
+
+  @UseGuards(JwtGuard)
+  @Delete('remove-member-request')
+  async removeRequest(
+    @Req() req: JwtAuthRequest,
+    @Query('id', new ParseIntPipe()) id: number,
+  ): Promise<boolean> {
+    const { userId } = req.user;
+
+    return await this.memberRequestService.removeRequest(userId, id);
   }
 }
 

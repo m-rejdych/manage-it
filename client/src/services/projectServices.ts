@@ -52,3 +52,10 @@ export const getMemberRequest = (
       withCredentials: true,
     },
   );
+
+export const removeMemberRequest = (
+  id: number,
+): Promise<AxiosResponse<boolean>> =>
+  axios.delete(`${API}/project/remove-member-request?id=${id}`, {
+    withCredentials: true,
+  });

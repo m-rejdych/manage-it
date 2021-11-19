@@ -4,7 +4,10 @@ import { Box, Typography, Button } from '@mui/material';
 import { Add, ExitToApp, Check, Close } from '@mui/icons-material';
 
 import { RootState } from '../../../store/types/state';
-import { requestMembership } from '../../../store/ducks/projects/actions';
+import {
+  requestMembership,
+  removeMemberRequest,
+} from '../../../store/ducks/projects/actions';
 
 interface Props {
   id: number;
@@ -24,6 +27,11 @@ const ProjectHeader: React.FC<Props> = ({ id, title, toggleTaskDialog }) => {
 
   const handleRequestMembership = (): void => {
     dispatch(requestMembership(id));
+  };
+
+  const handleCancelRequest = (): void => {
+    if (!memberRequest) return;
+    dispatch(removeMemberRequest(memberRequest.id));
   };
 
   const renderButton = (): JSX.Element => {
@@ -47,6 +55,7 @@ const ProjectHeader: React.FC<Props> = ({ id, title, toggleTaskDialog }) => {
           startIcon={isHovered ? <Close /> : <Check />}
           onMouseEnter={(): void => setIsHovered(true)}
           onMouseLeave={(): void => setIsHovered(false)}
+          onClick={handleCancelRequest}
         >
           {isHovered ? 'Cancel request' : 'Request sent'}
         </Button>

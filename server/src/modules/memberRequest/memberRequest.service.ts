@@ -1,9 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOneOptions } from 'typeorm';
 
 import MemberRequest from './memberRequest.entity';
-import UserService from '../user/user.service';
 
 @Injectable()
 class MemberRequestService {
@@ -17,6 +20,18 @@ class MemberRequestService {
     await this.memberRequestRepository.save(memberRequest);
 
     return memberRequest;
+  }
+
+  async findOneById(
+    id: number,
+    options?: FindOneOptions,
+  ): Promise<MemberRequest | null> {
+    const memberRequest = await this.memberRequestRepository.findOne(
+      id,
+      options,
+    );
+
+    return memberRequest || null;
   }
 
   async findOneByUserAndProjectId(
@@ -52,6 +67,26 @@ class MemberRequestService {
       .getOne());
 
     return isValid;
+  }
+
+  async removeRequest(userId: number, requestId: number): Promise<boolean> {
+    const memberRequest = await this.findOneById(requestId, {
+      relations: ['requestedBy'],
+    });
+
+    if (!memberRequest) {
+      throw new NotFoundException('Member request not found.');
+    }
+
+    if (memberRequest.requestedBy.id !== userId) {
+      throw new UnauthorizedException(
+        "Member request can be removed only by it's creator",
+      );
+    }
+
+    await this.memberRequestRepository.remove(memberRequest);
+
+    return true;
   }
 }
 

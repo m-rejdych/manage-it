@@ -114,7 +114,7 @@ class ProjectService {
     return projects;
   }
 
-  async sendRequest(
+  async requestMembership(
     userId: number,
     { projectId }: CreateMemberRequestDto,
   ): Promise<MemberRequest> {

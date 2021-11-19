@@ -12,6 +12,7 @@ import {
   SET_IS_MEMBER,
   SET_MEMBER_REQUEST,
   SET_ERROR,
+  REMOVE_MEMBER_REQUEST,
   RESET,
 } from './actions';
 
@@ -73,6 +74,8 @@ const reducer = (
       };
     case SET_ERROR:
       return { ...state, loading: false, error: payload };
+    case REMOVE_MEMBER_REQUEST:
+      return { ...state, loading: true };
     case RESET:
       return initialState;
     default:
