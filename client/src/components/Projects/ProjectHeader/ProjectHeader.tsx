@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography, Button } from '@mui/material';
 import { Add, ExitToApp, Check, Close } from '@mui/icons-material';
 
 import { RootState } from '../../../store/types/state';
+import { requestMembership } from '../../../store/ducks/projects/actions';
 
 interface Props {
+  id: number;
   title: string;
   toggleTaskDialog: () => void;
 }
 
-const ProjectHeader: React.FC<Props> = ({ title, toggleTaskDialog }) => {
+const ProjectHeader: React.FC<Props> = ({ id, title, toggleTaskDialog }) => {
   const [isHovered, setIsHovered] = useState(false);
   const isMember = useSelector(
     (state: RootState) => state.project.openedProject.isMember,
@@ -18,6 +20,11 @@ const ProjectHeader: React.FC<Props> = ({ title, toggleTaskDialog }) => {
   const memberRequest = useSelector(
     (state: RootState) => state.project.openedProject.memberRequest,
   );
+  const dispatch = useDispatch();
+
+  const handleRequestMembership = (): void => {
+    dispatch(requestMembership(id));
+  };
 
   const renderButton = (): JSX.Element => {
     if (isMember) {
@@ -47,7 +54,11 @@ const ProjectHeader: React.FC<Props> = ({ title, toggleTaskDialog }) => {
     }
 
     return (
-      <Button variant="contained" startIcon={<ExitToApp />}>
+      <Button
+        variant="contained"
+        startIcon={<ExitToApp />}
+        onClick={handleRequestMembership}
+      >
         Join project
       </Button>
     );

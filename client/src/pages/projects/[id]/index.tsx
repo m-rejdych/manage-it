@@ -47,7 +47,11 @@ const Project: React.FC = () => {
   return (
     project && (
       <PageContainer>
-        <ProjectHeader title={project.title} toggleTaskDialog={toggleDialog} />
+        <ProjectHeader
+          id={project.id}
+          title={project.title}
+          toggleTaskDialog={toggleDialog}
+        />
         <Stack
           direction="row"
           spacing={3}

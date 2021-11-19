@@ -7,6 +7,7 @@ export const CREATE_PROJECT = 'PROJECT_CREATE_PROJECT';
 export const ADD_PROJECT = 'PROJECT_ADD_PROJECT';
 export const GET_MY_PROJECTS = 'PROJECT_GET_MY_PROJECTS';
 export const GET_PROJECT_BY_ID = 'PROJECT_GET_PROJECT_BY_ID';
+export const REQUEST_MEMBERSHIP = 'PROJECT_REQUEST_MEMBERSHIP';
 export const VALIDATE_MEMBERSHIP = 'PROJECT_VALIDATE_MEMBERSHIP';
 export const SET_PROJECTS = 'PROJECT_SET_PROJECTS';
 export const SET_ERROR = 'PROJECT_SET_ERROR';
@@ -32,6 +33,11 @@ export const validateMembership = createActionCreator<
   typeof VALIDATE_MEMBERSHIP,
   number
 >(VALIDATE_MEMBERSHIP);
+
+export const requestMembership = createActionCreator<
+  typeof REQUEST_MEMBERSHIP,
+  number
+>(REQUEST_MEMBERSHIP);
 
 export const getProjectById = createActionCreator<
   typeof GET_PROJECT_BY_ID,

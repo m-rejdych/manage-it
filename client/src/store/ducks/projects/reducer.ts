@@ -3,6 +3,7 @@ import { PayloadAction } from '../../types/actions';
 import {
   CREATE_PROJECT,
   VALIDATE_MEMBERSHIP,
+  REQUEST_MEMBERSHIP,
   ADD_PROJECT,
   GET_MY_PROJECTS,
   GET_PROJECT_BY_ID,
@@ -33,6 +34,8 @@ const reducer = (
     case CREATE_PROJECT:
       return { ...state, loading: true };
     case VALIDATE_MEMBERSHIP:
+      return { ...state, loading: true };
+    case REQUEST_MEMBERSHIP:
       return { ...state, loading: true };
     case ADD_PROJECT:
       return {

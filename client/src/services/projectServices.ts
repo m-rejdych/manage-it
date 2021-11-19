@@ -31,10 +31,19 @@ export const validateMembership = (
     withCredentials: true,
   });
 
+export const requestMembership = async (
+  projectId: number,
+): Promise<AxiosResponse<MemberRequest>> =>
+  axios.post(
+    `${API}/project/member-request`,
+    { projectId },
+    { withCredentials: true },
+  );
+
 export const getMemberRequest = (
   projectId: number,
   isAccepted?: boolean,
-): Promise<AxiosResponse<MemberRequest | null>> =>
+): Promise<AxiosResponse<MemberRequest>> =>
   axios.get(
     `${API}/project/get-member-request?projectId=${projectId}${
       isAccepted === undefined ? '' : `&isAccepted=${isAccepted}`

@@ -48,10 +48,7 @@ class ProjectController {
 
   @UseGuards(JwtGuard)
   @Get('get-by-id/:id')
-  async getById(
-    @Req() req: JwtAuthRequest,
-    @Param('id', new ParseIntPipe()) id: number,
-  ): Promise<Project> {
+  async getById(@Param('id', new ParseIntPipe()) id: number): Promise<Project> {
     const project = await this.projectService.findById(id, {
       relations: ['creator', 'stage', 'members', 'tags', 'admins'],
     });

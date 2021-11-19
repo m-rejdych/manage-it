@@ -10,6 +10,7 @@ import {
   getMyProjects,
   getProjectById,
   validateMembership,
+  requestMembership,
   getMemberRequest,
 } from '../../../services/projectServices';
 import {
@@ -17,6 +18,7 @@ import {
   GET_MY_PROJECTS,
   GET_PROJECT_BY_ID,
   VALIDATE_MEMBERSHIP,
+  REQUEST_MEMBERSHIP,
   addProject,
   setMembereRequest,
   setProjects,
@@ -54,7 +56,7 @@ function* handleGetProjectById({ payload }: PayloadAction<number>) {
       payload,
     );
 
-    yield put(setOpenedProject(response.data));
+    yield put(setOpenedProject(response.data || null));
   } catch (error) {
     yield put(setError(error.response.data.message));
   }
@@ -68,16 +70,29 @@ function* handleValidateMembership({ payload }: PayloadAction<number>) {
     );
 
     if (!response.data) {
-      const memberRequest: AxiosResponse<MemberRequest | null> = yield call(
+      const memberRequest: AxiosResponse<MemberRequest> = yield call(
         getMemberRequest,
         payload,
         false,
       );
 
-      yield put(setMembereRequest(memberRequest.data));
+      yield put(setMembereRequest(memberRequest.data || null));
     }
 
     yield put(setIsMember(response.data));
+  } catch (error) {
+    yield put(setError(error.response.data.message));
+  }
+}
+
+function* handleRequestMembership({ payload }: PayloadAction<number>) {
+  try {
+    const response: AxiosResponse<MemberRequest> = yield call(
+      requestMembership,
+      payload,
+    );
+
+    yield put(setMembereRequest(response.data));
   } catch (error) {
     yield put(setError(error.response.data.message));
   }
@@ -99,11 +114,16 @@ function* validateMembershipSaga() {
   yield takeLatest(VALIDATE_MEMBERSHIP, handleValidateMembership);
 }
 
+function* requestMembershipSaga() {
+  yield takeEvery(REQUEST_MEMBERSHIP, handleRequestMembership);
+}
+
 const sagas = [
   createProjectSaga(),
   getMyProjectsSaga(),
   getProjectByIdSaga(),
   validateMembershipSaga(),
+  requestMembershipSaga(),
 ];
 
 export default sagas;
