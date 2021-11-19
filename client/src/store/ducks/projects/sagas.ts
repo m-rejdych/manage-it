@@ -2,6 +2,7 @@ import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 
 import Project from '../../../types/project';
+import MemberRequest from '../../../types/memberRequest';
 import { PayloadAction } from '../../types/actions';
 import { CreateProjectPayload } from '../../../types/project/payloads';
 import {
@@ -9,7 +10,7 @@ import {
   getMyProjects,
   getProjectById,
   validateMembership,
-  checkIsMemberRequested,
+  getMemberRequest,
 } from '../../../services/projectServices';
 import {
   CREATE_PROJECT,
@@ -17,7 +18,7 @@ import {
   GET_PROJECT_BY_ID,
   VALIDATE_MEMBERSHIP,
   addProject,
-  setIsMemberRequested,
+  setMembereRequest,
   setProjects,
   setOpenedProject,
   setIsMember,
@@ -67,12 +68,13 @@ function* handleValidateMembership({ payload }: PayloadAction<number>) {
     );
 
     if (!response.data) {
-      const memberRequestResponse: AxiosResponse<boolean> = yield call(
-        checkIsMemberRequested,
+      const memberRequest: AxiosResponse<MemberRequest | null> = yield call(
+        getMemberRequest,
         payload,
+        false,
       );
 
-      yield put(setIsMemberRequested(memberRequestResponse.data));
+      yield put(setMembereRequest(memberRequest.data));
     }
 
     yield put(setIsMember(response.data));

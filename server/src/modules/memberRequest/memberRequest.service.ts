@@ -22,16 +22,23 @@ class MemberRequestService {
   async findOneByUserAndProjectId(
     userId: number,
     projectId: number,
+    isAccepted?: boolean,
   ): Promise<MemberRequest | null> {
-    const memberRequest = await this.memberRequestRepository
+    let memberRequest = this.memberRequestRepository
       .createQueryBuilder('memberRequest')
       .leftJoin('memberRequest.requestedBy', 'requestedBy')
       .leftJoin('memberRequest.project', 'project')
       .where('requestedBy.id = :userId', { userId })
-      .andWhere('project.id = :projectId', { projectId })
-      .getOne();
+      .andWhere('project.id = :projectId', { projectId });
 
-    return memberRequest ?? null;
+    if (isAccepted !== undefined) {
+      memberRequest = memberRequest.andWhere(
+        'memberRequest.isAccepted = :isAccepted',
+        { isAccepted },
+      );
+    }
+
+    return (await memberRequest.getOne()) ?? null;
   }
 
   async validateRequest(userId: number, projectId: number): Promise<boolean> {

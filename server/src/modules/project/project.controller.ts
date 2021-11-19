@@ -92,17 +92,19 @@ class ProjectController {
   }
 
   @UseGuards(JwtGuard)
-  @Get('check-is-member-requested')
+  @Get('get-member-request')
   async checkMemberShipRequest(
-    @Query('projectId', new ParseIntPipe()) projectId: number,
     @Req() req: JwtAuthRequest,
-  ): Promise<boolean> {
+    @Query('projectId', new ParseIntPipe()) projectId: number,
+    @Query('isAccepted') isAccepted?: boolean,
+  ): Promise<MemberRequest> {
     const { userId } = req.user;
 
-    return !(await this.memberRequestService.validateRequest(
+    return await this.memberRequestService.findOneByUserAndProjectId(
       userId,
       projectId,
-    ));
+      isAccepted,
+    );
   }
 }
 

@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 import Project from '../types/project/Project';
+import MemberRequest from '../types/memberRequest';
 import { CreateProjectPayload } from '../types/project/payloads';
 
 const API = process.env.NEXT_PUBLIC_API_URL;
@@ -30,9 +31,15 @@ export const validateMembership = (
     withCredentials: true,
   });
 
-export const checkIsMemberRequested = (
+export const getMemberRequest = (
   projectId: number,
-): Promise<AxiosResponse<boolean>> =>
-  axios.get(`${API}/project/check-is-member-requested?projectId=${projectId}`, {
-    withCredentials: true,
-  });
+  isAccepted?: boolean,
+): Promise<AxiosResponse<MemberRequest | null>> =>
+  axios.get(
+    `${API}/project/get-member-request?projectId=${projectId}${
+      isAccepted === undefined ? '' : `&isAccepted=${isAccepted}`
+    }`,
+    {
+      withCredentials: true,
+    },
+  );

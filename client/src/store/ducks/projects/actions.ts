@@ -1,6 +1,7 @@
 import createActionCreator from '../../util/createActionCreator';
 import { CreateProjectPayload } from '../../../types/project/payloads';
 import Project from '../../../types/project';
+import MemberRequest from '../../../types/memberRequest';
 
 export const CREATE_PROJECT = 'PROJECT_CREATE_PROJECT';
 export const ADD_PROJECT = 'PROJECT_ADD_PROJECT';
@@ -11,7 +12,7 @@ export const SET_PROJECTS = 'PROJECT_SET_PROJECTS';
 export const SET_ERROR = 'PROJECT_SET_ERROR';
 export const SET_OPENED_PROJECT = 'PROJECT_SET_OPENED_PROJECT';
 export const SET_IS_MEMBER = 'PROJECT_SET_IS_MEMBER';
-export const SET_IS_REQUESTED = 'PROJECT_SET_IS_REQUESTED';
+export const SET_MEMBER_REQUEST = 'PROJECT_SET_MEMBER_REQUEST';
 export const RESET = 'PROJECT_RESET';
 
 export const createProject = createActionCreator<
@@ -43,17 +44,17 @@ export const setProjects = createActionCreator<typeof SET_PROJECTS, Project[]>(
 
 export const setOpenedProject = createActionCreator<
   typeof SET_OPENED_PROJECT,
-  Project
+  Project | null
 >(SET_OPENED_PROJECT);
 
 export const setIsMember = createActionCreator<typeof SET_IS_MEMBER, boolean>(
   SET_IS_MEMBER,
 );
 
-export const setIsMemberRequested = createActionCreator<
-  typeof SET_IS_REQUESTED,
-  boolean
->(SET_IS_REQUESTED);
+export const setMembereRequest = createActionCreator<
+  typeof SET_MEMBER_REQUEST,
+  MemberRequest | null
+>(SET_MEMBER_REQUEST);
 
 export const setError = createActionCreator<typeof SET_ERROR, string | null>(
   SET_ERROR,
