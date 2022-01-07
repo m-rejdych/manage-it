@@ -79,6 +79,17 @@ class ProjectController {
   }
 
   @UseGuards(JwtGuard)
+  @Get('validate-admin')
+  async validateAdmin(
+    @Req() req: JwtAuthRequest,
+    @Query('projectId', new ParseIntPipe()) projectId: number,
+  ): Promise<boolean> {
+    const { userId } = req.user;
+
+    return await this.projectService.validateAdmin(userId, projectId);
+  }
+
+  @UseGuards(JwtGuard)
   @Post('member-request')
   async sendRequest(
     @Body() data: CreateMemberRequestDto,

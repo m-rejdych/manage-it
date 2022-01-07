@@ -4,6 +4,7 @@ import MemberRequest from '../../../types/memberRequest';
 interface OpenedProject {
   project: Project | null;
   isMember: boolean;
+  isAdmin: boolean;
   memberRequest: MemberRequest | null;
 }
 

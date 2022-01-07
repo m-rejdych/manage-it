@@ -77,6 +77,19 @@ class ProjectService {
     return !!project;
   }
 
+  async validateAdmin(userId: number, projectId: number): Promise<boolean> {
+    const project = this.projectRepository
+      .createQueryBuilder('project')
+      .leftJoin('project.admins', 'admin')
+      .leftJoin('project.members', 'member')
+      .where('project.id = :projectId', { projectId })
+      .andWhere('member.id = :userId', { userId })
+      .andWhere('admin.id = :userId', { userId })
+      .getOne();
+
+    return !!project;
+  }
+
   async findById(
     id: number,
     options?: FindOneOptions,

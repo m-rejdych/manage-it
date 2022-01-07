@@ -10,6 +10,7 @@ import {
   getMyProjects,
   getProjectById,
   validateMembership,
+  validateAdmin,
   requestMembership,
   removeMemberRequest,
   getMemberRequest,
@@ -26,6 +27,7 @@ import {
   setProjects,
   setOpenedProject,
   setIsMember,
+  setIsAdmin,
   setError,
 } from './actions';
 
@@ -79,6 +81,13 @@ function* handleValidateMembership({ payload }: PayloadAction<number>) {
       );
 
       yield put(setMembereRequest(memberRequest.data || null));
+    } else {
+      const isAdmin: AxiosResponse<boolean> = yield call(
+        validateAdmin,
+        payload,
+      );
+
+      yield put(setIsAdmin(isAdmin.data));
     }
 
     yield put(setIsMember(response.data));
@@ -102,7 +111,10 @@ function* handleRequestMembership({ payload }: PayloadAction<number>) {
 
 function* handleRemoveMembershipRequest({ payload }: PayloadAction<number>) {
   try {
-    const response: AxiosResponse<boolean> = yield call(removeMemberRequest, payload);
+    const response: AxiosResponse<boolean> = yield call(
+      removeMemberRequest,
+      payload,
+    );
 
     if (response.data) yield put(setMembereRequest(null));
   } catch (error) {

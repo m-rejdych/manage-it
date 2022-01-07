@@ -11,6 +11,7 @@ import {
   SET_OPENED_PROJECT,
   SET_IS_MEMBER,
   SET_MEMBER_REQUEST,
+  SET_IS_ADMIN,
   SET_ERROR,
   REMOVE_MEMBER_REQUEST,
   RESET,
@@ -21,6 +22,7 @@ const initialState: State = {
   openedProject: {
     project: null,
     isMember: false,
+    isAdmin: false,
     memberRequest: null,
   },
   error: null,
@@ -64,6 +66,13 @@ const reducer = (
         loading: false,
         error: null,
         openedProject: { ...state.openedProject, isMember: payload },
+      };
+    case SET_IS_ADMIN:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        openedProject: { ...state.openedProject, isAdmin: payload },
       };
     case SET_MEMBER_REQUEST:
       return {

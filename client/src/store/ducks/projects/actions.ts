@@ -13,6 +13,7 @@ export const SET_PROJECTS = 'PROJECT_SET_PROJECTS';
 export const SET_ERROR = 'PROJECT_SET_ERROR';
 export const SET_OPENED_PROJECT = 'PROJECT_SET_OPENED_PROJECT';
 export const SET_IS_MEMBER = 'PROJECT_SET_IS_MEMBER';
+export const SET_IS_ADMIN = 'PROJECT_SET_IS_ADMIN';
 export const SET_MEMBER_REQUEST = 'PROJECT_SET_MEMBER_REQUEST';
 export const REMOVE_MEMBER_REQUEST = 'PROJECT_REMOVE_MEMBER_REQUEST';
 export const RESET = 'PROJECT_RESET';
@@ -56,6 +57,10 @@ export const setOpenedProject = createActionCreator<
 
 export const setIsMember = createActionCreator<typeof SET_IS_MEMBER, boolean>(
   SET_IS_MEMBER,
+);
+
+export const setIsAdmin = createActionCreator<typeof SET_IS_ADMIN, boolean>(
+  SET_IS_ADMIN,
 );
 
 export const setMembereRequest = createActionCreator<
