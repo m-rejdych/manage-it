@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Stack, Typography, Button } from '@mui/material';
 import { Add, ExitToApp, Check, Close } from '@mui/icons-material';
 
 import { RootState } from '../../../store/types/state';
@@ -13,12 +13,23 @@ interface Props {
   id: number;
   title: string;
   toggleTaskDialog: () => void;
+  toggleAdminPanel: () => void;
+  isAdminPanelActive: boolean;
 }
 
-const ProjectHeader: React.FC<Props> = ({ id, title, toggleTaskDialog }) => {
+const ProjectHeader: React.FC<Props> = ({
+  id,
+  title,
+  toggleTaskDialog,
+  toggleAdminPanel,
+  isAdminPanelActive,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const isMember = useSelector(
     (state: RootState) => state.project.openedProject.isMember,
+  );
+  const isAdmin = useSelector(
+    (state: RootState) => state.project.openedProject.isAdmin,
   );
   const memberRequest = useSelector(
     (state: RootState) => state.project.openedProject.memberRequest,
@@ -37,13 +48,20 @@ const ProjectHeader: React.FC<Props> = ({ id, title, toggleTaskDialog }) => {
   const renderButton = (): JSX.Element => {
     if (isMember) {
       return (
-        <Button
-          variant="contained"
-          startIcon={<Add />}
-          onClick={toggleTaskDialog}
-        >
-          Add task
-        </Button>
+        <Stack spacing={2} direction="row">
+          {isAdmin && (
+            <Button color="secondary" onClick={toggleAdminPanel}>
+              {`${isAdminPanelActive ? 'User' : 'Admin'}`} panel
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={toggleTaskDialog}
+          >
+            Add task
+          </Button>
+        </Stack>
       );
     }
 
