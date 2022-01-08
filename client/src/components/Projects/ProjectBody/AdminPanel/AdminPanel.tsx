@@ -1,8 +1,16 @@
 import React from 'react';
-import { Typography } from '@mui/material';
+import { PersonOutlined } from '@mui/icons-material';
+
+import SquareButton from '../../../SquareButton';
 
 const AdminPanel: React.FC = () => {
-  return <Typography>Hello there!</Typography>
+  return (
+    <>
+      {Array.from({ length: 5 }, () => (
+        <SquareButton Icon={PersonOutlined}>Member requests</SquareButton>
+      ))}
+    </>
+  );
 };
 
 export default AdminPanel;
