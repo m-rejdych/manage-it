@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dialog, DialogProps, DialogTitle } from '@mui/material';
 
 import TaskForm from '../TaskForm';

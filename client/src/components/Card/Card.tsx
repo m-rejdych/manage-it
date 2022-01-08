@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Paper, Box, Stack, Typography, useTheme } from '@mui/material';
 import { format } from 'date-fns';
 

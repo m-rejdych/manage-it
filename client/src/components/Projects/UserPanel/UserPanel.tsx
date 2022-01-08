@@ -1,28 +1,18 @@
-import React from 'react';
-
-import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { Stack, Typography, Box, Divider } from '@mui/material';
 
-import type { RootState } from '../../../../store/types/state';
-import TaskDialog from '../../../Tasks/TaskDialog';
-import TasksList from '../../../Tasks/TasksList';
+import type { RootState } from '../../../store/types/state';
+import TasksList from '../../Tasks/TasksList';
 
-interface Props {
-  taskDialogOpen: boolean;
-  toggleDialog: () => void;
-}
-
-const UserPanel: React.FC<Props> = ({ taskDialogOpen, toggleDialog }) => {
+const UserPanel: React.FC = () => {
   const project = useSelector(
     (state: RootState) => state.project.openedProject.project,
   );
   const isMember = useSelector(
     (state: RootState) => state.project.openedProject.isMember,
   );
-  const { query } = useRouter();
 
-  return (
+  return project ? (
     <>
       <Stack
         direction="row"
@@ -37,13 +27,8 @@ const UserPanel: React.FC<Props> = ({ taskDialogOpen, toggleDialog }) => {
           <Typography>Section</Typography>
         </Box>
       </Stack>
-      <TaskDialog
-        open={taskDialogOpen}
-        onClose={toggleDialog}
-        projectId={parseInt(query.id as string)}
-      />
     </>
-  );
+  ) : null;
 };
 
 export default UserPanel;

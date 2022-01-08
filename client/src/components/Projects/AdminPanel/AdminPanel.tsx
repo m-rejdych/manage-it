@@ -1,7 +1,6 @@
-import React from 'react';
 import { PersonOutlined } from '@mui/icons-material';
 
-import SquareButton from '../../../SquareButton';
+import SquareButton from '../../SquareButton';
 
 const AdminPanel: React.FC = () => {
   return (

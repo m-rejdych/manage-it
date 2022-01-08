@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { OutlinedTextFieldProps, Box, TextField, Typography, useTheme } from '@mui/material';
 
 import Tag from './Tag';

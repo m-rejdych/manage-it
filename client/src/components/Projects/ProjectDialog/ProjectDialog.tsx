@@ -1,5 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogProps } from '@mui/material';
-import React from 'react';
+import { Dialog, DialogTitle, DialogProps } from '@mui/material';
 
 import ProjectForm from '../ProjectForm';
 
