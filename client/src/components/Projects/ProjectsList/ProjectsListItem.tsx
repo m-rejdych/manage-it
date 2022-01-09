@@ -3,7 +3,7 @@ import { Grid } from '@mui/material';
 
 import Project from '../../../types/project';
 import ROUTES from '../../../constants/routes';
-import Card from '../../Card';
+import StageCard from '../../Card/StageCard';
 
 const ProjectsListItem: React.FC<Project> = ({
   id,
@@ -20,7 +20,7 @@ const ProjectsListItem: React.FC<Project> = ({
 
   return (
     <Grid item xs={6}>
-      <Card
+      <StageCard
         title={title}
         stage={stage}
         createdAt={createdAt}

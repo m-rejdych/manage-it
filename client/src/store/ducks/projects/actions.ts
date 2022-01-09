@@ -1,5 +1,5 @@
 import createActionCreator from '../../util/createActionCreator';
-import { CreateProjectPayload } from '../../../types/project/payloads';
+import { CreateProjectPayload, GetMemberRequestsPayload } from '../../../types/project/payloads';
 import Project from '../../../types/project';
 import MemberRequest from '../../../types/memberRequest';
 
@@ -35,7 +35,7 @@ export const getMyProjects = createActionCreator<typeof GET_MY_PROJECTS, void>(
 
 export const getAdminMemberRequests = createActionCreator<
   typeof ADMIN_GET_MEMBER_REQUESTS,
-  number
+  GetMemberRequestsPayload
 >(ADMIN_GET_MEMBER_REQUESTS);
 
 export const validateMembership = createActionCreator<

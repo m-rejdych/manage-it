@@ -4,7 +4,7 @@ import { AxiosResponse } from 'axios';
 import Project from '../../../types/project';
 import MemberRequest from '../../../types/memberRequest';
 import { PayloadAction } from '../../types/actions';
-import { CreateProjectPayload } from '../../../types/project/payloads';
+import { CreateProjectPayload, GetMemberRequestsPayload } from '../../../types/project/payloads';
 import {
   createProject,
   getMyProjects,
@@ -69,7 +69,7 @@ function* handleGetProjectById({ payload }: PayloadAction<number>) {
   }
 }
 
-function* handleGetAdminMemberRequests({ payload }: PayloadAction<number>) {
+function* handleGetAdminMemberRequests({ payload }: PayloadAction<GetMemberRequestsPayload>) {
   try {
     const response: AxiosResponse<MemberRequest[]> = yield call(
       getMembershipRequests,

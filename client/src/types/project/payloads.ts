@@ -4,3 +4,8 @@ export interface CreateProjectPayload {
   maxMembers?: number;
   tags?: string[];
 }
+
+export interface GetMemberRequestsPayload {
+  projectId: number;
+  isAccepted?: boolean;
+}

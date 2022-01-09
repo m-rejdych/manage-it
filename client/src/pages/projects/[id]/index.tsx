@@ -7,7 +7,7 @@ import UserPanel from '../../../components/Projects/UserPanel';
 const Project: React.FC = () => <UserPanel />;
 
 Project.getLayout = (page: React.ReactElement): React.ReactNode => (
-  <ProjectPageContainer>{page}</ProjectPageContainer>
+  <ProjectPageContainer shouldFade>{page}</ProjectPageContainer>
 );
 
 export const getServerSideProps = wrapper.getServerSideProps(

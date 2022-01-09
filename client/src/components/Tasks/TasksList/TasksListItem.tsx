@@ -1,4 +1,4 @@
-import Card from '../../Card';
+import StageCard from '../../Card/StageCard';
 import User from '../../../types/user';
 import TaskStage from '../../../types/taskStage';
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const TasksListItem: React.FC<Props> = (props) => {
-  return <Card {...props} onClick={(): void => {}} />;
+  return <StageCard {...props} onClick={(): void => {}} />;
 };
 
 export default TasksListItem;

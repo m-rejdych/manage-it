@@ -2,7 +2,10 @@ import axios, { AxiosResponse } from 'axios';
 
 import Project from '../types/project/Project';
 import MemberRequest from '../types/memberRequest';
-import { CreateProjectPayload } from '../types/project/payloads';
+import {
+  CreateProjectPayload,
+  GetMemberRequestsPayload,
+} from '../types/project/payloads';
 
 const PROJECT_API = `${process.env.NEXT_PUBLIC_API_URL}/project`;
 
@@ -16,6 +19,30 @@ export const getMyProjects = async (): Promise<AxiosResponse<Project[]>> =>
 
 export const getProjectById = (id: number): Promise<AxiosResponse<Project>> =>
   axios.get(`${PROJECT_API}/get-by-id/${id}`, { withCredentials: true });
+
+export const getMemberRequest = (
+  projectId: number,
+  isAccepted?: boolean,
+): Promise<AxiosResponse<MemberRequest>> =>
+  axios.get(
+    `${PROJECT_API}/get-member-request?projectId=${projectId}${
+      isAccepted === undefined ? '' : `&isAccepted=${isAccepted}`
+    }`,
+    {
+      withCredentials: true,
+    },
+  );
+
+export const getMembershipRequests = async ({
+  projectId,
+  isAccepted,
+}: GetMemberRequestsPayload) =>
+  axios.get(
+    `${PROJECT_API}/admin/get-member-requests?projectId=${projectId}${
+      isAccepted !== undefined ? `&isAccepted=${isAccepted}` : ''
+    }`,
+    { withCredentials: true },
+  );
 
 export const searchProjects = (
   value: string,
@@ -47,33 +74,9 @@ export const requestMembership = async (
     { withCredentials: true },
   );
 
-export const getMemberRequest = (
-  projectId: number,
-  isAccepted?: boolean,
-): Promise<AxiosResponse<MemberRequest>> =>
-  axios.get(
-    `${PROJECT_API}/get-member-request?projectId=${projectId}${
-      isAccepted === undefined ? '' : `&isAccepted=${isAccepted}`
-    }`,
-    {
-      withCredentials: true,
-    },
-  );
-
 export const removeMemberRequest = (
   id: number,
 ): Promise<AxiosResponse<boolean>> =>
   axios.delete(`${PROJECT_API}/remove-member-request?id=${id}`, {
     withCredentials: true,
   });
-
-export const getMembershipRequests = async (
-  projectId: number,
-  isAccepted?: boolean,
-) =>
-  axios.get(
-    `${PROJECT_API}/admin/get-member-requests?projectId=${projectId}${
-      isAccepted !== undefined ? `&isAccepted=${isAccepted}` : ''
-    }`,
-    { withCredentials: true },
-  );

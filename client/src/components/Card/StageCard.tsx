@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Paper, Box, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { format } from 'date-fns';
 
+import CardBase from './CardBase';
 import User from '../../types/user';
 import ProjectStage from '../../types/projectStage';
 import TaskStage from '../../types/taskStage';
@@ -22,7 +22,7 @@ interface Props {
   disableClick?: boolean;
 }
 
-const Card: React.FC<Props> = ({
+const StageCard: React.FC<Props> = ({
   stage,
   title,
   createdAt,
@@ -30,9 +30,6 @@ const Card: React.FC<Props> = ({
   onClick,
   disableClick,
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const theme = useTheme();
-
   const getStageIcon = (
     name: ProjectStageName | TaskStageName,
   ): JSX.Element => {
@@ -41,33 +38,8 @@ const Card: React.FC<Props> = ({
     return <Icon htmlColor={STAGE_ICONS_COLORS[name]} fontSize="small" />;
   };
 
-  const handleMouseEnter = (): void => {
-    if (disableClick) return;
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = (): void => {
-    if (disableClick) return;
-    setIsHovered(false);
-  };
-
-  const handleClick = (): void => {
-    if (disableClick) return;
-    onClick();
-  };
-
   return (
-    <Paper
-      sx={{
-        p: theme.spacing(4),
-        borderRadius: 5,
-        cursor: disableClick ? 'default' : 'pointer',
-      }}
-      elevation={isHovered ? 6 : 1}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={handleClick}
-    >
+    <CardBase onClick={onClick} disableClick={disableClick}>
       <Box>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography sx={{ fontWeight: 700 }}>{title}</Typography>
@@ -88,8 +60,8 @@ const Card: React.FC<Props> = ({
           {`by ${creator!.username}`}
         </Typography>
       </Box>
-    </Paper>
+    </CardBase>
   );
 };
 
-export default Card;
+export default StageCard;

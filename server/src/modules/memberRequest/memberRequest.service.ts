@@ -63,6 +63,8 @@ class MemberRequestService {
     let memberRequests = this.memberRequestRepository
       .createQueryBuilder('memberRequest')
       .leftJoin('memberRequest.project', 'project')
+      .leftJoinAndSelect('memberRequest.requestedBy', 'requestedBy')
+      .leftJoinAndSelect('memberRequest.acceptedBy', 'acceptedBy')
       .where('project.id = :projectId', { projectId });
 
     if (isAccepted !== undefined) {
