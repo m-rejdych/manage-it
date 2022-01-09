@@ -14,8 +14,10 @@ import {
   requestMembership,
   removeMemberRequest,
   getMemberRequest,
+  getMembershipRequests,
 } from '../../../services/projectServices';
 import {
+  ADMIN_GET_MEMBER_REQUESTS,
   CREATE_PROJECT,
   GET_MY_PROJECTS,
   GET_PROJECT_BY_ID,
@@ -23,6 +25,7 @@ import {
   REQUEST_MEMBERSHIP,
   REMOVE_MEMBER_REQUEST,
   addProject,
+  setAdminMemberRequests,
   setMembereRequest,
   setProjects,
   setOpenedProject,
@@ -61,6 +64,19 @@ function* handleGetProjectById({ payload }: PayloadAction<number>) {
     );
 
     yield put(setOpenedProject(response.data || null));
+  } catch (error) {
+    yield put(setError(error.response.data.message));
+  }
+}
+
+function* handleGetAdminMemberRequests({ payload }: PayloadAction<number>) {
+  try {
+    const response: AxiosResponse<MemberRequest[]> = yield call(
+      getMembershipRequests,
+      payload,
+    );
+
+    yield put(setAdminMemberRequests(response.data));
   } catch (error) {
     yield put(setError(error.response.data.message));
   }
@@ -130,6 +146,10 @@ function* getMyProjectsSaga() {
   yield takeEvery(GET_MY_PROJECTS, handleGetMyProjects);
 }
 
+function* getAdminMemberRequestsSaga() {
+  yield takeEvery(ADMIN_GET_MEMBER_REQUESTS, handleGetAdminMemberRequests);
+}
+
 function* getProjectByIdSaga() {
   yield takeEvery(GET_PROJECT_BY_ID, handleGetProjectById);
 }
@@ -150,6 +170,7 @@ const sagas = [
   createProjectSaga(),
   getMyProjectsSaga(),
   getProjectByIdSaga(),
+  getAdminMemberRequestsSaga(),
   validateMembershipSaga(),
   requestMembershipSaga(),
   removeMembershipRequestSaga(),

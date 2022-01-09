@@ -66,3 +66,14 @@ export const removeMemberRequest = (
   axios.delete(`${PROJECT_API}/remove-member-request?id=${id}`, {
     withCredentials: true,
   });
+
+export const getMembershipRequests = async (
+  projectId: number,
+  isAccepted?: boolean,
+) =>
+  axios.get(
+    `${PROJECT_API}/admin/get-member-requests?projectId=${projectId}${
+      isAccepted !== undefined ? `&isAccepted=${isAccepted}` : ''
+    }`,
+    { withCredentials: true },
+  );

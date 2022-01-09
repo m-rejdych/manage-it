@@ -129,7 +129,7 @@ class ProjectController {
   }
 
   @UseGuards(JwtGuard)
-  @Get('get-member-requests')
+  @Get('admin/get-member-requests')
   async getMemberRequests(
     @Req() req: JwtAuthRequest,
     @Query('projectId', new ParseIntPipe()) projectId: number,

@@ -1,6 +1,8 @@
 import { State } from './types';
 import { PayloadAction } from '../../types/actions';
 import {
+  ADMIN_GET_MEMBER_REQUESTS,
+  ADMIN_SET_MEMBER_REQUESTS,
   CREATE_PROJECT,
   VALIDATE_MEMBERSHIP,
   REQUEST_MEMBERSHIP,
@@ -24,22 +26,33 @@ const initialState: State = {
     isMember: false,
     isAdmin: false,
     memberRequest: null,
+    admin: null,
   },
   error: null,
   loading: false,
 };
-
 const reducer = (
   state = initialState,
   { type, payload }: PayloadAction,
 ): State => {
   switch (type) {
+    case ADMIN_GET_MEMBER_REQUESTS:
     case CREATE_PROJECT:
-      return { ...state, loading: true };
     case VALIDATE_MEMBERSHIP:
-      return { ...state, loading: true };
     case REQUEST_MEMBERSHIP:
+    case GET_MY_PROJECTS:
+    case GET_PROJECT_BY_ID:
+    case REMOVE_MEMBER_REQUEST:
       return { ...state, loading: true };
+    case ADMIN_SET_MEMBER_REQUESTS:
+      return {
+        ...state,
+        loading: false,
+        openedProject: {
+          ...state.openedProject,
+          admin: { ...state.openedProject.admin, memberRequests: payload },
+        },
+      };
     case ADD_PROJECT:
       return {
         ...state,
@@ -47,10 +60,6 @@ const reducer = (
         error: null,
         projects: [payload, ...state.projects],
       };
-    case GET_MY_PROJECTS:
-      return { ...state, loading: true };
-    case GET_PROJECT_BY_ID:
-      return { ...state, loading: true };
     case SET_PROJECTS:
       return { ...state, loading: false, error: null, projects: payload };
     case SET_OPENED_PROJECT:
@@ -83,8 +92,6 @@ const reducer = (
       };
     case SET_ERROR:
       return { ...state, loading: false, error: payload };
-    case REMOVE_MEMBER_REQUEST:
-      return { ...state, loading: true };
     case RESET:
       return initialState;
     default:
