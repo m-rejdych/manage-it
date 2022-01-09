@@ -1,9 +1,13 @@
 import { Fade, Box } from '@mui/material';
 
-const PageContainer: React.FC = ({ children }) => (
-  <Fade in>
-    <Box py={4}>{children}</Box>
-  </Fade>
-);
+interface Props {
+  shouldFade?: boolean;
+}
+
+const PageContainer: React.FC<Props> = ({ children, shouldFade }) => {
+  const content = <Box py={4}>{children}</Box>;
+
+  return shouldFade ? <Fade in>{content}</Fade> : content;
+};
 
 export default PageContainer;

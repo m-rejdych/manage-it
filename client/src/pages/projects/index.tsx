@@ -28,7 +28,7 @@ const Projects: React.FC = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer shouldFade>
       <Box display="flex" alignItems="center" justifyContent="space-between" mb={3}>
         <Box>
           <Typography variant="h6">Projects</Typography>

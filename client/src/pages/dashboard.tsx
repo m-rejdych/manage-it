@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Fade } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 
 import { wrapper } from '../store';
 import { getServerSidePropsWithAutologin } from '../util/autologin';
@@ -9,8 +9,7 @@ import Calendar from '../components/Calendar';
 
 const Dashboard: React.FC = () => {
   return (
-    <PageContainer>
-      {/* <SearchInput /> */}
+    <PageContainer shouldFade>
       <WelcomeSection />
       <Grid container spacing={3}>
         <Grid item xs={6}>

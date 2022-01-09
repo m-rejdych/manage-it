@@ -76,7 +76,7 @@ const ProjectHeader: React.FC<Props> = ({ id, title, toggleTaskDialog }) => {
       );
 
       if (isAdmin) {
-        if (router.pathname === `${ROUTES.PROJECTS}/[id]/admin`) {
+        if (router.pathname.includes('admin')) {
           return (
             <Stack direction="row" spacing={2}>
               <Button onClick={handleNavigate()}>User panel</Button>

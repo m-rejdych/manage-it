@@ -12,7 +12,11 @@ import PageContainer from '../../../components/PageContainer';
 import ProjectHeader from '../../../components/Projects/ProjectHeader';
 import TaskDialog from '../../../components/Tasks/TaskDialog';
 
-const ProjectPageContainer: React.FC = ({ children }) => {
+interface Props {
+  shouldFade?: boolean;
+}
+
+const ProjectPageContainer: React.FC<Props> = ({ children, shouldFade }) => {
   const [open, setOpen] = useState(false);
   const { query } = useRouter();
   const project = useSelector(
@@ -37,7 +41,7 @@ const ProjectPageContainer: React.FC = ({ children }) => {
   };
 
   return project ? (
-    <PageContainer>
+    <PageContainer shouldFade={shouldFade}>
       <ProjectHeader
         id={project.id}
         title={project.title}
