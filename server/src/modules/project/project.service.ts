@@ -1,6 +1,7 @@
 import {
   Injectable,
   NotFoundException,
+  ForbiddenException,
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -163,6 +164,29 @@ class ProjectService {
     await this.projectRepository.save(project);
 
     return memberRequest;
+  }
+
+  async getMemeberRequests(
+    adminId: number,
+    projectId: number,
+    isAccepted?: boolean,
+  ): Promise<MemberRequest[]> {
+    const project = await this.projectRepository
+      .createQueryBuilder('project')
+      .leftJoin('project.admins', 'admin')
+      .where('admin.id = :adminId', { adminId })
+      .andWhere('project.id = :projectId', { projectId })
+      .getOne();
+    if (!project) {
+      throw new ForbiddenException('You are not an admin of this project.');
+    }
+
+    const memberRequests = await this.memberRequestService.findAllByProjectId(
+      projectId,
+      isAccepted,
+    );
+
+    return memberRequests;
   }
 }
 

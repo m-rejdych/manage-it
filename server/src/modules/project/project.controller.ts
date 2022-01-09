@@ -12,6 +12,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
+import parseBool from '../../util/parseBool';
 import ProjectService from './project.service';
 import JwtGuard from '../../guards/jwt.guard';
 import Project from './project.entity';
@@ -125,6 +126,22 @@ class ProjectController {
     const { userId } = req.user;
 
     return await this.memberRequestService.removeRequest(userId, id);
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('get-member-requests')
+  async getMemberRequests(
+    @Req() req: JwtAuthRequest,
+    @Query('projectId', new ParseIntPipe()) projectId: number,
+    @Query('isAccepted') isAccepted?: string,
+  ) {
+    const { userId } = req.user;
+
+    return await this.projectService.getMemeberRequests(
+      userId,
+      projectId,
+      parseBool(isAccepted),
+    );
   }
 }
 

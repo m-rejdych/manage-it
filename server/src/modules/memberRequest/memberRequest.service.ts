@@ -56,6 +56,25 @@ class MemberRequestService {
     return (await memberRequest.getOne()) ?? null;
   }
 
+  async findAllByProjectId(
+    projectId: number,
+    isAccepted?: boolean,
+  ): Promise<MemberRequest[] | null> {
+    let memberRequests = this.memberRequestRepository
+      .createQueryBuilder('memberRequest')
+      .leftJoin('memberRequest.project', 'project')
+      .where('project.id = :projectId', { projectId });
+
+    if (isAccepted !== undefined) {
+      memberRequests = memberRequests.andWhere(
+        'memberRequest.isAccepted = :isAccepted',
+        { isAccepted },
+      );
+    }
+
+    return await memberRequests.getMany();
+  }
+
   async validateRequest(userId: number, projectId: number): Promise<boolean> {
     const isValid = !(await this.memberRequestRepository
       .createQueryBuilder('memberRequest')
