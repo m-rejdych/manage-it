@@ -25,13 +25,13 @@ class MemberRequest {
   updatedAt: Date;
 
   @ManyToOne(() => User, { cascade: true })
-  requestedBy: User;
+  requestedBy?: User;
 
   @ManyToOne(() => User, { cascade: true })
-  acceptedBy: User;
+  acceptedBy?: User;
 
   @ManyToOne(() => Project, (project) => project.requests, { cascade: true })
-  project: Project;
+  project?: Project;
 }
 
 export default MemberRequest;

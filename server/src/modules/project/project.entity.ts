@@ -47,32 +47,32 @@ class Project {
     onDelete: 'CASCADE',
   })
   @JoinTable()
-  members: User[];
+  members?: User[];
 
   @ManyToMany(() => User, { cascade: true, onDelete: 'CASCADE' })
   @JoinTable()
-  admins: User[];
+  admins?: User[];
 
   @OneToMany(() => Task, (task) => task.project, {
     cascade: ['insert', 'update'],
   })
-  tasks: Task[];
+  tasks?: Task[];
 
   @ManyToMany(() => Tag, (tag) => tag.projects, {
     cascade: ['insert', 'update'],
   })
-  tags: Tag[];
+  tags?: Tag[];
 
   @ManyToOne(() => ProjectStage, (projectStage) => projectStage.projects, {
     cascade: true,
     onDelete: 'CASCADE',
   })
-  stage: ProjectStage;
+  stage?: ProjectStage;
 
   @OneToMany(() => MemberRequest, (memberRequest) => memberRequest.project, {
     cascade: ['insert', 'update'],
   })
-  requests: MemberRequest[];
+  requests?: MemberRequest[];
 }
 
 export default Project;

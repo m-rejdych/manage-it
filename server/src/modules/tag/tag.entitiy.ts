@@ -22,14 +22,14 @@ class Tag {
     onDelete: 'CASCADE',
   })
   @JoinTable()
-  projects: Project[];
+  projects?: Project[];
 
   @ManyToMany(() => Task, (task) => task.tags, {
     cascade: true,
     onDelete: 'CASCADE',
   })
   @JoinTable()
-  tasks: Task[];
+  tasks?: Task[];
 }
 
 export default Tag;

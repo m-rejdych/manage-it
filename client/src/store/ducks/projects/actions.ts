@@ -1,10 +1,17 @@
 import createActionCreator from '../../util/createActionCreator';
-import { CreateProjectPayload, GetMemberRequestsPayload } from '../../../types/project/payloads';
+import {
+  CreateProjectPayload,
+  GetMemberRequestsPayload,
+} from '../../../types/project/payloads';
 import Project from '../../../types/project';
 import MemberRequest from '../../../types/memberRequest';
 
 export const ADMIN_GET_MEMBER_REQUESTS = 'PROJECT_ADMIN_GET_MEMBER_REQUESTS';
 export const ADMIN_SET_MEMBER_REQUESTS = 'PROJECT_ADMIN_SET_MEMBER_REQUESTS';
+export const ADMIN_REJECT_MEMBER_REQUEST =
+  'PROJECT_ADMIN_REJECT_MEMBER_REQUEST';
+export const ADMIN_FILTER_MEMBER_REQUESTS =
+  'PROJECT_ADMIN_FILTER_MEMBER_REQUESTS';
 export const CREATE_PROJECT = 'PROJECT_CREATE_PROJECT';
 export const ADD_PROJECT = 'PROJECT_ADD_PROJECT';
 export const GET_MY_PROJECTS = 'PROJECT_GET_MY_PROJECTS';
@@ -28,6 +35,11 @@ export const createProject = createActionCreator<
 export const addProject = createActionCreator<typeof ADD_PROJECT, Project>(
   ADD_PROJECT,
 );
+
+export const filterAdminMemberRequests = createActionCreator<
+  typeof ADMIN_FILTER_MEMBER_REQUESTS,
+  number
+>(ADMIN_FILTER_MEMBER_REQUESTS);
 
 export const getMyProjects = createActionCreator<typeof GET_MY_PROJECTS, void>(
   GET_MY_PROJECTS,
@@ -84,6 +96,11 @@ export const removeMemberRequest = createActionCreator<
   typeof REMOVE_MEMBER_REQUEST,
   number
 >(REMOVE_MEMBER_REQUEST);
+
+export const rejectAdminMemberRequest = createActionCreator<
+  typeof ADMIN_REJECT_MEMBER_REQUEST,
+  number
+>(ADMIN_REJECT_MEMBER_REQUEST);
 
 export const setError = createActionCreator<typeof SET_ERROR, string | null>(
   SET_ERROR,

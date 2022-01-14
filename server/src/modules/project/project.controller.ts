@@ -125,7 +125,18 @@ class ProjectController {
   ): Promise<boolean> {
     const { userId } = req.user;
 
-    return await this.memberRequestService.removeRequest(userId, id);
+    return await this.projectService.cancelMemberRequest(userId, id);
+  }
+
+  @UseGuards(JwtGuard)
+  @Delete('admin/reject-member-request')
+  async(
+    @Req() req: JwtAuthRequest,
+    @Query('id', new ParseIntPipe()) id: number,
+  ): Promise<boolean> {
+    const { userId } = req.user;
+
+    return this.projectService.rejectMemberRequest(userId, id);
   }
 
   @UseGuards(JwtGuard)

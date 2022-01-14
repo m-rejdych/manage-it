@@ -7,26 +7,16 @@ import { PersonAddAlt1, PersonRemove } from '@mui/icons-material';
 
 import ProjectPageContainer from '../../../../components/Projects/ProjectPageContainer';
 import ButtonsCard from '../../../../components/Card/ButtonsCard';
-import { getAdminMemberRequests } from '../../../../store/ducks/projects/actions';
+import {
+  getAdminMemberRequests,
+  rejectAdminMemberRequest,
+} from '../../../../store/ducks/projects/actions';
 import type { RootState } from '../../../../store/types/state';
 
 interface Button extends ButtonProps {
   text: string;
+  onClick: (id: number) => void;
 }
-
-const BUTTONS: Button[] = [
-  {
-    text: 'Accept',
-    variant: 'contained',
-    startIcon: <PersonAddAlt1 />,
-  },
-  {
-    text: 'Reject',
-    variant: 'contained',
-    color: 'secondary',
-    startIcon: <PersonRemove />,
-  },
-];
 
 const ProjectRequests: React.FC = () => {
   const isAdmin = useSelector(
@@ -51,16 +41,38 @@ const ProjectRequests: React.FC = () => {
 
   if (!isAdmin) return null;
 
+  const handleReject = (id: number): void => {
+    dispatch(rejectAdminMemberRequest(id));
+  };
+
+  const BUTTONS: Button[] = [
+    {
+      text: 'Accept',
+      variant: 'contained',
+      startIcon: <PersonAddAlt1 />,
+      onClick: () => {},
+    },
+    {
+      text: 'Reject',
+      variant: 'contained',
+      color: 'secondary',
+      startIcon: <PersonRemove />,
+      onClick: (id) => handleReject(id),
+    },
+  ];
+
   return (
     <Stack spacing={3}>
       {memberRequests?.map(({ id, requestedBy, createdAt }) => (
         <ButtonsCard
+          disableClick
           key={`request-${id}`}
           avatar={<Avatar />}
           title={requestedBy ? `${requestedBy.username}` : ''}
           subtitle={`Requested ${format(new Date(createdAt), 'd.M.y, h:m a')}`}
-          buttons={BUTTONS.map(({ text, ...rest }) => ({
+          buttons={BUTTONS.map(({ text, onClick, ...rest }) => ({
             text,
+            onClick: (): void => onClick(id),
             id: `${text}-button-request-${id}`,
             ...rest,
           }))}

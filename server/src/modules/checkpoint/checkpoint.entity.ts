@@ -15,13 +15,13 @@ class Checkpoint {
   isFinished: boolean;
 
   @ManyToOne(() => User)
-  addedBy: User;
+  addedBy?: User;
 
   @ManyToOne(() => Task, (task) => task.checkpoints, {
     cascade: true,
     onDelete: 'CASCADE',
   })
-  task: Task;
+  task?: Task;
 }
 
 export default Checkpoint;

@@ -34,17 +34,17 @@ class User {
   @ManyToMany(() => Project, (project) => project.members, {
     cascade: ['insert', 'update'],
   })
-  projects: Project[];
+  projects?: Project[];
 
   @OneToMany(() => Task, (task) => task.creator, {
     cascade: ['insert', 'update'],
   })
-  createdTasks: Task[];
+  createdTasks?: Task[];
 
   @OneToMany(() => Task, (task) => task.assignedTo, {
     cascade: ['insert', 'update'],
   })
-  assignedTasks: Task[];
+  assignedTasks?: Task[];
 }
 
 export default User;

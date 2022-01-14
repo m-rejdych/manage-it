@@ -166,6 +166,46 @@ class ProjectService {
     return memberRequest;
   }
 
+  async cancelMemberRequest(
+    userId: number,
+    requestId: number,
+  ): Promise<boolean> {
+    const memberRequest = await this.memberRequestService.findOneById(
+      requestId,
+      { relations: ['requestedBy'] },
+    );
+    if (!memberRequest) {
+      throw new NotFoundException('Member request not found!');
+    }
+    if (memberRequest.requestedBy.id !== userId) {
+      throw new ForbiddenException('You can only cancel your own requests.');
+    }
+
+    await this.memberRequestService.removeRequest(requestId);
+
+    return true;
+  }
+
+  async rejectMemberRequest(
+    adminId: number,
+    requestId: number,
+  ): Promise<boolean> {
+    const memberRequest = await this.memberRequestService.findOneById(
+      requestId,
+      { relations: ['project', 'project.admins'] },
+    );
+    if (!memberRequest) {
+      throw new NotFoundException('Member request not found!');
+    }
+    if (!memberRequest.project.admins.some(({ id }) => id === adminId)) {
+      throw new ForbiddenException('Only admins can reject member requests.');
+    }
+
+    await this.memberRequestService.removeRequest(requestId);
+
+    return true;
+  }
+
   async getMemeberRequests(
     adminId: number,
     projectId: number,

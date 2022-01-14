@@ -1,7 +1,9 @@
 import { State } from './types';
 import { PayloadAction } from '../../types/actions';
 import {
+  ADMIN_FILTER_MEMBER_REQUESTS,
   ADMIN_GET_MEMBER_REQUESTS,
+  ADMIN_REJECT_MEMBER_REQUEST,
   ADMIN_SET_MEMBER_REQUESTS,
   CREATE_PROJECT,
   VALIDATE_MEMBERSHIP,
@@ -37,6 +39,7 @@ const reducer = (
 ): State => {
   switch (type) {
     case ADMIN_GET_MEMBER_REQUESTS:
+    case ADMIN_REJECT_MEMBER_REQUEST:
     case CREATE_PROJECT:
     case VALIDATE_MEMBERSHIP:
     case REQUEST_MEMBERSHIP:
@@ -59,6 +62,22 @@ const reducer = (
         loading: false,
         error: null,
         projects: [payload, ...state.projects],
+      };
+    case ADMIN_FILTER_MEMBER_REQUESTS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        openedProject: {
+          ...state.openedProject,
+          admin: {
+            ...state.openedProject.admin,
+            memberRequests:
+              state.openedProject.admin?.memberRequests.filter(
+                ({ id }) => id !== payload,
+              ) ?? [],
+          },
+        },
       };
     case SET_PROJECTS:
       return { ...state, loading: false, error: null, projects: payload };

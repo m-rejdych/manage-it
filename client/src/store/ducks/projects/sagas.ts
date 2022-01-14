@@ -12,12 +12,14 @@ import {
   validateMembership,
   validateAdmin,
   requestMembership,
+  rejectMemberRequest,
   removeMemberRequest,
   getMemberRequest,
   getMembershipRequests,
 } from '../../../services/projectServices';
 import {
   ADMIN_GET_MEMBER_REQUESTS,
+  ADMIN_REJECT_MEMBER_REQUEST,
   CREATE_PROJECT,
   GET_MY_PROJECTS,
   GET_PROJECT_BY_ID,
@@ -25,6 +27,7 @@ import {
   REQUEST_MEMBERSHIP,
   REMOVE_MEMBER_REQUEST,
   addProject,
+  filterAdminMemberRequests,
   setAdminMemberRequests,
   setMembereRequest,
   setProjects,
@@ -138,6 +141,18 @@ function* handleRemoveMembershipRequest({ payload }: PayloadAction<number>) {
   }
 }
 
+function* handleRejectMemberRequest({ payload }: PayloadAction<number>) {
+  try {
+    const response: AxiosResponse<boolean> = yield call(rejectMemberRequest, payload);
+
+    if (response.data) {
+      yield put(filterAdminMemberRequests(payload));
+    }
+  } catch (error) {
+    yield put(setError(error.response.data.message));
+  }
+}
+
 function* createProjectSaga() {
   yield takeEvery(CREATE_PROJECT, handleCreateProject);
 }
@@ -166,6 +181,10 @@ function* removeMembershipRequestSaga() {
   yield takeEvery(REMOVE_MEMBER_REQUEST, handleRemoveMembershipRequest);
 }
 
+function* rejectAdminMembershipRequestSaga() {
+  yield takeEvery(ADMIN_REJECT_MEMBER_REQUEST, handleRejectMemberRequest);
+}
+
 const sagas = [
   createProjectSaga(),
   getMyProjectsSaga(),
@@ -174,6 +193,7 @@ const sagas = [
   validateMembershipSaga(),
   requestMembershipSaga(),
   removeMembershipRequestSaga(),
+  rejectAdminMembershipRequestSaga(),
 ];
 
 export default sagas;

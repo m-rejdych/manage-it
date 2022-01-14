@@ -41,33 +41,33 @@ class Task {
     cascade: true,
     onDelete: 'CASCADE',
   })
-  creator: User;
+  creator?: User;
 
   @ManyToOne(() => Project, (project) => project.tasks)
-  project: Project;
+  project?: Project;
 
   @ManyToOne(() => User, (user) => user.assignedTasks, {
     cascade: true,
     onDelete: 'CASCADE',
   })
-  assignedTo: User;
+  assignedTo?: User;
 
   @ManyToOne(() => TaskType, { cascade: true, onDelete: 'CASCADE' })
-  type: TaskType;
+  type?: TaskType;
 
   @ManyToOne(() => TaskPriority, { cascade: true, onDelete: 'CASCADE' })
-  priority: TaskPriority;
+  priority?: TaskPriority;
 
   @ManyToOne(() => TaskStage, { cascade: true, onDelete: 'CASCADE' })
-  stage: TaskStage;
+  stage?: TaskStage;
 
   @OneToMany(() => Checkpoint, (checkpoint) => checkpoint.task, {
     cascade: ['insert', 'update'],
   })
-  checkpoints: Checkpoint[];
+  checkpoints?: Checkpoint[];
 
   @ManyToMany(() => Tag, (tag) => tag.tasks, { cascade: ['insert', 'update'] })
-  tags: Tag[];
+  tags?: Tag[];
 }
 
 export default Task;
