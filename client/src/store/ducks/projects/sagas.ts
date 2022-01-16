@@ -6,6 +6,7 @@ import MemberRequest from '../../../types/memberRequest';
 import { PayloadAction } from '../../types/actions';
 import { CreateProjectPayload, GetMemberRequestsPayload } from '../../../types/project/payloads';
 import {
+  acceptMemberRequest,
   createProject,
   getMyProjects,
   getProjectById,
@@ -18,6 +19,7 @@ import {
   getMembershipRequests,
 } from '../../../services/projectServices';
 import {
+  ADMIN_ACCEPT_MEMBER_REQUEST,
   ADMIN_GET_MEMBER_REQUESTS,
   ADMIN_REJECT_MEMBER_REQUEST,
   CREATE_PROJECT,
@@ -153,6 +155,22 @@ function* handleRejectMemberRequest({ payload }: PayloadAction<number>) {
   }
 }
 
+function* handleAcceptMemberRequest({ payload }: PayloadAction<number>) {
+  try {
+    const response: AxiosResponse<MemberRequest> = yield call(acceptMemberRequest, payload);
+
+    if (response.data.isAccepted) {
+      yield put(filterAdminMemberRequests(payload));
+    }
+  } catch (error) {
+    yield put(setError(error.response.data.message));
+  }
+}
+
+function* acceptMemberRequestSaga() {
+  yield takeEvery(ADMIN_ACCEPT_MEMBER_REQUEST, handleAcceptMemberRequest);
+}
+
 function* createProjectSaga() {
   yield takeEvery(CREATE_PROJECT, handleCreateProject);
 }
@@ -186,6 +204,7 @@ function* rejectAdminMembershipRequestSaga() {
 }
 
 const sagas = [
+  acceptMemberRequestSaga(),
   createProjectSaga(),
   getMyProjectsSaga(),
   getProjectByIdSaga(),

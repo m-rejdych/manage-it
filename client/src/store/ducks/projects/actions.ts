@@ -6,6 +6,8 @@ import {
 import Project from '../../../types/project';
 import MemberRequest from '../../../types/memberRequest';
 
+export const ADMIN_ACCEPT_MEMBER_REQUEST =
+  'PROJECT_ADMIN_ACCEPT_MEMBER_REQUEST';
 export const ADMIN_GET_MEMBER_REQUESTS = 'PROJECT_ADMIN_GET_MEMBER_REQUESTS';
 export const ADMIN_SET_MEMBER_REQUESTS = 'PROJECT_ADMIN_SET_MEMBER_REQUESTS';
 export const ADMIN_REJECT_MEMBER_REQUEST =
@@ -27,14 +29,18 @@ export const SET_MEMBER_REQUEST = 'PROJECT_SET_MEMBER_REQUEST';
 export const REMOVE_MEMBER_REQUEST = 'PROJECT_REMOVE_MEMBER_REQUEST';
 export const RESET = 'PROJECT_RESET';
 
-export const createProject = createActionCreator<
-  typeof CREATE_PROJECT,
-  CreateProjectPayload
->(CREATE_PROJECT);
+export const acceptAdminMemberRequest = createActionCreator<
+  typeof ADMIN_ACCEPT_MEMBER_REQUEST,
+  number
+>(ADMIN_ACCEPT_MEMBER_REQUEST);
 
 export const addProject = createActionCreator<typeof ADD_PROJECT, Project>(
   ADD_PROJECT,
 );
+export const createProject = createActionCreator<
+  typeof CREATE_PROJECT,
+  CreateProjectPayload
+>(CREATE_PROJECT);
 
 export const filterAdminMemberRequests = createActionCreator<
   typeof ADMIN_FILTER_MEMBER_REQUESTS,

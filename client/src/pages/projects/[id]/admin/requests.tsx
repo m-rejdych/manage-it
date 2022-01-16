@@ -8,12 +8,13 @@ import { PersonAddAlt1, PersonRemove } from '@mui/icons-material';
 import ProjectPageContainer from '../../../../components/Projects/ProjectPageContainer';
 import ButtonsCard from '../../../../components/Card/ButtonsCard';
 import {
+  acceptAdminMemberRequest,
   getAdminMemberRequests,
   rejectAdminMemberRequest,
 } from '../../../../store/ducks/projects/actions';
 import type { RootState } from '../../../../store/types/state';
 
-interface Button extends ButtonProps {
+interface Button extends Omit<ButtonProps, 'onClick'> {
   text: string;
   onClick: (id: number) => void;
 }
@@ -45,19 +46,23 @@ const ProjectRequests: React.FC = () => {
     dispatch(rejectAdminMemberRequest(id));
   };
 
+  const handleAccept = (id: number): void => {
+    dispatch(acceptAdminMemberRequest(id));
+  }
+
   const BUTTONS: Button[] = [
     {
       text: 'Accept',
       variant: 'contained',
       startIcon: <PersonAddAlt1 />,
-      onClick: () => {},
+      onClick: handleAccept,
     },
     {
       text: 'Reject',
       variant: 'contained',
       color: 'secondary',
       startIcon: <PersonRemove />,
-      onClick: (id) => handleReject(id),
+      onClick: handleReject,
     },
   ];
 

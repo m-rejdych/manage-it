@@ -1,6 +1,7 @@
 import { State } from './types';
 import { PayloadAction } from '../../types/actions';
 import {
+  ADMIN_ACCEPT_MEMBER_REQUEST,
   ADMIN_FILTER_MEMBER_REQUESTS,
   ADMIN_GET_MEMBER_REQUESTS,
   ADMIN_REJECT_MEMBER_REQUEST,
@@ -38,6 +39,7 @@ const reducer = (
   { type, payload }: PayloadAction,
 ): State => {
   switch (type) {
+    case ADMIN_ACCEPT_MEMBER_REQUEST:
     case ADMIN_GET_MEMBER_REQUESTS:
     case ADMIN_REJECT_MEMBER_REQUEST:
     case CREATE_PROJECT:
