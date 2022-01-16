@@ -46,16 +46,22 @@ class TaskService {
       throw new NotFoundException('User not found.');
     }
 
+    const project = await this.projectService.findById(projectId, {
+      relations: ['members'],
+    });
+
+    if (!project) {
+      throw new NotFoundException('Project not found.');
+    }
+
     const isMember = await this.projectService.validateMembership(
-      projectId,
       userId,
+      project,
     );
 
     if (!isMember) {
       throw new UnauthorizedException('You must be a member to add tasks.');
     }
-
-    const project = await this.projectService.findById(projectId);
 
     const assignedTo = assignedToId
       ? await this.userService.findById(assignedToId)
@@ -66,7 +72,7 @@ class TaskService {
     }
 
     const isAssignedMember = assignedTo
-      ? await this.projectService.validateMembership(projectId, assignedToId)
+      ? await this.projectService.validateMembership(assignedToId, project)
       : true;
 
     if (!isAssignedMember) {

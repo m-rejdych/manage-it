@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Put,
   Get,
   UseGuards,
   Req,
@@ -17,7 +18,8 @@ import ProjectService from './project.service';
 import JwtGuard from '../../guards/jwt.guard';
 import Project from './project.entity';
 import CreateProjectDto from './dto/createProject.dto';
-import CreateMemberRequestDto from '../memberRequest/dto/CreateMemberRequest.dto';
+import CreateMemberRequestDto from '../memberRequest/dto/createMemberRequest.dto';
+import AcceptMemberRequestDto from '../memberRequest/dto/acceptMemberRequest.dto';
 import MemberRequest from '../memberRequest/memberRequest.entity';
 import MemberRequestService from '../memberRequest/memberRequest.service';
 import { JwtAuthRequest } from '../auth/interfaces/authRequest';
@@ -76,7 +78,7 @@ class ProjectController {
   ): Promise<boolean> {
     const { userId } = req.user;
 
-    return await this.projectService.validateMembership(projectId, userId);
+    return await this.projectService.validateMembership(userId, projectId);
   }
 
   @UseGuards(JwtGuard)
@@ -130,13 +132,24 @@ class ProjectController {
 
   @UseGuards(JwtGuard)
   @Delete('admin/reject-member-request')
-  async(
+  async rejectMemberRequest(
     @Req() req: JwtAuthRequest,
     @Query('id', new ParseIntPipe()) id: number,
   ): Promise<boolean> {
     const { userId } = req.user;
 
-    return this.projectService.rejectMemberRequest(userId, id);
+    return await this.projectService.rejectMemberRequest(userId, id);
+  }
+
+  @UseGuards(JwtGuard)
+  @Put('admin/accept-member-request')
+  async acceptMemberRequest(
+    @Req() req: JwtAuthRequest,
+    @Body() data: AcceptMemberRequestDto,
+  ): Promise<MemberRequest> {
+    const { userId } = req.user;
+
+    return await this.projectService.acceptMemberRequest(userId, data);
   }
 
   @UseGuards(JwtGuard)

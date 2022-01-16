@@ -1,6 +1,6 @@
 import { IsInt } from 'class-validator';
 
-export default class CreateMemberRequestDto {
+export default class AcceptMemberRequestDto {
   @IsInt({ message: 'Project id must be an integer.' })
-  projectId: number;
+  requestId: number;
 }

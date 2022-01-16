@@ -14,7 +14,8 @@ import TagService from '../tag/tag.service';
 import ProjectStageService from '../projectStage/projectStage.service';
 import MemberRequestService from '../memberRequest/memberRequest.service';
 import CreateProjectDto from './dto/createProject.dto';
-import CreateMemberRequestDto from '../memberRequest/dto/CreateMemberRequest.dto';
+import CreateMemberRequestDto from '../memberRequest/dto/createMemberRequest.dto';
+import AcceptMemberRequestDto from '../memberRequest/dto/acceptMemberRequest.dto';
 
 @Injectable()
 class ProjectService {
@@ -65,30 +66,50 @@ class ProjectService {
   }
 
   async validateMembership(
-    projectId: number,
     userId: number,
+    projectId: number | Project,
   ): Promise<boolean> {
-    const project = await this.projectRepository
-      .createQueryBuilder('project')
-      .leftJoin('project.members', 'member')
-      .where('project.id = :projectId', { projectId })
-      .andWhere('member.id = :userId', { userId })
-      .getOne();
+    let isMember = false;
 
-    return !!project;
+    if (projectId instanceof Project) {
+      const project = projectId;
+      isMember = project.members?.some(({ id }) => id === userId);
+    } else {
+      const project = await this.projectRepository
+        .createQueryBuilder('project')
+        .leftJoin('project.members', 'member')
+        .where('project.id = :projectId', { projectId })
+        .andWhere('member.id = :userId', { userId })
+        .getOne();
+      isMember = !!project;
+    }
+
+    return !!isMember;
   }
 
-  async validateAdmin(userId: number, projectId: number): Promise<boolean> {
-    const project = this.projectRepository
-      .createQueryBuilder('project')
-      .leftJoin('project.admins', 'admin')
-      .leftJoin('project.members', 'member')
-      .where('project.id = :projectId', { projectId })
-      .andWhere('member.id = :userId', { userId })
-      .andWhere('admin.id = :userId', { userId })
-      .getOne();
+  async validateAdmin(
+    userId: number,
+    projectId: number | Project,
+  ): Promise<boolean> {
+    let isAdmin = false;
 
-    return !!project;
+    if (projectId instanceof Project) {
+      const project = projectId;
+      isAdmin = project.admins?.some(({ id }) => userId === id);
+    } else {
+      const project = await this.projectRepository
+        .createQueryBuilder('project')
+        .leftJoin('project.admins', 'admin')
+        .leftJoin('project.members', 'member')
+        .where('project.id = :projectId', { projectId })
+        .andWhere('member.id = :userId', { userId })
+        .andWhere('admin.id = :userId', { userId })
+        .getOne();
+
+      isAdmin = !!project;
+    }
+
+    return !!isAdmin;
   }
 
   async findById(
@@ -137,12 +158,14 @@ class ProjectService {
       throw new NotFoundException('User not found.');
     }
 
-    const project = await this.findById(projectId, { relations: ['requests'] });
+    const project = await this.findById(projectId, {
+      relations: ['requests', 'members'],
+    });
     if (!project) {
       throw new NotFoundException('Project not found!');
     }
 
-    const isMember = await this.validateMembership(projectId, userId);
+    const isMember = await this.validateMembership(userId, project);
     if (isMember) {
       throw new BadRequestException('You are already member of this project.');
     }
@@ -197,7 +220,7 @@ class ProjectService {
     if (!memberRequest) {
       throw new NotFoundException('Member request not found!');
     }
-    if (!memberRequest.project.admins.some(({ id }) => id === adminId)) {
+    if (!(await this.validateAdmin(adminId, memberRequest.project))) {
       throw new ForbiddenException('Only admins can reject member requests.');
     }
 
@@ -206,19 +229,65 @@ class ProjectService {
     return true;
   }
 
+  async acceptMemberRequest(
+    adminId: number,
+    { requestId }: AcceptMemberRequestDto,
+  ): Promise<MemberRequest> {
+    const memberRequest = await this.memberRequestService.findOneById(
+      requestId,
+      {
+        relations: [
+          'requestedBy',
+          'project',
+          'project.admins',
+          'project.members',
+        ],
+      },
+    );
+    if (!memberRequest) {
+      throw new NotFoundException('Memnber request not found.');
+    }
+    if (
+      await this.validateMembership(
+        memberRequest.requestedBy.id,
+        memberRequest.project,
+      )
+    ) {
+      throw new BadRequestException(
+        'This user is already a member of this project.',
+      );
+    }
+
+    const admin = memberRequest.project.admins.find(({ id }) => id === adminId);
+    if (!admin) {
+      throw new ForbiddenException('Only admins can accept member reqeusts.');
+    }
+
+    memberRequest.project.members = [
+      ...memberRequest.project.members,
+      memberRequest.requestedBy,
+    ];
+    await this.projectRepository.save(memberRequest.project);
+    await this.memberRequestService.acceptRequest(memberRequest, admin);
+
+    return memberRequest;
+  }
+
   async getMemeberRequests(
     adminId: number,
     projectId: number,
     isAccepted?: boolean,
   ): Promise<MemberRequest[]> {
-    const project = await this.projectRepository
-      .createQueryBuilder('project')
-      .leftJoin('project.admins', 'admin')
-      .where('admin.id = :adminId', { adminId })
-      .andWhere('project.id = :projectId', { projectId })
-      .getOne();
+    const project = await this.projectRepository.findOne(projectId, {
+      relations: ['admins'],
+    });
     if (!project) {
-      throw new ForbiddenException('You are not an admin of this project.');
+      throw new NotFoundException('Project not found.');
+    }
+    if (!(await this.validateAdmin(adminId, project))) {
+      throw new ForbiddenException(
+        "Only admins can get project's member requests.",
+      );
     }
 
     const memberRequests = await this.memberRequestService.findAllByProjectId(

@@ -84,7 +84,15 @@ export const removeMemberRequest = async (
 export const rejectMemberRequest = async (
   requestId: number,
 ): Promise<AxiosResponse<boolean>> =>
-  axios.delete(
-    `${PROJECT_API}/admin/reject-member-request?id=${requestId}`,
+  axios.delete(`${PROJECT_API}/admin/reject-member-request?id=${requestId}`, {
+    withCredentials: true,
+  });
+
+export const acceptMemberRequest = async (
+  requestId: number,
+): Promise<AxiosResponse<MemberRequest>> =>
+  axios.put(
+    `${PROJECT_API}/admin/accept-member-request`,
+    { requestId },
     { withCredentials: true },
   );

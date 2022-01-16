@@ -1,8 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOneOptions } from 'typeorm';
 
 import MemberRequest from './memberRequest.entity';
+import User from '../user/user.entity';
 
 @Injectable()
 class MemberRequestService {
@@ -96,6 +101,29 @@ class MemberRequestService {
     await this.memberRequestRepository.remove(memberRequest);
 
     return true;
+  }
+
+  async acceptRequest(
+    requestId: number | MemberRequest,
+    acceptedBy: User,
+  ): Promise<MemberRequest> {
+    const memberRequest =
+      requestId instanceof MemberRequest
+        ? requestId
+        : await this.findOneById(requestId, { relations: ['acceptedBy'] });
+    if (!memberRequest) {
+      throw new NotFoundException('Member request not found.');
+    }
+    if (memberRequest.isAccepted) {
+      throw new BadRequestException('This request is already accepted.');
+    }
+
+    memberRequest.isAccepted = true;
+    memberRequest.acceptedBy = acceptedBy;
+
+    await this.memberRequestRepository.save(memberRequest);
+
+    return memberRequest;
   }
 }
 
