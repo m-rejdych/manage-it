@@ -16,6 +16,7 @@ import {
 import parseBool from '../../util/parseBool';
 import ProjectService from './project.service';
 import JwtGuard from '../../guards/jwt.guard';
+import User from '../user/user.entity';
 import Project from './project.entity';
 import CreateProjectDto from './dto/createProject.dto';
 import CreateMemberRequestDto from '../memberRequest/dto/createMemberRequest.dto';
@@ -62,6 +63,17 @@ class ProjectController {
     }
 
     return project;
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('get-members')
+  async getMembers(
+    @Req() req: JwtAuthRequest,
+    @Query('projectId', new ParseIntPipe()) projectId: number,
+  ): Promise<User[]> {
+    const { userId } = req.user;
+
+    return await this.projectService.getMembers(userId, projectId);
   }
 
   @UseGuards(JwtGuard)

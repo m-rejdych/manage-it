@@ -1,13 +1,13 @@
 import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 
-import Project from '../../../types/project';
-import MemberRequest from '../../../types/memberRequest';
-import { PayloadAction } from '../../types/actions';
-import { CreateProjectPayload, GetMemberRequestsPayload } from '../../../types/project/payloads';
-import {
+import type Project from '../../../types/project';
+import type User from '../../../types/user';
+import type MemberRequest from '../../../types/memberRequest';
+import type { PayloadAction } from '../../types/actions'; import type { CreateProjectPayload, GetMemberRequestsPayload } from '../../../types/project/payloads'; import {
   acceptMemberRequest,
   createProject,
+  getMembers,
   getMyProjects,
   getProjectById,
   validateMembership,
@@ -23,6 +23,7 @@ import {
   ADMIN_GET_MEMBER_REQUESTS,
   ADMIN_REJECT_MEMBER_REQUEST,
   CREATE_PROJECT,
+  GET_MEMBERS,
   GET_MY_PROJECTS,
   GET_PROJECT_BY_ID,
   VALIDATE_MEMBERSHIP,
@@ -31,6 +32,7 @@ import {
   addProject,
   filterAdminMemberRequests,
   setAdminMemberRequests,
+  setMembers,
   setMembereRequest,
   setProjects,
   setOpenedProject,
@@ -69,6 +71,16 @@ function* handleGetProjectById({ payload }: PayloadAction<number>) {
     );
 
     yield put(setOpenedProject(response.data || null));
+  } catch (error) {
+    yield put(setError(error.response.data.message));
+  }
+}
+
+function* handleGetMembers({ payload }: PayloadAction<number>) {
+  try {
+    const response: AxiosResponse<User[]> = yield call(getMembers, payload);
+
+    yield put(setMembers(response.data));
   } catch (error) {
     yield put(setError(error.response.data.message));
   }
@@ -175,6 +187,10 @@ function* createProjectSaga() {
   yield takeEvery(CREATE_PROJECT, handleCreateProject);
 }
 
+function* getMembersSaga() {
+  yield takeEvery(GET_MEMBERS, handleGetMembers);
+}
+
 function* getMyProjectsSaga() {
   yield takeEvery(GET_MY_PROJECTS, handleGetMyProjects);
 }
@@ -206,6 +222,7 @@ function* rejectAdminMembershipRequestSaga() {
 const sagas = [
   acceptMemberRequestSaga(),
   createProjectSaga(),
+  getMembersSaga(),
   getMyProjectsSaga(),
   getProjectByIdSaga(),
   getAdminMemberRequestsSaga(),

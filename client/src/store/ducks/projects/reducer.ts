@@ -1,5 +1,5 @@
-import { State } from './types';
-import { PayloadAction } from '../../types/actions';
+import type { State } from './types';
+import type { PayloadAction } from '../../types/actions';
 import {
   ADMIN_ACCEPT_MEMBER_REQUEST,
   ADMIN_FILTER_MEMBER_REQUESTS,
@@ -10,8 +10,10 @@ import {
   VALIDATE_MEMBERSHIP,
   REQUEST_MEMBERSHIP,
   ADD_PROJECT,
+  GET_MEMBERS,
   GET_MY_PROJECTS,
   GET_PROJECT_BY_ID,
+  SET_MEMBERS,
   SET_PROJECTS,
   SET_OPENED_PROJECT,
   SET_IS_MEMBER,
@@ -45,6 +47,7 @@ const reducer = (
     case CREATE_PROJECT:
     case VALIDATE_MEMBERSHIP:
     case REQUEST_MEMBERSHIP:
+    case GET_MEMBERS:
     case GET_MY_PROJECTS:
     case GET_PROJECT_BY_ID:
     case REMOVE_MEMBER_REQUEST:
@@ -79,6 +82,18 @@ const reducer = (
                 ({ id }) => id !== payload,
               ) ?? [],
           },
+        },
+      };
+    case SET_MEMBERS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        openedProject: {
+          ...state.openedProject,
+          project: state.openedProject?.project
+            ? { ...state.openedProject.project, members: payload }
+            : null,
         },
       };
     case SET_PROJECTS:

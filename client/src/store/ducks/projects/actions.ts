@@ -1,10 +1,11 @@
 import createActionCreator from '../../util/createActionCreator';
-import {
+import type {
   CreateProjectPayload,
   GetMemberRequestsPayload,
 } from '../../../types/project/payloads';
-import Project from '../../../types/project';
-import MemberRequest from '../../../types/memberRequest';
+import type Project from '../../../types/project';
+import type User from '../../../types/user';
+import type MemberRequest from '../../../types/memberRequest';
 
 export const ADMIN_ACCEPT_MEMBER_REQUEST =
   'PROJECT_ADMIN_ACCEPT_MEMBER_REQUEST';
@@ -18,8 +19,10 @@ export const CREATE_PROJECT = 'PROJECT_CREATE_PROJECT';
 export const ADD_PROJECT = 'PROJECT_ADD_PROJECT';
 export const GET_MY_PROJECTS = 'PROJECT_GET_MY_PROJECTS';
 export const GET_PROJECT_BY_ID = 'PROJECT_GET_PROJECT_BY_ID';
+export const GET_MEMBERS = 'PROJECT_GET_MEMBERS';
 export const REQUEST_MEMBERSHIP = 'PROJECT_REQUEST_MEMBERSHIP';
 export const VALIDATE_MEMBERSHIP = 'PROJECT_VALIDATE_MEMBERSHIP';
+export const SET_MEMBERS = 'PROJECT_SET_MEMBERS';
 export const SET_PROJECTS = 'PROJECT_SET_PROJECTS';
 export const SET_ERROR = 'PROJECT_SET_ERROR';
 export const SET_OPENED_PROJECT = 'PROJECT_SET_OPENED_PROJECT';
@@ -47,6 +50,10 @@ export const filterAdminMemberRequests = createActionCreator<
   number
 >(ADMIN_FILTER_MEMBER_REQUESTS);
 
+export const getMembers = createActionCreator<typeof GET_MEMBERS, number>(
+  GET_MEMBERS,
+);
+
 export const getMyProjects = createActionCreator<typeof GET_MY_PROJECTS, void>(
   GET_MY_PROJECTS,
 );
@@ -70,6 +77,8 @@ export const getProjectById = createActionCreator<
   typeof GET_PROJECT_BY_ID,
   number
 >(GET_PROJECT_BY_ID);
+
+export const setMembers = createActionCreator<typeof SET_MEMBERS, User[]>(SET_MEMBERS);
 
 export const setProjects = createActionCreator<typeof SET_PROJECTS, Project[]>(
   SET_PROJECTS,

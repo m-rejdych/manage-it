@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOneOptions } from 'typeorm';
 
+import User from '../user/user.entity';
 import Project from './project.entity';
 import MemberRequest from '../memberRequest/memberRequest.entity';
 import UserService from '../user/user.service';
@@ -138,6 +139,19 @@ class ProjectService {
       .getMany();
 
     return projects;
+  }
+
+  async getMembers(userId: number, projectId: number): Promise<User[]> {
+    const project = await this.projectRepository.findOne(projectId, {
+      relations: ['members'],
+    });
+    if (!(await this.validateMembership(userId, project))) {
+      throw new ForbiddenException(
+        'You need to be a member to see project members.',
+      );
+    }
+
+    return project.members;
   }
 
   async search(value: string): Promise<Project[]> {

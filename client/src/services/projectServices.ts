@@ -44,6 +44,11 @@ export const getMembershipRequests = async ({
     { withCredentials: true },
   );
 
+export const getMembers = async (projectId: number) =>
+  axios.get(`${PROJECT_API}/get-members?projectId=${projectId}`, {
+    withCredentials: true,
+  });
+
 export const searchProjects = (
   value: string,
 ): Promise<AxiosResponse<Project[]>> =>

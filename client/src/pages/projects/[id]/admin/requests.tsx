@@ -5,13 +5,17 @@ import { format } from 'date-fns';
 import { Stack, Avatar, ButtonProps } from '@mui/material';
 import { PersonAddAlt1, PersonRemove } from '@mui/icons-material';
 
+import ROUTES from '../../../../constants/routes';
 import ProjectPageContainer from '../../../../components/Projects/ProjectPageContainer';
 import ButtonsCard from '../../../../components/Card/ButtonsCard';
 import {
   acceptAdminMemberRequest,
   getAdminMemberRequests,
+  setAdminMemberRequests,
   rejectAdminMemberRequest,
 } from '../../../../store/ducks/projects/actions';
+import { wrapper } from '../../../../store';
+import { getServerSidePropsWithAutologin } from '../../../../util/autologin';
 import type { RootState } from '../../../../store/types/state';
 
 interface Button extends Omit<ButtonProps, 'onClick'> {
@@ -37,8 +41,10 @@ const ProjectRequests: React.FC = () => {
           isAccepted: false,
         }),
       );
+    } else {
+      dispatch(setAdminMemberRequests([]));
     }
-  }, []);
+  }, [isAdmin, query.id]);
 
   if (!isAdmin) return null;
 
@@ -48,9 +54,9 @@ const ProjectRequests: React.FC = () => {
 
   const handleAccept = (id: number): void => {
     dispatch(acceptAdminMemberRequest(id));
-  }
+  };
 
-  const BUTTONS: Button[] = [
+  const buttons: Button[] = [
     {
       text: 'Accept',
       variant: 'contained',
@@ -75,7 +81,7 @@ const ProjectRequests: React.FC = () => {
           avatar={<Avatar />}
           title={requestedBy ? `${requestedBy.username}` : ''}
           subtitle={`Requested ${format(new Date(createdAt), 'd.M.y, h:m a')}`}
-          buttons={BUTTONS.map(({ text, onClick, ...rest }) => ({
+          buttons={buttons.map(({ text, onClick, ...rest }) => ({
             text,
             onClick: (): void => onClick(id),
             id: `${text}-button-request-${id}`,
@@ -89,6 +95,10 @@ const ProjectRequests: React.FC = () => {
 
 ProjectRequests.getLayout = (page: React.ReactElement): React.ReactNode => (
   <ProjectPageContainer>{page}</ProjectPageContainer>
+);
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  getServerSidePropsWithAutologin(true, ROUTES.LOGIN),
 );
 
 export default ProjectRequests;
