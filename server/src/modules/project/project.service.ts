@@ -297,6 +297,32 @@ class ProjectService {
 
     return memberRequests;
   }
+
+  async removeMember(
+    memberId: number,
+    adminId: number,
+    projectId: number,
+  ): Promise<Project> {
+    const project = await this.findById(projectId, {
+      relations: ['members', 'admins'],
+    });
+    if (!project) {
+      throw new NotFoundException('Project not found.');
+    }
+    if (!(await this.validateMembership(memberId, project))) {
+      throw new BadRequestException(
+        'This user is not a member of this project.',
+      );
+    }
+    if (!(await this.validateAdmin(adminId, project))) {
+      throw new ForbiddenException('Only admins can remove members.');
+    }
+
+    project.members = project.members.filter(({ id }) => id !== memberId);
+    await this.projectRepository.save(project);
+
+    return project;
+  }
 }
 
 export default ProjectService;

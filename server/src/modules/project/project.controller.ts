@@ -167,6 +167,18 @@ class ProjectController {
       parseBool(isAccepted),
     );
   }
+
+  @UseGuards(JwtGuard)
+  @Delete('admin/remove-member')
+  async removeMember(
+    @Req() req: JwtAuthRequest,
+    @Query('memberId', new ParseIntPipe()) memberId: number,
+    @Query('projectId', new ParseIntPipe()) projectId: number,
+  ): Promise<Project> {
+    const { userId } = req.user;
+
+    return await this.projectService.removeMember(memberId, userId, projectId);
+  }
 }
 
 export default ProjectController;

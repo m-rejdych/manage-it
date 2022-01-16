@@ -1,7 +1,8 @@
 import {
   Injectable,
   NotFoundException,
-  UnauthorizedException,
+  ForbiddenException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -60,7 +61,7 @@ class TaskService {
     );
 
     if (!isMember) {
-      throw new UnauthorizedException('You must be a member to add tasks.');
+      throw new ForbiddenException('You must be a member to add tasks.');
     }
 
     const assignedTo = assignedToId
@@ -76,7 +77,7 @@ class TaskService {
       : true;
 
     if (!isAssignedMember) {
-      throw new UnauthorizedException('Assignee must be a member of project.');
+      throw new BadRequestException('Assignee must be a member of project.');
     }
 
     const taskType = await this.taskTypeService.findByName(type);
