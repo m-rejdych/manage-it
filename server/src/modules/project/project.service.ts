@@ -3,7 +3,6 @@ import {
   NotFoundException,
   ForbiddenException,
   BadRequestException,
-  Param,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOneOptions } from 'typeorm';
@@ -353,13 +352,13 @@ class ProjectService {
     if (!project) {
       throw new NotFoundException('Project not found.');
     }
+    if (!(await this.validateAdmin(adminId, project))) {
+      throw new ForbiddenException('Only admins can add admins.');
+    }
     if (!(await this.validateMembership(memberId, project))) {
       throw new BadRequestException(
         'This user is not a member of this project.',
       );
-    }
-    if (!(await this.validateAdmin(adminId, project))) {
-      throw new ForbiddenException('Only admins can remove members.');
     }
     if (await this.validateAdmin(memberId, project)) {
       throw new BadRequestException('This user is already an admin.');
@@ -367,6 +366,28 @@ class ProjectService {
 
     const member = await this.userService.findById(memberId);
     project.admins = [...project.admins, member];
+    await this.projectRepository.save(project);
+
+    return project;
+  }
+
+  async degrade(
+    memberId: number,
+    adminId: number,
+    projectId: number,
+  ): Promise<Project> {
+    const project = await this.findById(projectId, { relations: ['admins'] });
+    if (!project) {
+      throw new NotFoundException('Project not found.');
+    }
+    if (!(await this.validateAdmin(adminId, project))) {
+      throw new ForbiddenException('Only admins can degrade admins.');
+    }
+    if (!(await this.validateAdmin(memberId, project))) {
+      throw new ForbiddenException('This user is not an admin.');
+    }
+
+    project.admins = project.admins.filter(({ id }) => id !== memberId);
     await this.projectRepository.save(project);
 
     return project;

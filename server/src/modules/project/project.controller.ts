@@ -203,6 +203,18 @@ class ProjectController {
 
     return await this.projectService.makeAdmin(memberId, userId, projectId);
   }
+
+  @UseGuards(JwtGuard)
+  @Delete('admin/degrade')
+  async degrade(
+    @Req() req: JwtAuthRequest,
+    @Query('memberId', new ParseIntPipe()) memberId: number,
+    @Query('projectId', new ParseIntPipe()) projectId: number,
+  ): Promise<Project> {
+    const { userId } = req.user;
+
+    return await this.projectService.degrade(memberId, userId, projectId);
+  }
 }
 
 export default ProjectController;
