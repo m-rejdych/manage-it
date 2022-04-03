@@ -8,7 +8,7 @@ import type { PayloadAction } from '../../types/actions';
 import type {
   CreateProjectPayload,
   GetMemberRequestsPayload,
-  RemoveMemberPayload,
+  ProjectMemberPayload,
 } from '../../../types/project/payloads';
 import {
   acceptMemberRequest,
@@ -16,6 +16,7 @@ import {
   getMembers,
   getMyProjects,
   getProjectById,
+  makeAdmin,
   validateMembership,
   validateAdmin,
   requestMembership,
@@ -28,6 +29,7 @@ import {
 import {
   ADMIN_ACCEPT_MEMBER_REQUEST,
   ADMIN_GET_MEMBER_REQUESTS,
+  ADMIN_MAKE_ADMIN,
   ADMIN_REJECT_MEMBER_REQUEST,
   ADMIN_REMOVE_MEMBER,
   CREATE_PROJECT,
@@ -40,6 +42,7 @@ import {
   addProject,
   filterAdminMemberRequests,
   setAdminMemberRequests,
+  setAdmins,
   setMembers,
   setMembereRequest,
   setProjects,
@@ -47,7 +50,6 @@ import {
   setIsMember,
   setIsAdmin,
   setError,
-  updateProject,
 } from './actions';
 
 function* handleCreateProject({
@@ -153,7 +155,9 @@ function* handleRequestMembership({ payload }: PayloadAction<never, number>) {
   }
 }
 
-function* handleRemoveMembershipRequest({ payload }: PayloadAction<never, number>) {
+function* handleRemoveMembershipRequest({
+  payload,
+}: PayloadAction<never, number>) {
   try {
     const response: AxiosResponse<boolean> = yield call(
       removeMemberRequest,
@@ -198,11 +202,23 @@ function* handleAcceptMemberRequest({ payload }: PayloadAction<never, number>) {
 
 function* handleRemoveAdminMember({
   payload,
-}: PayloadAction<never, RemoveMemberPayload>) {
+}: PayloadAction<never, ProjectMemberPayload>) {
   try {
     const response: AxiosResponse<Project> = yield call(removeMember, payload);
 
-    yield put(updateProject(response.data));
+    yield put(setMembers(response.data.members ?? []));
+  } catch (error) {
+    yield put(setError(error.response.data.message));
+  }
+}
+
+function* handleMakeAdmin({
+  payload,
+}: PayloadAction<never, ProjectMemberPayload>) {
+  try {
+    const response: AxiosResponse<Project> = yield call(makeAdmin, payload);
+
+    yield put(setAdmins(response.data.admins ?? []));
   } catch (error) {
     yield put(setError(error.response.data.message));
   }
@@ -232,6 +248,10 @@ function* getProjectByIdSaga() {
   yield takeEvery(GET_PROJECT_BY_ID, handleGetProjectById);
 }
 
+function* makeAdminSaga() {
+  yield takeEvery(ADMIN_MAKE_ADMIN, handleMakeAdmin);
+}
+
 function* validateMembershipSaga() {
   yield takeLatest(VALIDATE_MEMBERSHIP, handleValidateMembership);
 }
@@ -259,11 +279,12 @@ const sagas = [
   getMyProjectsSaga(),
   getProjectByIdSaga(),
   getAdminMemberRequestsSaga(),
-  validateMembershipSaga(),
+  makeAdminSaga(),
   requestMembershipSaga(),
   removeMembershipRequestSaga(),
   rejectAdminMembershipRequestSaga(),
   removeAdminMemberSaga(),
+  validateMembershipSaga(),
 ];
 
 export default sagas;

@@ -5,7 +5,7 @@ import type MemberRequest from '../types/memberRequest';
 import type {
   CreateProjectPayload,
   GetMemberRequestsPayload,
-  RemoveMemberPayload,
+  ProjectMemberPayload,
 } from '../types/project/payloads';
 
 const PROJECT_API = `${process.env.NEXT_PUBLIC_API_URL}/project`;
@@ -106,8 +106,13 @@ export const rejectMemberRequest = async (
 export const removeMember = async ({
   memberId,
   projectId,
-}: RemoveMemberPayload): Promise<Project> =>
+}: ProjectMemberPayload): Promise<AxiosResponse<Project>> =>
   axios.delete(
     `${PROJECT_API}/admin/remove-member?memberId=${memberId}&projectId=${projectId}`,
     { withCredentials: true },
   );
+
+export const makeAdmin = async (
+  data: ProjectMemberPayload,
+): Promise<AxiosResponse<Project>> =>
+  axios.put(`${PROJECT_API}/admin/make-admin`, data, { withCredentials: true });

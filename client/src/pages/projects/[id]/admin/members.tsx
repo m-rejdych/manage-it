@@ -13,6 +13,7 @@ import { wrapper } from '../../../../store';
 import { getServerSidePropsWithAutologin } from '../../../../util/autologin';
 import {
   getMembers,
+  makeAdmin,
   setMembers,
   removeAdminMember,
 } from '../../../../store/ducks/projects/actions';
@@ -58,19 +59,28 @@ const AdminMembers: React.FC = () => {
     );
   };
 
+  const handleMakeAdmin = (id: number): void => {
+    dispatch(
+      makeAdmin({
+        memberId: id,
+        projectId: parseInt(query.id as string, 10),
+      }),
+    );
+  };
+
   const memberButtons: Button[] = [
     {
       variant: 'contained',
       text: 'Make admin',
       startIcon: <AdminPanelSettings />,
-      onClick: () => {},
+      onClick: handleMakeAdmin,
     },
     {
       variant: 'contained',
       color: 'secondary',
       text: 'Remove',
       startIcon: <PersonRemove />,
-      onClick: (id) => handleRemoveMember(id),
+      onClick: handleRemoveMember,
     },
   ];
 

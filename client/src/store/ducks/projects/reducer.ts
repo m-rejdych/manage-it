@@ -4,8 +4,9 @@ import {
   ADMIN_ACCEPT_MEMBER_REQUEST,
   ADMIN_FILTER_MEMBER_REQUESTS,
   ADMIN_GET_MEMBER_REQUESTS,
-  ADMIN_REJECT_MEMBER_REQUEST,
+  ADMIN_MAKE_ADMIN,
   ADMIN_SET_MEMBER_REQUESTS,
+  ADMIN_REJECT_MEMBER_REQUEST,
   ADMIN_REMOVE_MEMBER,
   CREATE_PROJECT,
   VALIDATE_MEMBERSHIP,
@@ -15,6 +16,7 @@ import {
   GET_MEMBERS,
   GET_MY_PROJECTS,
   GET_PROJECT_BY_ID,
+  SET_ADMINS,
   SET_MEMBERS,
   SET_PROJECTS,
   SET_OPENED_PROJECT,
@@ -22,7 +24,6 @@ import {
   SET_MEMBER_REQUEST,
   SET_IS_ADMIN,
   SET_ERROR,
-  UPDATE_PROJECT,
   RESET,
 } from './actions';
 
@@ -45,6 +46,7 @@ const reducer = (
   switch (type) {
     case ADMIN_ACCEPT_MEMBER_REQUEST:
     case ADMIN_GET_MEMBER_REQUESTS:
+    case ADMIN_MAKE_ADMIN:
     case ADMIN_REJECT_MEMBER_REQUEST:
     case ADMIN_REMOVE_MEMBER:
     case CREATE_PROJECT:
@@ -87,6 +89,18 @@ const reducer = (
           },
         },
       };
+    case SET_ADMINS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        openedProject: {
+          ...state.openedProject,
+          project: state.openedProject.project
+            ? { ...state.openedProject.project, admins: payload }
+            : null,
+        },
+      };
     case SET_MEMBERS:
       return {
         ...state,
@@ -107,16 +121,6 @@ const reducer = (
         loading: false,
         error: null,
         openedProject: { ...state.openedProject, project: payload },
-      };
-    case UPDATE_PROJECT:
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        openedProject: {
-          ...state.openedProject,
-          project: { ...state.openedProject.project, ...payload },
-        },
       };
     case SET_IS_MEMBER:
       return {

@@ -10,7 +10,7 @@ export interface GetMemberRequestsPayload {
   isAccepted?: boolean;
 }
 
-export interface RemoveMemberPayload {
+export interface ProjectMemberPayload {
   memberId: number;
   projectId: number;
 }

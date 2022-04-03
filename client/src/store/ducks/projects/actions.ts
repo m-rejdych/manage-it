@@ -2,7 +2,7 @@ import createActionCreator from '../../util/createActionCreator';
 import type {
   CreateProjectPayload,
   GetMemberRequestsPayload,
-  RemoveMemberPayload,
+  ProjectMemberPayload,
 } from '../../../types/project/payloads';
 import type Project from '../../../types/project';
 import type User from '../../../types/user';
@@ -10,21 +10,23 @@ import type MemberRequest from '../../../types/memberRequest';
 
 export const ADMIN_ACCEPT_MEMBER_REQUEST =
   'PROJECT_ADMIN_ACCEPT_MEMBER_REQUEST';
-export const ADMIN_GET_MEMBER_REQUESTS = 'PROJECT_ADMIN_GET_MEMBER_REQUESTS';
-export const ADMIN_SET_MEMBER_REQUESTS = 'PROJECT_ADMIN_SET_MEMBER_REQUESTS';
-export const ADMIN_REJECT_MEMBER_REQUEST =
-  'PROJECT_ADMIN_REJECT_MEMBER_REQUEST';
 export const ADMIN_FILTER_MEMBER_REQUESTS =
   'PROJECT_ADMIN_FILTER_MEMBER_REQUESTS';
+export const ADMIN_GET_MEMBER_REQUESTS = 'PROJECT_ADMIN_GET_MEMBER_REQUESTS';
+export const ADMIN_MAKE_ADMIN = 'PROJECT_ADMIN_MAKE_ADMIN';
+export const ADMIN_REJECT_MEMBER_REQUEST =
+  'PROJECT_ADMIN_REJECT_MEMBER_REQUEST';
+export const ADMIN_SET_MEMBER_REQUESTS = 'PROJECT_ADMIN_SET_MEMBER_REQUESTS';
 export const ADMIN_REMOVE_MEMBER = 'PROJECT_ADMIN_REMOVE_MEMBER';
-export const CREATE_PROJECT = 'PROJECT_CREATE_PROJECT';
 export const ADD_PROJECT = 'PROJECT_ADD_PROJECT';
+export const CREATE_PROJECT = 'PROJECT_CREATE_PROJECT';
 export const GET_MY_PROJECTS = 'PROJECT_GET_MY_PROJECTS';
 export const GET_PROJECT_BY_ID = 'PROJECT_GET_PROJECT_BY_ID';
 export const GET_MEMBERS = 'PROJECT_GET_MEMBERS';
 export const REQUEST_MEMBERSHIP = 'PROJECT_REQUEST_MEMBERSHIP';
 export const VALIDATE_MEMBERSHIP = 'PROJECT_VALIDATE_MEMBERSHIP';
 export const REMOVE_MEMBER_REQUEST = 'PROJECT_REMOVE_MEMBER_REQUEST';
+export const SET_ADMINS = 'PROJECT_SET_ADMINS';
 export const SET_MEMBERS = 'PROJECT_SET_MEMBERS';
 export const SET_PROJECTS = 'PROJECT_SET_PROJECTS';
 export const SET_ERROR = 'PROJECT_SET_ERROR';
@@ -32,7 +34,6 @@ export const SET_OPENED_PROJECT = 'PROJECT_SET_OPENED_PROJECT';
 export const SET_IS_MEMBER = 'PROJECT_SET_IS_MEMBER';
 export const SET_IS_ADMIN = 'PROJECT_SET_IS_ADMIN';
 export const SET_MEMBER_REQUEST = 'PROJECT_SET_MEMBER_REQUEST';
-export const UPDATE_PROJECT = 'PROJECT_UPDATE_PROJECT';
 export const RESET = 'PROJECT_RESET';
 
 export const acceptAdminMemberRequest = createActionCreator<
@@ -81,6 +82,10 @@ export const getProjectById = createActionCreator<
   number
 >(GET_PROJECT_BY_ID);
 
+export const setAdmins = createActionCreator<typeof SET_ADMINS, User[]>(
+  SET_ADMINS,
+);
+
 export const setMembers = createActionCreator<typeof SET_MEMBERS, User[]>(
   SET_MEMBERS,
 );
@@ -124,13 +129,13 @@ export const rejectAdminMemberRequest = createActionCreator<
 
 export const removeAdminMember = createActionCreator<
   typeof ADMIN_REMOVE_MEMBER,
-  RemoveMemberPayload
+  ProjectMemberPayload
 >(ADMIN_REMOVE_MEMBER);
 
-export const updateProject = createActionCreator<
-  typeof UPDATE_PROJECT,
-  Partial<Project>
->(UPDATE_PROJECT);
+export const makeAdmin = createActionCreator<
+  typeof ADMIN_MAKE_ADMIN,
+  ProjectMemberPayload
+>(ADMIN_MAKE_ADMIN);
 
 export const setError = createActionCreator<typeof SET_ERROR, string | null>(
   SET_ERROR,
