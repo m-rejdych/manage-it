@@ -10,6 +10,7 @@ import type MemberRequest from '../../../types/memberRequest';
 
 export const ADMIN_ACCEPT_MEMBER_REQUEST =
   'PROJECT_ADMIN_ACCEPT_MEMBER_REQUEST';
+export const ADMIN_DEGRADE = 'ADMIN_DEGRADE';
 export const ADMIN_FILTER_MEMBER_REQUESTS =
   'PROJECT_ADMIN_FILTER_MEMBER_REQUESTS';
 export const ADMIN_GET_MEMBER_REQUESTS = 'PROJECT_ADMIN_GET_MEMBER_REQUESTS';
@@ -136,6 +137,11 @@ export const makeAdmin = createActionCreator<
   typeof ADMIN_MAKE_ADMIN,
   ProjectMemberPayload
 >(ADMIN_MAKE_ADMIN);
+
+export const degradeAdmin = createActionCreator<
+  typeof ADMIN_DEGRADE,
+  ProjectMemberPayload
+>(ADMIN_DEGRADE);
 
 export const setError = createActionCreator<typeof SET_ERROR, string | null>(
   SET_ERROR,

@@ -13,6 +13,7 @@ import { wrapper } from '../../../../store';
 import { getServerSidePropsWithAutologin } from '../../../../util/autologin';
 import {
   getMembers,
+  degradeAdmin,
   makeAdmin,
   setMembers,
   removeAdminMember,
@@ -68,6 +69,15 @@ const AdminMembers: React.FC = () => {
     );
   };
 
+  const handleDegradeAdmin = (id: number): void => {
+    dispatch(
+      degradeAdmin({
+        memberId: id,
+        projectId: parseInt(query.id as string, 10),
+      }),
+    );
+  };
+
   const memberButtons: Button[] = [
     {
       variant: 'contained',
@@ -90,7 +100,7 @@ const AdminMembers: React.FC = () => {
       text: 'Degrade',
       color: 'secondary',
       startIcon: <ArrowCircleDown />,
-      onClick: () => {},
+      onClick: handleDegradeAdmin,
     },
   ];
 

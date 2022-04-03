@@ -116,3 +116,12 @@ export const makeAdmin = async (
   data: ProjectMemberPayload,
 ): Promise<AxiosResponse<Project>> =>
   axios.put(`${PROJECT_API}/admin/make-admin`, data, { withCredentials: true });
+
+export const degrade = ({
+  memberId,
+  projectId,
+}: ProjectMemberPayload): Promise<AxiosResponse<Project>> =>
+  axios.delete(
+    `${PROJECT_API}/admin/degrade?memberId=${memberId}&projectId=${projectId}`,
+    { withCredentials: true },
+  );

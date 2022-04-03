@@ -13,6 +13,7 @@ import type {
 import {
   acceptMemberRequest,
   createProject,
+  degrade,
   getMembers,
   getMyProjects,
   getProjectById,
@@ -28,6 +29,7 @@ import {
 } from '../../../services/projectServices';
 import {
   ADMIN_ACCEPT_MEMBER_REQUEST,
+  ADMIN_DEGRADE,
   ADMIN_GET_MEMBER_REQUESTS,
   ADMIN_MAKE_ADMIN,
   ADMIN_REJECT_MEMBER_REQUEST,
@@ -224,12 +226,28 @@ function* handleMakeAdmin({
   }
 }
 
+function* handleDegrade({
+  payload,
+}: PayloadAction<never, ProjectMemberPayload>) {
+  try {
+    const response: AxiosResponse<Project> = yield call(degrade, payload);
+
+    yield put(setAdmins(response.data.admins ?? []));
+  } catch (error) {
+    yield put(setError(error.response.data.message));
+  }
+}
+
 function* acceptMemberRequestSaga() {
   yield takeEvery(ADMIN_ACCEPT_MEMBER_REQUEST, handleAcceptMemberRequest);
 }
 
 function* createProjectSaga() {
   yield takeEvery(CREATE_PROJECT, handleCreateProject);
+}
+
+function* degradeSaga() {
+  yield takeEvery(ADMIN_DEGRADE, handleDegrade);
 }
 
 function* getMembersSaga() {
@@ -275,6 +293,7 @@ function* removeAdminMemberSaga() {
 const sagas = [
   acceptMemberRequestSaga(),
   createProjectSaga(),
+  degradeSaga(),
   getMembersSaga(),
   getMyProjectsSaga(),
   getProjectByIdSaga(),
