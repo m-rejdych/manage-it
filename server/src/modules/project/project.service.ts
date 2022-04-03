@@ -3,6 +3,7 @@ import {
   NotFoundException,
   ForbiddenException,
   BadRequestException,
+  Param,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOneOptions } from 'typeorm';
@@ -331,8 +332,41 @@ class ProjectService {
     if (!(await this.validateAdmin(adminId, project))) {
       throw new ForbiddenException('Only admins can remove members.');
     }
+    if (await this.validateAdmin(memberId, project)) {
+      throw new BadRequestException('Admins can not be removed.');
+    }
 
     project.members = project.members.filter(({ id }) => id !== memberId);
+    await this.projectRepository.save(project);
+
+    return project;
+  }
+
+  async makeAdmin(
+    memberId: number,
+    adminId: number,
+    projectId: number,
+  ): Promise<Project> {
+    const project = await this.findById(projectId, {
+      relations: ['admins', 'members'],
+    });
+    if (!project) {
+      throw new NotFoundException('Project not found.');
+    }
+    if (!(await this.validateMembership(memberId, project))) {
+      throw new BadRequestException(
+        'This user is not a member of this project.',
+      );
+    }
+    if (!(await this.validateAdmin(adminId, project))) {
+      throw new ForbiddenException('Only admins can remove members.');
+    }
+    if (await this.validateAdmin(memberId, project)) {
+      throw new BadRequestException('This user is already an admin.');
+    }
+
+    const member = await this.userService.findById(memberId);
+    project.admins = [...project.admins, member];
     await this.projectRepository.save(project);
 
     return project;

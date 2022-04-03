@@ -2,7 +2,11 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
 import { Stack, Avatar, ButtonProps } from '@mui/material';
-import { PersonRemove, AdminPanelSettings } from '@mui/icons-material';
+import {
+  PersonRemove,
+  AdminPanelSettings,
+  ArrowCircleDown,
+} from '@mui/icons-material';
 
 import type { RootState } from '../../../../store/types/state';
 import { wrapper } from '../../../../store';
@@ -54,7 +58,7 @@ const AdminMembers: React.FC = () => {
     );
   };
 
-  const buttons: Button[] = [
+  const memberButtons: Button[] = [
     {
       variant: 'contained',
       text: 'Make admin',
@@ -67,6 +71,16 @@ const AdminMembers: React.FC = () => {
       text: 'Remove',
       startIcon: <PersonRemove />,
       onClick: (id) => handleRemoveMember(id),
+    },
+  ];
+
+  const adminButtons: Button[] = [
+    {
+      variant: 'contained',
+      text: 'Degrade',
+      color: 'secondary',
+      startIcon: <ArrowCircleDown />,
+      onClick: () => {},
     },
   ];
 
@@ -86,7 +100,10 @@ const AdminMembers: React.FC = () => {
           buttons={
             id === userId
               ? []
-              : buttons.map(({ text, onClick, ...rest }) => ({
+              : (admins?.some(({ id: adminId }) => adminId === id)
+                  ? adminButtons
+                  : memberButtons
+                ).map(({ text, onClick, ...rest }) => ({
                   text,
                   onClick: (): void => onClick(id),
                   id: `${text}-button-member-${id}`,

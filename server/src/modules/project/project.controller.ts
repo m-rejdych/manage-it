@@ -21,6 +21,7 @@ import Project from './project.entity';
 import CreateProjectDto from './dto/createProject.dto';
 import CreateMemberRequestDto from '../memberRequest/dto/createMemberRequest.dto';
 import AcceptMemberRequestDto from '../memberRequest/dto/acceptMemberRequest.dto';
+import MakeAdminDto from './dto/makeAdmin.dto';
 import MemberRequest from '../memberRequest/memberRequest.entity';
 import MemberRequestService from '../memberRequest/memberRequest.service';
 import { JwtAuthRequest } from '../auth/interfaces/authRequest';
@@ -190,6 +191,17 @@ class ProjectController {
     const { userId } = req.user;
 
     return await this.projectService.removeMember(memberId, userId, projectId);
+  }
+
+  @UseGuards(JwtGuard)
+  @Put('admin/make-admin')
+  async makeAdmin(
+    @Req() req: JwtAuthRequest,
+    @Body() { memberId, projectId }: MakeAdminDto,
+  ): Promise<Project> {
+    const { userId } = req.user;
+
+    return await this.projectService.makeAdmin(memberId, userId, projectId);
   }
 }
 
