@@ -10,6 +10,7 @@ import { getServerSidePropsWithAutologin } from '../../../../util/autologin';
 import {
   getMembers,
   setMembers,
+  removeAdminMember,
 } from '../../../../store/ducks/projects/actions';
 import ProjectPageContainer from '../../../../components/Projects/ProjectPageContainer';
 import ButtonsCard from '../../../../components/Card/ButtonsCard';
@@ -36,13 +37,22 @@ const AdminMembers: React.FC = () => {
 
   useEffect(() => {
     if (isAdmin) {
-      dispatch(getMembers(parseInt(query.id as string)));
+      dispatch(getMembers(parseInt(query.id as string, 10)));
     } else {
       dispatch(setMembers([]));
     }
   }, [isAdmin, query.id]);
 
   if (!isAdmin) return null;
+
+  const handleRemoveMember = (id: number): void => {
+    dispatch(
+      removeAdminMember({
+        memberId: id,
+        projectId: parseInt(query.id as string, 10),
+      }),
+    );
+  };
 
   const buttons: Button[] = [
     {
@@ -56,7 +66,7 @@ const AdminMembers: React.FC = () => {
       color: 'secondary',
       text: 'Remove',
       startIcon: <PersonRemove />,
-      onClick: () => {},
+      onClick: (id) => handleRemoveMember(id),
     },
   ];
 

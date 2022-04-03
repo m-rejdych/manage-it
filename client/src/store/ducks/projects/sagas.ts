@@ -4,7 +4,13 @@ import { AxiosResponse } from 'axios';
 import type Project from '../../../types/project';
 import type User from '../../../types/user';
 import type MemberRequest from '../../../types/memberRequest';
-import type { PayloadAction } from '../../types/actions'; import type { CreateProjectPayload, GetMemberRequestsPayload } from '../../../types/project/payloads'; import {
+import type { PayloadAction } from '../../types/actions';
+import type {
+  CreateProjectPayload,
+  GetMemberRequestsPayload,
+  RemoveMemberPayload,
+} from '../../../types/project/payloads';
+import {
   acceptMemberRequest,
   createProject,
   getMembers,
@@ -15,6 +21,7 @@ import type { PayloadAction } from '../../types/actions'; import type { CreatePr
   requestMembership,
   rejectMemberRequest,
   removeMemberRequest,
+  removeMember,
   getMemberRequest,
   getMembershipRequests,
 } from '../../../services/projectServices';
@@ -22,6 +29,7 @@ import {
   ADMIN_ACCEPT_MEMBER_REQUEST,
   ADMIN_GET_MEMBER_REQUESTS,
   ADMIN_REJECT_MEMBER_REQUEST,
+  ADMIN_REMOVE_MEMBER,
   CREATE_PROJECT,
   GET_MEMBERS,
   GET_MY_PROJECTS,
@@ -39,11 +47,12 @@ import {
   setIsMember,
   setIsAdmin,
   setError,
+  updateProject,
 } from './actions';
 
 function* handleCreateProject({
   payload,
-}: PayloadAction<CreateProjectPayload>) {
+}: PayloadAction<never, CreateProjectPayload>) {
   try {
     const response: AxiosResponse<Project> = yield call(createProject, payload);
 
@@ -63,7 +72,7 @@ function* handleGetMyProjects() {
   }
 }
 
-function* handleGetProjectById({ payload }: PayloadAction<number>) {
+function* handleGetProjectById({ payload }: PayloadAction<never, number>) {
   try {
     const response: AxiosResponse<Project> = yield call(
       getProjectById,
@@ -76,7 +85,7 @@ function* handleGetProjectById({ payload }: PayloadAction<number>) {
   }
 }
 
-function* handleGetMembers({ payload }: PayloadAction<number>) {
+function* handleGetMembers({ payload }: PayloadAction<never, number>) {
   try {
     const response: AxiosResponse<User[]> = yield call(getMembers, payload);
 
@@ -86,7 +95,9 @@ function* handleGetMembers({ payload }: PayloadAction<number>) {
   }
 }
 
-function* handleGetAdminMemberRequests({ payload }: PayloadAction<GetMemberRequestsPayload>) {
+function* handleGetAdminMemberRequests({
+  payload,
+}: PayloadAction<never, GetMemberRequestsPayload>) {
   try {
     const response: AxiosResponse<MemberRequest[]> = yield call(
       getMembershipRequests,
@@ -99,7 +110,7 @@ function* handleGetAdminMemberRequests({ payload }: PayloadAction<GetMemberReque
   }
 }
 
-function* handleValidateMembership({ payload }: PayloadAction<number>) {
+function* handleValidateMembership({ payload }: PayloadAction<never, number>) {
   try {
     const response: AxiosResponse<boolean> = yield call(
       validateMembership,
@@ -129,7 +140,7 @@ function* handleValidateMembership({ payload }: PayloadAction<number>) {
   }
 }
 
-function* handleRequestMembership({ payload }: PayloadAction<number>) {
+function* handleRequestMembership({ payload }: PayloadAction<never, number>) {
   try {
     const response: AxiosResponse<MemberRequest> = yield call(
       requestMembership,
@@ -142,7 +153,7 @@ function* handleRequestMembership({ payload }: PayloadAction<number>) {
   }
 }
 
-function* handleRemoveMembershipRequest({ payload }: PayloadAction<number>) {
+function* handleRemoveMembershipRequest({ payload }: PayloadAction<never, number>) {
   try {
     const response: AxiosResponse<boolean> = yield call(
       removeMemberRequest,
@@ -155,9 +166,12 @@ function* handleRemoveMembershipRequest({ payload }: PayloadAction<number>) {
   }
 }
 
-function* handleRejectMemberRequest({ payload }: PayloadAction<number>) {
+function* handleRejectMemberRequest({ payload }: PayloadAction<never, number>) {
   try {
-    const response: AxiosResponse<boolean> = yield call(rejectMemberRequest, payload);
+    const response: AxiosResponse<boolean> = yield call(
+      rejectMemberRequest,
+      payload,
+    );
 
     if (response.data) {
       yield put(filterAdminMemberRequests(payload));
@@ -167,13 +181,28 @@ function* handleRejectMemberRequest({ payload }: PayloadAction<number>) {
   }
 }
 
-function* handleAcceptMemberRequest({ payload }: PayloadAction<number>) {
+function* handleAcceptMemberRequest({ payload }: PayloadAction<never, number>) {
   try {
-    const response: AxiosResponse<MemberRequest> = yield call(acceptMemberRequest, payload);
+    const response: AxiosResponse<MemberRequest> = yield call(
+      acceptMemberRequest,
+      payload,
+    );
 
     if (response.data.isAccepted) {
       yield put(filterAdminMemberRequests(payload));
     }
+  } catch (error) {
+    yield put(setError(error.response.data.message));
+  }
+}
+
+function* handleRemoveAdminMember({
+  payload,
+}: PayloadAction<never, RemoveMemberPayload>) {
+  try {
+    const response: AxiosResponse<Project> = yield call(removeMember, payload);
+
+    yield put(updateProject(response.data));
   } catch (error) {
     yield put(setError(error.response.data.message));
   }
@@ -219,6 +248,10 @@ function* rejectAdminMembershipRequestSaga() {
   yield takeEvery(ADMIN_REJECT_MEMBER_REQUEST, handleRejectMemberRequest);
 }
 
+function* removeAdminMemberSaga() {
+  yield takeEvery(ADMIN_REMOVE_MEMBER, handleRemoveAdminMember);
+}
+
 const sagas = [
   acceptMemberRequestSaga(),
   createProjectSaga(),
@@ -230,6 +263,7 @@ const sagas = [
   requestMembershipSaga(),
   removeMembershipRequestSaga(),
   rejectAdminMembershipRequestSaga(),
+  removeAdminMemberSaga(),
 ];
 
 export default sagas;

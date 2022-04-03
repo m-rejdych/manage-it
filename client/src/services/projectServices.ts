@@ -1,13 +1,23 @@
 import axios, { AxiosResponse } from 'axios';
 
-import Project from '../types/project/Project';
-import MemberRequest from '../types/memberRequest';
-import {
+import type Project from '../types/project/Project';
+import type MemberRequest from '../types/memberRequest';
+import type {
   CreateProjectPayload,
   GetMemberRequestsPayload,
+  RemoveMemberPayload,
 } from '../types/project/payloads';
 
 const PROJECT_API = `${process.env.NEXT_PUBLIC_API_URL}/project`;
+
+export const acceptMemberRequest = async (
+  requestId: number,
+): Promise<AxiosResponse<MemberRequest>> =>
+  axios.put(
+    `${PROJECT_API}/admin/accept-member-request`,
+    { requestId },
+    { withCredentials: true },
+  );
 
 export const createProject = async (
   data: CreateProjectPayload,
@@ -93,11 +103,11 @@ export const rejectMemberRequest = async (
     withCredentials: true,
   });
 
-export const acceptMemberRequest = async (
-  requestId: number,
-): Promise<AxiosResponse<MemberRequest>> =>
-  axios.put(
-    `${PROJECT_API}/admin/accept-member-request`,
-    { requestId },
+export const removeMember = async ({
+  memberId,
+  projectId,
+}: RemoveMemberPayload): Promise<Project> =>
+  axios.delete(
+    `${PROJECT_API}/admin/remove-member?memberId=${memberId}&projectId=${projectId}`,
     { withCredentials: true },
   );

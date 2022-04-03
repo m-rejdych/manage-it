@@ -6,9 +6,11 @@ import {
   ADMIN_GET_MEMBER_REQUESTS,
   ADMIN_REJECT_MEMBER_REQUEST,
   ADMIN_SET_MEMBER_REQUESTS,
+  ADMIN_REMOVE_MEMBER,
   CREATE_PROJECT,
   VALIDATE_MEMBERSHIP,
   REQUEST_MEMBERSHIP,
+  REMOVE_MEMBER_REQUEST,
   ADD_PROJECT,
   GET_MEMBERS,
   GET_MY_PROJECTS,
@@ -20,7 +22,7 @@ import {
   SET_MEMBER_REQUEST,
   SET_IS_ADMIN,
   SET_ERROR,
-  REMOVE_MEMBER_REQUEST,
+  UPDATE_PROJECT,
   RESET,
 } from './actions';
 
@@ -44,6 +46,7 @@ const reducer = (
     case ADMIN_ACCEPT_MEMBER_REQUEST:
     case ADMIN_GET_MEMBER_REQUESTS:
     case ADMIN_REJECT_MEMBER_REQUEST:
+    case ADMIN_REMOVE_MEMBER:
     case CREATE_PROJECT:
     case VALIDATE_MEMBERSHIP:
     case REQUEST_MEMBERSHIP:
@@ -104,6 +107,16 @@ const reducer = (
         loading: false,
         error: null,
         openedProject: { ...state.openedProject, project: payload },
+      };
+    case UPDATE_PROJECT:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        openedProject: {
+          ...state.openedProject,
+          project: { ...state.openedProject.project, ...payload },
+        },
       };
     case SET_IS_MEMBER:
       return {
