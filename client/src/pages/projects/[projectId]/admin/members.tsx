@@ -43,11 +43,11 @@ const AdminMembers: React.FC = () => {
 
   useEffect(() => {
     if (isAdmin) {
-      dispatch(getMembers(parseInt(query.id as string, 10)));
+      dispatch(getMembers(parseInt(query.projectId as string, 10)));
     } else {
       dispatch(setMembers([]));
     }
-  }, [isAdmin, query.id]);
+  }, [isAdmin, query.projectId]);
 
   if (!isAdmin) return null;
 
@@ -55,7 +55,7 @@ const AdminMembers: React.FC = () => {
     dispatch(
       removeAdminMember({
         memberId: id,
-        projectId: parseInt(query.id as string, 10),
+        projectId: parseInt(query.projectId as string, 10),
       }),
     );
   };
@@ -64,7 +64,7 @@ const AdminMembers: React.FC = () => {
     dispatch(
       makeAdmin({
         memberId: id,
-        projectId: parseInt(query.id as string, 10),
+        projectId: parseInt(query.projectId as string, 10),
       }),
     );
   };
@@ -73,7 +73,7 @@ const AdminMembers: React.FC = () => {
     dispatch(
       degradeAdmin({
         memberId: id,
-        projectId: parseInt(query.id as string, 10),
+        projectId: parseInt(query.projectId as string, 10),
       }),
     );
   };

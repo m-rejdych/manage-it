@@ -44,14 +44,14 @@ const ProjectHeader: React.FC<Props> = ({ id, title, toggleTaskDialog }) => {
   );
 
   useEffect(() => {
-    dispatch(getProjectById(parseInt(router.query.id as string)));
-    dispatch(validateMembership(parseInt(router.query.id as string)));
-  }, [router.query.id]);
+    dispatch(getProjectById(parseInt(router.query.projectId as string)));
+    dispatch(validateMembership(parseInt(router.query.projectId as string)));
+  }, [router.query.projectId]);
 
   const handleNavigate: NavigateClosure =
     (pathname = '') =>
     () => {
-      router.push(`${ROUTES.PROJECTS}/${router.query.id}${pathname}`);
+      router.push(`${ROUTES.PROJECTS}/${router.query.projectId}${pathname}`);
     };
 
   const handleRequestMembership = (): void => {

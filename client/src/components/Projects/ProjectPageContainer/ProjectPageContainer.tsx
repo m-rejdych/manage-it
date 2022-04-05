@@ -32,9 +32,9 @@ const ProjectPageContainer: React.FC<Props> = ({ children, shouldFade }) => {
   );
 
   useEffect(() => {
-    dispatch(getProjectById(parseInt(query.id as string)));
-    dispatch(validateMembership(parseInt(query.id as string)));
-  }, [query.id]);
+    dispatch(getProjectById(parseInt(query.projectId as string)));
+    dispatch(validateMembership(parseInt(query.projectId as string)));
+  }, [query.projectId]);
 
   const toggleDialog = (): void => {
     setOpen((isOpen) => !isOpen);
@@ -51,7 +51,7 @@ const ProjectPageContainer: React.FC<Props> = ({ children, shouldFade }) => {
       <TaskDialog
         open={open}
         onClose={toggleDialog}
-        projectId={parseInt(query.id as string)}
+        projectId={parseInt(query.projectId as string)}
       />
     </PageContainer>
   ) : null;

@@ -41,10 +41,13 @@ const ProjectAdmin: React.FC = () => {
   if (!isAdmin) return null;
 
   const handleClick = async (pathname: string): Promise<void> => {
-    const { id } = router.query;
+    const { projectId } = router.query;
 
     await router.push(
-      `${router.pathname.replace('[id]', id as string)}${pathname}`,
+      `${router.pathname.replace(
+        '[projectId]',
+        projectId as string,
+      )}${pathname}`,
     );
   };
 

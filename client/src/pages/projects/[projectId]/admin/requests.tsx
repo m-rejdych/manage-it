@@ -37,14 +37,14 @@ const ProjectRequests: React.FC = () => {
     if (isAdmin) {
       dispatch(
         getAdminMemberRequests({
-          projectId: parseInt(query.id as string),
+          projectId: parseInt(query.projectId as string),
           isAccepted: false,
         }),
       );
     } else {
       dispatch(setAdminMemberRequests([]));
     }
-  }, [isAdmin, query.id]);
+  }, [isAdmin, query.projectId]);
 
   if (!isAdmin) return null;
 
