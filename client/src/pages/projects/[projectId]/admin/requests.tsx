@@ -94,7 +94,23 @@ const ProjectRequests: React.FC = () => {
 };
 
 ProjectRequests.getLayout = (page: React.ReactElement): React.ReactNode => (
-  <ProjectPageContainer>{page}</ProjectPageContainer>
+  <ProjectPageContainer
+    breadcrumbs={{
+      current: 'Requests',
+      values: [
+        {
+          label: 'Project',
+          href: `${ROUTES.PROJECTS}/${page._owner.pendingProps.router.query.projectId}`,
+        },
+        {
+          label: 'Admin',
+          href: `${ROUTES.PROJECTS}/${page._owner.pendingProps.router.query.projectId}/admin`,
+        },
+      ],
+    }}
+  >
+    {page}
+  </ProjectPageContainer>
 );
 
 export const getServerSideProps = wrapper.getServerSideProps(

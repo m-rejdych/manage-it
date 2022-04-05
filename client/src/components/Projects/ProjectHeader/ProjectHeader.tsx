@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box, Stack, Typography, Button } from '@mui/material';
+import { Stack, Button, Breadcrumbs } from '@mui/material';
 import { Add, ExitToApp, Check, Close } from '@mui/icons-material';
 
-import { RootState } from '../../../store/types/state';
+import type { RootState } from '../../../store/types/state';
+import type { BreadcrumbsType } from '../../PageHeader/PageHeader';
 import {
   requestMembership,
   removeMemberRequest,
@@ -12,6 +13,7 @@ import {
   getProjectById,
   validateMembership,
 } from '../../../store/ducks/projects/actions';
+import PageHeader from '../../PageHeader';
 import ROUTES from '../../../constants/routes';
 
 type NavigateClosure = (pathname?: string) => () => void;
@@ -20,9 +22,15 @@ interface Props {
   id: number;
   title: string;
   toggleTaskDialog: () => void;
+  breadcrumbs?: BreadcrumbsType;
 }
 
-const ProjectHeader: React.FC<Props> = ({ id, title, toggleTaskDialog }) => {
+const ProjectHeader: React.FC<Props> = ({
+  id,
+  title,
+  toggleTaskDialog,
+  breadcrumbs,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const isMember = useSelector(
     (state: RootState) => state.project.openedProject.isMember,
@@ -125,15 +133,11 @@ const ProjectHeader: React.FC<Props> = ({ id, title, toggleTaskDialog }) => {
   };
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      mb={3}
-    >
-      <Typography variant="h6">{title}</Typography>
-      {renderButton()}
-    </Box>
+    <PageHeader
+      title={title}
+      renderButtons={renderButton}
+      breadcrumbs={breadcrumbs}
+    />
   );
 };
 

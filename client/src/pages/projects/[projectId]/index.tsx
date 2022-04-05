@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Stack, Typography, Box, Divider } from '@mui/material';
+import { NextPage } from 'next';
 
 import { wrapper } from '../../../store';
 import { getServerSidePropsWithAutologin } from '../../../util/autologin';

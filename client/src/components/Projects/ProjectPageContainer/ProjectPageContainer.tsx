@@ -8,15 +8,21 @@ import {
   reset,
 } from '../../../store/ducks/projects/actions';
 import type { RootState } from '../../../store/types/state';
+import type { BreadcrumbsType } from '../../PageHeader/PageHeader';
 import PageContainer from '../../../components/PageContainer';
 import ProjectHeader from '../../../components/Projects/ProjectHeader';
 import TaskDialog from '../../../components/Tasks/TaskDialog';
 
 interface Props {
   shouldFade?: boolean;
+  breadcrumbs?: BreadcrumbsType;
 }
 
-const ProjectPageContainer: React.FC<Props> = ({ children, shouldFade }) => {
+const ProjectPageContainer: React.FC<Props> = ({
+  children,
+  shouldFade,
+  breadcrumbs,
+}) => {
   const [open, setOpen] = useState(false);
   const { query } = useRouter();
   const project = useSelector(
@@ -46,6 +52,7 @@ const ProjectPageContainer: React.FC<Props> = ({ children, shouldFade }) => {
         id={project.id}
         title={project.title}
         toggleTaskDialog={toggleDialog}
+        breadcrumbs={breadcrumbs}
       />
       {children}
       <TaskDialog
