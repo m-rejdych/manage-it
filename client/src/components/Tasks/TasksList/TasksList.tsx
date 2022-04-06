@@ -28,11 +28,11 @@ const TasksList: React.FC<Props> = ({ projectId, disableClick }) => {
 
   return tasks?.length ? (
     <Stack spacing={3}>
-      {tasks.map(({ id, ...task }) => (
+      {tasks.map((task) => (
         <TasksListItem
           {...task}
           disableClick={disableClick}
-          key={`task-${id}`}
+          key={`task-${task.id}`}
         />
       ))}
     </Stack>

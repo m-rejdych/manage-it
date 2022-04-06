@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { Stack, Typography, Box, Divider } from '@mui/material';
-import { NextPage } from 'next';
 
 import { wrapper } from '../../../store';
 import { getServerSidePropsWithAutologin } from '../../../util/autologin';
@@ -8,6 +7,7 @@ import type { RootState } from '../../../store/types/state';
 import ProjectPageContainer from '../../../components/Projects/ProjectPageContainer';
 import TasksList from '../../../components/Tasks/TasksList';
 import ROUTES from '../../../constants/routes';
+
 
 const Project: React.FC = () => {
   const project = useSelector(
