@@ -4,7 +4,6 @@ import {
   Post,
   UseGuards,
   ParseIntPipe,
-  Param,
   Body,
   Query,
   Req,
@@ -21,11 +20,15 @@ class TaskController {
   constructor(private taskService: TaskService) {}
 
   @UseGuards(JwtGuard)
-  @Get('get-by-id/:id')
+  @Get('get-by-id')
   async getById(
-    @Param('id', new ParseIntPipe()) id: number,
+    @Req() req: JwtAuthRequest,
+    @Query('taskId', new ParseIntPipe()) taskId: number,
+    @Query('projectId', new ParseIntPipe()) projectId: number,
   ): Promise<Task | null> {
-    return await this.taskService.findById(id);
+    const { userId } = req.user;
+
+    return await this.taskService.findById(taskId, userId, projectId);
   }
 
   @UseGuards(JwtGuard)

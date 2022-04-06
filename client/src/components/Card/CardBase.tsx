@@ -34,7 +34,8 @@ const CardBase: React.FC<Props> = ({
     <Paper
       {...rest}
       sx={{
-        p: theme.spacing(4),
+        px: theme.spacing(4),
+        py: theme.spacing(2),
         borderRadius: 5,
         cursor: disableClick ? 'default' : 'pointer',
         ...rest.sx,

@@ -27,7 +27,7 @@ const TasksList: React.FC<Props> = ({ projectId, disableClick }) => {
   }, [projectId]);
 
   return tasks?.length ? (
-    <Stack spacing={3}>
+    <Stack spacing={2}>
       {tasks.map((task) => (
         <TasksListItem
           {...task}

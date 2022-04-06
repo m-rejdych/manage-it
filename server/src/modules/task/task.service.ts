@@ -5,7 +5,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindOneOptions } from 'typeorm';
 
 import TaskTypeService from '../taskType/taskType.service';
 import TaskPriorityService from '../taskPriority/taskPriority.service';
@@ -126,8 +126,17 @@ class TaskService {
     return task;
   }
 
-  async findById(id: number): Promise<Task | null> {
-    const task = this.taskRepository.findOne(id);
+  async findById(
+    id: number,
+    memberId: number,
+    projectId: number,
+    options?: FindOneOptions,
+  ): Promise<Task | null> {
+    if (!(await this.projectService.validateMembership(memberId, projectId))) {
+      throw new ForbiddenException('Only project members can ');
+    }
+
+    const task = this.taskRepository.findOne(id, options);
 
     return task || null;
   }

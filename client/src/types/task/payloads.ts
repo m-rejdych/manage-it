@@ -12,3 +12,8 @@ export interface CreateTaskPayload {
   checkpoints?: string[];
   tags?: string[];
 }
+
+export interface GetTaskByIdPayload {
+  taskId: number;
+  projectId: number;
+}

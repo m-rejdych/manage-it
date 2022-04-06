@@ -8,7 +8,7 @@ const ProjectsList: React.FC = () => {
   const projects = useSelector((state: RootState) => state.project.projects);
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={2}>
       {projects.map((project) => (
         <ProjectsListItem {...project} key={project.id} />
       ))}

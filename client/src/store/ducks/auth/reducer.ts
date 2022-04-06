@@ -18,7 +18,6 @@ const reducer: Reducer<State, PayloadAction> = (state = initialState, { type, pa
     case HYDRATE:
       return { ...state, ...payload.auth };
     case REGISTER:
-      return { ...state, loading: true };
     case LOGIN:
       return { ...state, loading: true };
     case AUTH_SUCCESS:

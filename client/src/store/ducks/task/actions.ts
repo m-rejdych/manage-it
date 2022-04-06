@@ -1,10 +1,14 @@
 import createActionCreator from '../../util/createActionCreator';
 
-import { CreateTaskPayload } from '../../../types/task/payloads';
+import type {
+  CreateTaskPayload,
+  GetTaskByIdPayload,
+} from '../../../types/task/payloads';
 import Task from '../../../types/task';
 
 export const ADD_TASK = 'TASK_ADD_TASK';
 export const CREATE_TASK = 'TAST_CREATE_TASK';
+export const GET_TASK_BY_ID = 'TASK_GET_TASK_BY_ID';
 export const GET_TASKS_BY_PROJECT_ID = 'TASK_GET_TASKS_BY_PROJECT_ID';
 export const SET_OPENED_TASK = 'TASK_SET_OPENED_TASK';
 export const SET_TASKS = 'TASK_SET_TASKS';
@@ -21,6 +25,11 @@ export const addTask = createActionCreator<typeof ADD_TASK, Task>(ADD_TASK);
 export const setOpenedTask = createActionCreator<typeof SET_OPENED_TASK, Task>(
   SET_OPENED_TASK,
 );
+
+export const getTaskById = createActionCreator<
+  typeof GET_TASK_BY_ID,
+  GetTaskByIdPayload
+>(GET_TASK_BY_ID);
 
 export const getTasksByProjectId = createActionCreator<
   typeof GET_TASKS_BY_PROJECT_ID,
