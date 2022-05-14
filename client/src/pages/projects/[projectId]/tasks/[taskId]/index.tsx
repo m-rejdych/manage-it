@@ -7,6 +7,7 @@ import { getServerSidePropsWithAutologin } from '../../../../../util/autologin';
 import { getTaskById, reset } from '../../../../../store/ducks/task/actions';
 import ROUTES from '../../../../../constants/routes';
 import ProjectPageContainer from '../../../../../components/Projects/ProjectPageContainer';
+import TaskDetails from '../../../../../components/Tasks/TaskDetails';
 import Role from '../../../../../types/project/Role';
 import type { RootState } from '../../../../../store/types/state';
 
@@ -14,6 +15,7 @@ const ProjectTask: React.FC = () => {
   const isMember = useSelector(
     (state: RootState) => state.project.openedProject.isMember,
   );
+  const task = useSelector((state: RootState) => state.task.openedTask);
   const { query } = useRouter();
   const dispatch = useDispatch();
 
@@ -32,7 +34,7 @@ const ProjectTask: React.FC = () => {
     };
   }, [isMember]);
 
-  return <div>Hello task!</div>;
+  return task ? <TaskDetails {...task} /> : null;
 };
 
 ProjectTask.getLayout = (page: React.ElementType) => (

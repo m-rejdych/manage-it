@@ -1,11 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-import TaskPriorityName from './types/name';
+import type TaskPriorityName from './types/name';
+import type TaskPriorityKind from './types/kind';
 
 @Entity()
 class TaskPriority {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: TaskPriorityKind;
 
   @Column({ unique: true })
   name: TaskPriorityName;

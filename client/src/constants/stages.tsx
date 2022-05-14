@@ -2,7 +2,7 @@ import { Done, WatchLater, Cached, NotStarted } from '@mui/icons-material';
 import { green, yellow, deepPurple, teal } from '@mui/material/colors';
 
 import ProjectStageName from '../types/projectStage/ProjectStageName';
-import TaskStageName from '../types/taskStage/taskStageName';
+import TaskStageName from '../types/taskStage/TaskStageName';
 
 export const STAGE_LABELS: Record<ProjectStageName | TaskStageName, string> = {
   closed: 'Closed',

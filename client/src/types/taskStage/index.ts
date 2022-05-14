@@ -1,1 +1,1 @@
-export type { default } from './taskStage';
+export type { default } from './TaskStage';

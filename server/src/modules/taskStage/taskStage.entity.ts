@@ -1,13 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-import TaskStageName from './types/name';
+import type TaskStageName from './types/name';
+import type TaskStageKind from './types/kind';
 
 @Entity()
 class TaskStage {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: TaskStageKind;
 
-  @Column()
+  @Column({ unique: true })
   name: TaskStageName;
 }
 

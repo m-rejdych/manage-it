@@ -28,7 +28,17 @@ class TaskController {
   ): Promise<Task | null> {
     const { userId } = req.user;
 
-    return await this.taskService.findById(taskId, userId, projectId);
+    return await this.taskService.findById(taskId, userId, projectId, {
+      relations: [
+        'creator',
+        'assignedTo',
+        'type',
+        'priority',
+        'stage',
+        'checkpoints',
+        'tags',
+      ],
+    });
   }
 
   @UseGuards(JwtGuard)
