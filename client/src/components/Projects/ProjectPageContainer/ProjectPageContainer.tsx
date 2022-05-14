@@ -9,26 +9,42 @@ import {
 } from '../../../store/ducks/projects/actions';
 import type { RootState } from '../../../store/types/state';
 import type { BreadcrumbsType } from '../../PageHeader/PageHeader';
+import Role from '../../../types/project/Role';
 import PageContainer from '../../../components/PageContainer';
 import ProjectHeader from '../../../components/Projects/ProjectHeader';
 import TaskDialog from '../../../components/Tasks/TaskDialog';
+import Unauthorized from '../../../components/Unauthorized';
 
 interface Props {
   shouldFade?: boolean;
   breadcrumbs?: BreadcrumbsType;
+  role?: Role;
 }
 
 const ProjectPageContainer: React.FC<Props> = ({
   children,
   shouldFade,
   breadcrumbs,
+  role,
 }) => {
   const [open, setOpen] = useState(false);
   const { query } = useRouter();
   const project = useSelector(
     (state: RootState) => state.project.openedProject.project,
   );
+  const isMember = useSelector(
+    (state: RootState) => state.project.openedProject.isMember,
+  );
+  const isAdmin = useSelector(
+    (state: RootState) => state.project.openedProject.isAdmin,
+  );
+  const loading = useSelector((state: RootState) => state.project.loading);
   const dispatch = useDispatch();
+
+  const isAuthorized =
+    role === undefined ||
+    (role === Role.User && isMember) ||
+    (role === Role.Admin && isAdmin);
 
   useEffect(
     () => () => {
@@ -48,18 +64,24 @@ const ProjectPageContainer: React.FC<Props> = ({
 
   return project ? (
     <PageContainer shouldFade={shouldFade}>
-      <ProjectHeader
-        id={project.id}
-        title={project.title}
-        toggleTaskDialog={toggleDialog}
-        breadcrumbs={breadcrumbs}
-      />
-      {children}
-      <TaskDialog
-        open={open}
-        onClose={toggleDialog}
-        projectId={parseInt(query.projectId as string)}
-      />
+      {isAuthorized ? (
+        <>
+          <ProjectHeader
+            id={project.id}
+            title={project.title}
+            toggleTaskDialog={toggleDialog}
+            breadcrumbs={breadcrumbs}
+          />
+          {children}
+          <TaskDialog
+            open={open}
+            onClose={toggleDialog}
+            projectId={parseInt(query.projectId as string)}
+          />
+        </>
+      ) : loading ? null : (
+        <Unauthorized />
+      )}
     </PageContainer>
   ) : null;
 };

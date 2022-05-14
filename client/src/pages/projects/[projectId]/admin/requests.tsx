@@ -8,6 +8,7 @@ import { PersonAddAlt1, PersonRemove } from '@mui/icons-material';
 import ROUTES from '../../../../constants/routes';
 import ProjectPageContainer from '../../../../components/Projects/ProjectPageContainer';
 import ButtonsCard from '../../../../components/Card/ButtonsCard';
+import Role from '../../../../types/project/Role';
 import {
   acceptAdminMemberRequest,
   getAdminMemberRequests,
@@ -45,8 +46,6 @@ const ProjectRequests: React.FC = () => {
       dispatch(setAdminMemberRequests([]));
     }
   }, [isAdmin, query.projectId]);
-
-  if (!isAdmin) return null;
 
   const handleReject = (id: number): void => {
     dispatch(rejectAdminMemberRequest(id));
@@ -95,6 +94,7 @@ const ProjectRequests: React.FC = () => {
 
 ProjectRequests.getLayout = (page: React.ReactElement): React.ReactNode => (
   <ProjectPageContainer
+    role={Role.Admin}
     breadcrumbs={{
       current: 'Requests',
       values: [

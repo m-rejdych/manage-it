@@ -1,14 +1,13 @@
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 import { PersonAddAlt, ManageAccountsOutlined } from '@mui/icons-material';
 import { Stack } from '@mui/material';
 
 import { wrapper } from '../../../../store';
 import { getServerSidePropsWithAutologin } from '../../../../util/autologin';
-import type { RootState } from '../../../../store/types/state';
 import ROUTES from '../../../../constants/routes';
 import ProjectPageContainer from '../../../../components/Projects/ProjectPageContainer';
 import SquareButton from '../../../../components/SquareButton';
+import Role from '../../../../types/project/Role';
 
 interface AdminPage {
   id: string;
@@ -33,12 +32,7 @@ const BUTTONS: AdminPage[] = [
 ];
 
 const ProjectAdmin: React.FC = () => {
-  const isAdmin = useSelector(
-    (state: RootState) => state.project.openedProject.isAdmin,
-  );
   const router = useRouter();
-
-  if (!isAdmin) return null;
 
   const handleClick = async (pathname: string): Promise<void> => {
     const { projectId } = router.query;
@@ -68,6 +62,7 @@ const ProjectAdmin: React.FC = () => {
 
 ProjectAdmin.getLayout = (page: React.ReactElement): React.ReactNode => (
   <ProjectPageContainer
+    role={Role.Admin}
     breadcrumbs={{
       current: 'Admin',
       values: [

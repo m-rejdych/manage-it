@@ -20,6 +20,7 @@ import {
 } from '../../../../store/ducks/projects/actions';
 import ProjectPageContainer from '../../../../components/Projects/ProjectPageContainer';
 import ButtonsCard from '../../../../components/Card/ButtonsCard';
+import Role from '../../../../types/project/Role';
 import ROUTES from '../../../../constants/routes';
 
 interface Button extends Omit<ButtonProps, 'onClick'> {
@@ -48,8 +49,6 @@ const AdminMembers: React.FC = () => {
       dispatch(setMembers([]));
     }
   }, [isAdmin, query.projectId]);
-
-  if (!isAdmin) return null;
 
   const handleRemoveMember = (id: number): void => {
     dispatch(
@@ -138,6 +137,7 @@ const AdminMembers: React.FC = () => {
 
 AdminMembers.getLayout = (page: React.ReactElement): React.ReactNode => (
   <ProjectPageContainer
+    role={Role.Admin}
     breadcrumbs={{
       current: 'Members',
       values: [

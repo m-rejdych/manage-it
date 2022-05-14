@@ -7,6 +7,7 @@ import { getServerSidePropsWithAutologin } from '../../../../../util/autologin';
 import { getTaskById, reset } from '../../../../../store/ducks/task/actions';
 import ROUTES from '../../../../../constants/routes';
 import ProjectPageContainer from '../../../../../components/Projects/ProjectPageContainer';
+import Role from '../../../../../types/project/Role';
 import type { RootState } from '../../../../../store/types/state';
 
 const ProjectTask: React.FC = () => {
@@ -28,16 +29,15 @@ const ProjectTask: React.FC = () => {
 
     return () => {
       dispatch(reset());
-    }
+    };
   }, [isMember]);
-
-  if (!isMember) return null;
 
   return <div>Hello task!</div>;
 };
 
 ProjectTask.getLayout = (page: React.ElementType) => (
   <ProjectPageContainer
+    role={Role.User}
     breadcrumbs={{
       current: 'Task',
       values: [
